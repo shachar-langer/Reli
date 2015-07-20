@@ -13,7 +13,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name=".main.ReliApp">
 
         <!-- Facebook -->
         <meta-data
@@ -60,10 +61,7 @@
             android:name=".location.LocationActivity"
             android:label="@string/title_activity_location" >
         </activity>
-        <activity
-            android:name=".login.ToBeDeletedActivity"
-            android:label="@string/title_activity_to_be_deleted" >
-        </activity>
+
     </application>
 
 </manifest>

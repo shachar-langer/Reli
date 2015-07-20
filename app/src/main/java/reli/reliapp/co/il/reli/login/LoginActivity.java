@@ -31,19 +31,12 @@ import reli.reliapp.co.il.reli.main.MainActivity;
 
 public class LoginActivity extends FragmentActivity {
 
-    private final String PARSE_APP_ID = "jmxBnVR9fWE39FZxG5tCuVCVwpMp7j62DjdjTFj2";
-    private final String PARSE_CLIENT_KEY = "LILbHV2CYBZp10mqzXUKr1lwGv2Oguo82dvp5c2P";
-
     /* ========================================================================== */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // Parse - enable Local Datastore
-//        Parse.enableLocalDatastore(this);
-//        Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
 
         // Fragment
         if (savedInstanceState == null) {
