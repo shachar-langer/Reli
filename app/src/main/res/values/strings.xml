@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Reli</string>
+
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- Discussion -->
+    <string name="discussion_title">Discussion</string>
+    <string name="discussion_btn_text">Let\'s Reli!</string>
+    <string name="discussion_text_topicTitle">Topic:</string>
+    <string name="discussion_edt_topic">What do you want to discuss?</string>
+
+    <!-- Poll -->
+    <string name="poll_title">Poll</string>
+    <string name="poll_btn_text">Let\'s Reli!</string>
+    <string name="poll_text_questionTitle">Question:</string>
+    <string name="poll_edt_question">What do you want to ask?</string>
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">1610941799185524</string>
+    <string name="title_activity_main_drawer">MainDrawer</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <string-array name="drawer_titles">
+        <item>Tabs</item>
+        <item>WebView</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_welcome_string">Welcome to Reli!</string>
+    <string name="title_activity_location">LocationActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_to_be_deleted">ToBeDeletedActivity</string>
+</resources>
+
