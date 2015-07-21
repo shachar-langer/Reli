@@ -3,6 +3,7 @@ package reli.reliapp.co.il.reli.main;
 import android.app.Application;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
 
 public class ReliApp extends Application {
@@ -15,6 +16,9 @@ public class ReliApp extends Application {
         super.onCreate();
 
         Toast.makeText(getApplicationContext(), "Hello from ReliApp", Toast.LENGTH_SHORT).show();
+
+        // Initialize Parse
+        Parse.enableLocalDatastore(this);
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
     }
 }
