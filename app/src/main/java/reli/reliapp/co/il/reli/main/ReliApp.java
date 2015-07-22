@@ -5,6 +5,10 @@ import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 
 public class ReliApp extends Application {
 
@@ -15,10 +19,10 @@ public class ReliApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Toast.makeText(getApplicationContext(), "Hello from ReliApp", Toast.LENGTH_SHORT).show();
+        // Register the extended ParseUser (aka ReliUser)
+        ParseUser.registerSubclass(ReliUser.class);
 
         // Initialize Parse
-        Parse.enableLocalDatastore(this);
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
     }
 }
