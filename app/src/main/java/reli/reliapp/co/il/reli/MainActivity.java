@@ -427,8 +427,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
     /* ========================================================================== */
 
     private void updateParseLocation() {
-        user.setLocation(geoPointFromLocation(getLocation()));
-        user.saveEventually();
+        if (getLocation() != null) {
+            user.setLocation(geoPointFromLocation(getLocation()));
+            user.saveEventually();
+        }
     }
 
     /* ========================================================================== */
