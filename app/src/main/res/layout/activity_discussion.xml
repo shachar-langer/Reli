@@ -16,7 +16,7 @@
         android:fastScrollEnabled="true"
         android:paddingBottom="@dimen/pad_10dp"
         android:paddingTop="@dimen/pad_10dp"
-        tools:listitem="@layout/chat_item_rcv" >
+        tools:listitem="@layout/message_item_rcv" >
     </ListView>
 
    <LinearLayout 

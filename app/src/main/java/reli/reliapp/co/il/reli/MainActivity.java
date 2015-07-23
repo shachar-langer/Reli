@@ -97,7 +97,7 @@ public class MainActivity extends CustomActivity
 
                                 @Override
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                                    Intent intent = new Intent(MainActivity.this, Chat.class);
+                                    Intent intent = new Intent(MainActivity.this, DiscussionActivity.class);
                                     intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getUsername());
                                     startActivity(intent);
                                 }
@@ -148,15 +148,11 @@ public class MainActivity extends CustomActivity
         public View getView(int pos, View v, ViewGroup arg2)
         {
             if (v == null) {
-                v = getLayoutInflater().inflate(R.layout.chat_item, null);
+                v = getLayoutInflater().inflate(R.layout.discussion_item, null);
             }
 
-            TextView userLabel = (TextView) v;
-            userLabel.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    R.drawable.arrow,
-                    0);
+            TextView userLabel = (TextView) v.findViewById(R.id.dummy);
+            userLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow, 0);
 
             return v;
         }

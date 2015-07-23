@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:divider="@color/main_color_green"
             android:dividerHeight="1dp"
-            tools:listitem="@layout/chat_item" >
+            tools:listitem="@layout/discussion_item" >
         </ListView>
 
 </LinearLayout>

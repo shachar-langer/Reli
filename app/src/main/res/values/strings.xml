@@ -76,21 +76,10 @@
         <item>Inbox</item>
         <item>Sign Out</item>
         <item>Notification Settings</item>
-        <item>Change Default Settings</item>
-        <item>The Grand Tour</item>
+        <item>Default Settings</item>
+        <item>Grand Tour</item>
         <item>FAQ</item>
         <item>About</item>
     </string-array>
-
-    <array name="nav_drawer_icons">
-        <item>@drawable/arrow</item>
-        <item>@drawable/arrow</item>
-        <item>@drawable/arrow</item>
-        <item>@drawable/arrow</item>
-        <item>@drawable/arrow</item>
-        <item>@drawable/arrow</item>
-        <item>@drawable/arrow</item>
-    </array>
-
 
 </resources>
