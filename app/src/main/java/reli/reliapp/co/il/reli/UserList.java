@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,6 +44,7 @@ public class UserList extends CustomActivity
 
         getActionBar().setDisplayHomeAsUpEnabled(false);
 
+        user = ReliUser.getCurrentReliUser();
         updateUserStatus(true);
     }
 
@@ -66,6 +68,7 @@ public class UserList extends CustomActivity
 
     /* ========================================================================== */
 
+    // TODO - move to ReliUser
     private void updateUserStatus(boolean online)
     {
         user.put("online", online);
@@ -149,14 +152,14 @@ public class UserList extends CustomActivity
                 v = getLayoutInflater().inflate(R.layout.chat_item, null);
             }
 
-            ParseUser c = getItem(pos);
-            TextView userLabel = (TextView) v;
-            userLabel.setText(c.getUsername());
-            userLabel.setCompoundDrawablesWithIntrinsicBounds(
-                    c.getBoolean("online") ? R.drawable.ic_online : R.drawable.ic_offline,
-                    0,
-                    R.drawable.arrow,
-                    0);
+//            ParseUser c = getItem(pos);
+//            TextView userLabel = (TextView) v;
+//            userLabel.setText(c.getUsername());
+//            userLabel.setCompoundDrawablesWithIntrinsicBounds(
+//                    0,
+//                    0,
+//                    R.drawable.arrow,
+//                    0);
 
             return v;
         }

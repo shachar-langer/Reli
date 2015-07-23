@@ -16,8 +16,10 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import java.util.Arrays;
@@ -106,48 +108,52 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     /* ========================================================================== */
 
     private void changeUser() {
-        Profile profile = Profile.getCurrentProfile();
+        // TODO - add a logout function in the drawer
+//        ParseUser.logOut();
 
-        // Check if we are disconnected
-        if (profile.getCurrentProfile() == null) {
-            UserList.user = null;
-            profilePictureView.setProfileId(null);
-            Toast.makeText(getActivity().getApplicationContext(), "currentProfile NULL", Toast.LENGTH_SHORT).show();
-            return;
+        if (ParseUser.getCurrentUser() != null) {
+            startActivity(new Intent(getActivity(), UserList.class));
         }
 
-        // TODO - add "please wait" dialog
-        // final ProgressDialog dia = ProgressDialog.show(this, null, getString(R.string.alert_wait));
+        else {
+            Profile profile = Profile.getCurrentProfile();
 
-        profilePictureView.setProfileId(profile.getId());
-
-        // Create a new ReliUser
-        // TODO - we don't need to create a new user each time. Maybe we can use cache or something, and then use reliUser.reliUser.logInInBackground()
-        final ReliUser reliUser = new ReliUser(ReliUserType.FACEBOOK_USER,
-                profile.getFirstName(),
-                profile.getName(),
-                new ParseGeoPoint());
-
-        // Add the new user to Parse
-        reliUser.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e)
-            {
-                if (e == null)
-                {
-//                    dia.dismiss();
-                    UserList.user = reliUser;
-                    Toast.makeText(getActivity().getApplicationContext(), ReliUser.getCurrentReliUser().getUserType().toString(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getActivity(), UserList.class));
-                    getActivity().finish();
-                }
-                else
-                {
-                    // TODO - change
-//                        Utils.showDialog(this, getString(R.string.err_singup) + " " + e.getMessage());
-                    Toast.makeText(getActivity().getApplicationContext(), "Bassa", Toast.LENGTH_SHORT).show();
-                }
+            // Check if we are disconnected
+            if (profile.getCurrentProfile() == null) {
+                UserList.user = null;
+                profilePictureView.setProfileId(null);
+                Toast.makeText(getActivity().getApplicationContext(), "currentProfile NULL", Toast.LENGTH_SHORT).show();
+                return;
             }
-        });
+
+            // TODO - add "please wait" dialog
+            // final ProgressDialog dia = ProgressDialog.show(this, null, getString(R.string.alert_wait));
+
+            profilePictureView.setProfileId(profile.getId());
+
+            // Create a new ReliUser
+            final ReliUser reliUser = new ReliUser(ReliUserType.FACEBOOK_USER,
+                    profile.getFirstName(),
+                    profile.getName(),
+                    new ParseGeoPoint());
+
+            // Add the new user to Parse
+            reliUser.signUpInBackground(new SignUpCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        //                    dia.dismiss();
+                        UserList.user = reliUser;
+                        Toast.makeText(getActivity().getApplicationContext(), ReliUser.getCurrentReliUser().getUserType().toString(), Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getActivity(), UserList.class));
+                        getActivity().finish();
+                    } else {
+                        // TODO - change
+                        //                        Utils.showDialog(this, getString(R.string.err_singup) + " " + e.getMessage());
+                        Toast.makeText(getActivity().getApplicationContext(), "Bassa", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 }
