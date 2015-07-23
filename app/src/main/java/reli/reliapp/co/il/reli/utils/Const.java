@@ -12,6 +12,7 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
 public class Const
 {
 	public static final String BUDDY_NAME = "buddyName";
+    public static final String CURRENT_LOCATION = "currentLocation";
 
     public static final String DUMMY_PASSWORD = "Dummy";
     public static final String ANONYMOUS_NAME = "Anonymous";

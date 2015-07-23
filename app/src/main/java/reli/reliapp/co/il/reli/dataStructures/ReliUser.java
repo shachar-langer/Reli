@@ -121,6 +121,11 @@ public class ReliUser extends ParseUser {
     /* ========================================================================== */
 
     public void setLocation(ParseGeoPoint location) {
+
+        // Update Parse with the user location
         put(Const.COL_NAME_LOCATION, location);
+
+        // Update the user location in this object
+        this.location = location;
     }
 }

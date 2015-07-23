@@ -9,6 +9,12 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 
 public class ReliApp extends Application {
 
+    // Debugging switch
+    public static final boolean APPDEBUG = false;
+
+    // Debugging tag for the application
+    public static final String APPTAG = "Reli";
+
     private final String PARSE_APP_ID = "jmxBnVR9fWE39FZxG5tCuVCVwpMp7j62DjdjTFj2";
     private final String PARSE_CLIENT_KEY = "LILbHV2CYBZp10mqzXUKr1lwGv2Oguo82dvp5c2P";
 
