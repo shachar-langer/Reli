@@ -6,14 +6,12 @@ import java.util.List;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -29,7 +27,7 @@ import reli.reliapp.co.il.reli.utils.Utils;
  * The Class UserList is the Activity class. It shows a list of all users of
  * this app. It also shows the Offline/Online status of users.
  */
-public class UserList extends CustomActivity
+public class MainActivity extends CustomActivity
 {
     private ArrayList<ParseUser> chatsList;
     public static ReliUser user;
@@ -40,7 +38,7 @@ public class UserList extends CustomActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_list);
+        setContentView(R.layout.activity_main);
 
         getActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -88,7 +86,7 @@ public class UserList extends CustomActivity
                         dia.dismiss();
                         if (li != null) {
                             if (li.size() == 0) {
-                                Toast.makeText(UserList.this, R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
                             }
 
                             chatsList = new ArrayList<ParseUser>(li);
@@ -98,14 +96,14 @@ public class UserList extends CustomActivity
 
                                 @Override
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                                    Intent intent = new Intent(UserList.this, Chat.class);
+                                    Intent intent = new Intent(MainActivity.this, Chat.class);
                                     intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getUsername());
                                     startActivity(intent);
                                 }
                             });
                         }
                         else {
-                            Utils.showDialog (UserList.this, getString(R.string.err_users) + " " + e.getMessage());
+                            Utils.showDialog (MainActivity.this, getString(R.string.err_users) + " " + e.getMessage());
                             e.printStackTrace();
                         }
                     }

@@ -16,7 +16,6 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
@@ -24,8 +23,8 @@ import com.parse.SignUpCallback;
 
 import java.util.Arrays;
 
+import reli.reliapp.co.il.reli.MainActivity;
 import reli.reliapp.co.il.reli.R;
-import reli.reliapp.co.il.reli.UserList;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
 
@@ -112,7 +111,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 //        ParseUser.logOut();
 
         if (ParseUser.getCurrentUser() != null) {
-            startActivity(new Intent(getActivity(), UserList.class));
+            startActivity(new Intent(getActivity(), MainActivity.class));
         }
 
         else {
@@ -120,7 +119,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
             // Check if we are disconnected
             if (profile.getCurrentProfile() == null) {
-                UserList.user = null;
+                MainActivity.user = null;
                 profilePictureView.setProfileId(null);
                 Toast.makeText(getActivity().getApplicationContext(), "currentProfile NULL", Toast.LENGTH_SHORT).show();
                 return;
@@ -143,9 +142,9 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                 public void done(ParseException e) {
                     if (e == null) {
                         //                    dia.dismiss();
-                        UserList.user = reliUser;
+                        MainActivity.user = reliUser;
                         Toast.makeText(getActivity().getApplicationContext(), ReliUser.getCurrentReliUser().getUserType().toString(), Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), UserList.class));
+                        startActivity(new Intent(getActivity(), MainActivity.class));
                         getActivity().finish();
                     } else {
                         // TODO - change

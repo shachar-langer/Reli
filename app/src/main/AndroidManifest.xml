@@ -14,7 +14,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name=".main.ReliApp">
+        android:name=".createReli.ReliApp">
 
         <!-- Facebook -->
         <meta-data
@@ -52,8 +52,8 @@
         </activity>
 
         <activity
-            android:name=".main.MainActivity"
-            android:label="@string/title_activity_main" >
+            android:name=".createReli.CreateReliActivity"
+            android:label="@string/title_activity_create_reli" >
         </activity>
 
         <activity
@@ -65,7 +65,7 @@
         <!-- From now on - new -->
 
         <activity
-            android:name="UserList"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >

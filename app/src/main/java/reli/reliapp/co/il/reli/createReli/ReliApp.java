@@ -1,11 +1,8 @@
-package reli.reliapp.co.il.reli.main;
+package reli.reliapp.co.il.reli.createReli;
 
 import android.app.Application;
-import android.widget.Toast;
 
-import com.facebook.FacebookSdk;
 import com.parse.Parse;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;

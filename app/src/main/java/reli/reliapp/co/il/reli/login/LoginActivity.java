@@ -12,8 +12,9 @@ import com.facebook.Profile;
 
 import android.support.v4.app.FragmentActivity;
 
+import reli.reliapp.co.il.reli.MainActivity;
 import reli.reliapp.co.il.reli.R;
-import reli.reliapp.co.il.reli.main.MainActivity;
+import reli.reliapp.co.il.reli.createReli.CreateReliActivity;
 
 
 public class LoginActivity extends FragmentActivity {

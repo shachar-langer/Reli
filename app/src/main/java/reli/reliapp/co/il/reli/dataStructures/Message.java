@@ -2,7 +2,7 @@ package reli.reliapp.co.il.reli.dataStructures;
 
 import java.util.Date;
 
-import reli.reliapp.co.il.reli.UserList;
+import reli.reliapp.co.il.reli.MainActivity;
 
 public class Message
 {
@@ -32,7 +32,7 @@ public class Message
 	public boolean isSentByUser()
 	{
         // TODO change according to the implementation of ReliUser
-		return (UserList.user.getParseID() == this.senderID);
+		return (MainActivity.user.getParseID() == this.senderID);
 	}
 
 	public Date getDate()

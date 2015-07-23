@@ -1,4 +1,4 @@
-package reli.reliapp.co.il.reli.main;
+package reli.reliapp.co.il.reli.createReli;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

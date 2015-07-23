@@ -120,13 +120,13 @@ public class Chat extends CustomActivity
 		imm.hideSoftInputFromWindow(messageTxt.getWindowToken(), 0);
 
 		String s = messageTxt.getText().toString();
-		final Message message = new Message(s, new Date(), UserList.user.getParseID());
+		final Message message = new Message(s, new Date(), MainActivity.user.getParseID());
 		messagesList.add(message);
 		chatAdapter.notifyDataSetChanged();
 		messageTxt.setText(null);
 
 		ParseObject po = new ParseObject("Chat");
-		po.put("sender", UserList.user.getUsername());
+		po.put("sender", MainActivity.user.getUsername());
 		po.put("receiver", buddy);
 //		po.put("createdAt", "");
 		po.put("message", s);
@@ -154,7 +154,7 @@ public class Chat extends CustomActivity
 			// load all messages...
 			ArrayList<String> al = new ArrayList<String>();
 			al.add(buddy);
-			al.add(UserList.user.getUsername());
+			al.add(MainActivity.user.getUsername());
 			q.whereContainedIn("sender", al);
 			q.whereContainedIn("receiver", al);
 		}
@@ -163,7 +163,7 @@ public class Chat extends CustomActivity
 			if (lastMsgDate != null)
 				q.whereGreaterThan("createdAt", lastMsgDate);
 			q.whereEqualTo("sender", buddy);
-			q.whereEqualTo("receiver", UserList.user.getUsername());
+			q.whereEqualTo("receiver", MainActivity.user.getUsername());
 		}
 		q.orderByDescending("createdAt");
 		q.setLimit(30);
