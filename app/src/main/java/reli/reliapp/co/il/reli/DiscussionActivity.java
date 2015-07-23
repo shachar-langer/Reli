@@ -31,11 +31,11 @@ import reli.reliapp.co.il.reli.dataStructures.MessageStatus;
 import reli.reliapp.co.il.reli.utils.Const;
 
 /**
- * The Class Chat is the Activity class that holds main chat screen. It shows
+ * The Class Chat is the Activity class that holds main activity_discussion screen. It shows
  * all the conversation messages between two users and also allows the user to
  * send and receive messages.
  */
-public class Chat extends CustomActivity
+public class DiscussionActivity extends CustomActivity
 {
 	private ArrayList<Message> messagesList;
 	private ChatAdapter chatAdapter;
@@ -54,7 +54,7 @@ public class Chat extends CustomActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.chat);
+		setContentView(R.layout.activity_discussion);
 
 		messagesList = new ArrayList<Message>();
 		ListView list = (ListView) findViewById(R.id.list);
@@ -240,12 +240,12 @@ public class Chat extends CustomActivity
 		{
 			Message c = getItem(pos);
 			if (c.isSentByUser())
-				v = getLayoutInflater().inflate(R.layout.chat_item_sent, null);
+				v = getLayoutInflater().inflate(R.layout.message_item_sent, null);
 			else
-				v = getLayoutInflater().inflate(R.layout.chat_item_rcv, null);
+				v = getLayoutInflater().inflate(R.layout.message_item_rcv, null);
 
 			TextView lbl = (TextView) v.findViewById(R.id.lbl1);
-			lbl.setText(DateUtils.getRelativeDateTimeString(Chat.this, c
+			lbl.setText(DateUtils.getRelativeDateTimeString(DiscussionActivity.this, c
 					.getDate().getTime(), DateUtils.SECOND_IN_MILLIS,
 					DateUtils.DAY_IN_MILLIS, 0));
 

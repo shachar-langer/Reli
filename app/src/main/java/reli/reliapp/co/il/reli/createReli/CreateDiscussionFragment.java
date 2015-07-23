@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 
 import reli.reliapp.co.il.reli.R;
 
-public class PollFragment extends Fragment {
+public class CreateDiscussionFragment extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_poll, container, false);
+        return inflater.inflate(R.layout.fragment_create_discussion, container, false);
     }
+
 }

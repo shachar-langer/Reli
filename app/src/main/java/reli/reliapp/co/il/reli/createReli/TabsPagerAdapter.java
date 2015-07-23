@@ -27,9 +27,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new DiscussionFragment();
+                return new CreateDiscussionFragment();
             case 1:
-                return new PollFragment();
+                return new CreatePollFragment();
         }
         return null;
     }

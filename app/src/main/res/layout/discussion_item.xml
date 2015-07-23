@@ -107,6 +107,11 @@ android:orientation="vertical" >
                         android:textColor="@color/main_color_gray_dk"
                         android:textSize="@dimen/txt_13sp"
                         android:layout_gravity="bottom" />
+
+                    <TextView
+                        android:id="@+id/dummy"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" />
                 </LinearLayout>
 
             </LinearLayout>
