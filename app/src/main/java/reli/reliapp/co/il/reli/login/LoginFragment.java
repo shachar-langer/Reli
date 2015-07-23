@@ -1,7 +1,5 @@
 package reli.reliapp.co.il.reli.login;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,7 +21,6 @@ import com.parse.ParseGeoPoint;
 import com.parse.SignUpCallback;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.UserList;
@@ -111,7 +108,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     private void changeUser() {
         Profile profile = Profile.getCurrentProfile();
 
-        // Check if we disconnected
+        // Check if we are disconnected
         if (profile.getCurrentProfile() == null) {
             UserList.user = null;
             profilePictureView.setProfileId(null);
@@ -125,6 +122,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         profilePictureView.setProfileId(profile.getId());
 
         // Create a new ReliUser
+        // TODO - we don't need to create a new user each time. Maybe we can use cache or something, and then use reliUser.reliUser.logInInBackground()
         final ReliUser reliUser = new ReliUser(ReliUserType.FACEBOOK_USER,
                 profile.getFirstName(),
                 profile.getName(),
@@ -137,6 +135,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
             {
                 if (e == null)
                 {
+//                    dia.dismiss();
                     UserList.user = reliUser;
                     Toast.makeText(getActivity().getApplicationContext(), ReliUser.getCurrentReliUser().getUserType().toString(), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), UserList.class));
