@@ -43,6 +43,30 @@
     <string name="login_welcome_string">Welcome to Reli!</string>
     <string name="title_activity_location">LocationActivity</string>
 
-    <string name="hello_world">Hello world!</string>
-</resources>
 
+
+    <!-- Todo - New -->
+    <string name="type_msg">Type message</string>
+    <string name="or">or</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="log_in">Log in</string>
+    <string name="forgot_my_pwd">Forgot my password?</string>
+    <string name="my_chats">My Chats</string>
+    <string name="all_chats">All Chats</string>
+    <string name="search">Search</string>
+    <string name="to">To:</string>
+    <string name="edit">Edit</string>
+    <string name="new_chat">New Chat</string>
+    <string name="alert_wait">Please wait...</string>
+    <string name="err_fields_empty">Please fill all the fields.</string>
+    <string name="err_singup">Error occurred while signup:</string>
+    <string name="err_login">Error occurred while login:</string>
+    <string name="err_users">Error occurred while finding users:</string>
+    <string name="alert_loading">Loading...</string>
+
+    <string name="msg_no_user_found">No users were found</string>
+
+</resources>

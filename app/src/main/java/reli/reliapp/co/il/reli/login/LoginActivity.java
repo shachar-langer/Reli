@@ -2,28 +2,15 @@ package reli.reliapp.co.il.reli.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.facebook.CallbackManager;
-import com.facebook.login.widget.ProfilePictureView;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-
-import java.util.Arrays;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.main.MainActivity;
@@ -45,6 +32,7 @@ public class LoginActivity extends FragmentActivity {
                     .commit();
         }
 
+        // TODO -  delete
         Button b = (Button) findViewById(R.id.test_button);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +80,5 @@ public class LoginActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
-
     }
 }

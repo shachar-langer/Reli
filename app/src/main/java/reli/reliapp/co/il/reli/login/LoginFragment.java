@@ -1,5 +1,7 @@
 package reli.reliapp.co.il.reli.login;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,11 +18,15 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.SignUpCallback;
 
 import java.util.Arrays;
 import java.util.Date;
 
 import reli.reliapp.co.il.reli.R;
+import reli.reliapp.co.il.reli.UserList;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
 
@@ -50,7 +56,6 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                //Toast.makeText(getActivity().getApplicationContext(), "In ProfileTracker", Toast.LENGTH_SHORT).show();
                 changeUser();
             }
         };
@@ -70,7 +75,9 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {}
+            public void onSuccess(LoginResult loginResult) {
+
+            }
 
             @Override
             public void onCancel() {}
@@ -87,7 +94,6 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     @Override
     // Getting called after clicking on the login button
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //Toast.makeText(getActivity().getApplicationContext(), "In onActivityResult", Toast.LENGTH_SHORT).show();
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
@@ -104,13 +110,45 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
     private void changeUser() {
         Profile profile = Profile.getCurrentProfile();
+
+        // Check if we disconnected
         if (profile.getCurrentProfile() == null) {
+            UserList.user = null;
             profilePictureView.setProfileId(null);
             Toast.makeText(getActivity().getApplicationContext(), "currentProfile NULL", Toast.LENGTH_SHORT).show();
-        } else {
-            profilePictureView.setProfileId(profile.getId());
-            Toast.makeText(getActivity().getApplicationContext(), "newProfile " + profile.getCurrentProfile().getName(), Toast.LENGTH_SHORT).show();
-//            ReliUser ru = new ReliUser(ReliUserType.FACEBOOK_USER, profile.getId(), profile.getFirstName(), profile.getMiddleName(), profile.getLastName(), profile.getName());
+            return;
         }
+
+        // TODO - add "please wait" dialog
+        // final ProgressDialog dia = ProgressDialog.show(this, null, getString(R.string.alert_wait));
+
+        profilePictureView.setProfileId(profile.getId());
+
+        // Create a new ReliUser
+        final ReliUser reliUser = new ReliUser(ReliUserType.FACEBOOK_USER,
+                profile.getFirstName(),
+                profile.getName(),
+                new ParseGeoPoint());
+
+        // Add the new user to Parse
+        reliUser.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e)
+            {
+                if (e == null)
+                {
+                    UserList.user = reliUser;
+                    Toast.makeText(getActivity().getApplicationContext(), ReliUser.getCurrentReliUser().getUserType().toString(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), UserList.class));
+                    getActivity().finish();
+                }
+                else
+                {
+                    // TODO - change
+//                        Utils.showDialog(this, getString(R.string.err_singup) + " " + e.getMessage());
+                    Toast.makeText(getActivity().getApplicationContext(), "Bassa", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

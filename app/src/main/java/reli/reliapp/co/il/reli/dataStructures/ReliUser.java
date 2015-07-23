@@ -1,154 +1,126 @@
 package reli.reliapp.co.il.reli.dataStructures;
 
-import android.location.Location;
-
 import com.facebook.login.widget.ProfilePictureView;
-import java.util.Date;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
-public class ReliUser {
+import java.util.UUID;
 
-    /* ========================================================================== */
+import reli.reliapp.co.il.reli.utils.Const;
 
+public class ReliUser extends ParseUser {
+
+    private String parseID;
     private ReliUserType userType;
-    private String id;
     private String firstName;
-    private String middleName;
-    private String lastName;
     private String fullName;
     private ProfilePictureView facebookPicture;
-    private Date lastLoginDate;
-    private Location location;
+    private ParseGeoPoint location;
 
     /* ========================================================================== */
 
-    public ReliUser(ReliUserType userType, String id, String firstName, String middleName, String lastName, String fullName, Location location) {
-        this.userType = userType;
-        this.id = id;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.fullName = fullName;
-        this.location = location;
-        this.facebookPicture = facebookPicture;
-        this.lastLoginDate = new Date();
+    // Default constructor is a must
+    public ReliUser() {
+
     }
 
     /* ========================================================================== */
 
-    public String getFirstName() {
-        return firstName;
+    // Constructor
+    public ReliUser(ReliUserType userType, String firstName, String fullName, ParseGeoPoint location) {
+        String dummyUniqueString = UUID.randomUUID().toString();
+        setUsername(dummyUniqueString);
+        setPassword(dummyUniqueString);
+
+        setUserType(userType);
+        setFirstName(firstName);
+        setFullName(fullName);
+        setLocation(location);
     }
 
     /* ========================================================================== */
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public static ReliUser getCurrentReliUser() {
+        return (ReliUser) ParseUser.getCurrentUser();
     }
 
     /* ========================================================================== */
 
-    public String getLastName() {
-        return lastName;
+    public static ParseQuery<ReliUser> getReliQuery() {
+        return ParseQuery.getQuery(ReliUser.class);
     }
 
     /* ========================================================================== */
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getParseID() {
+        return getObjectId();
     }
-
 
     /* ========================================================================== */
 
     public ReliUserType getUserType() {
-        return userType;
+        try {
+            return ReliUserType.values()[getInt(Const.COL_NAME_USER_TYPE)];
+        }
+        catch (Exception e) {
+            return ReliUserType.ANONYMOUS_USER;
+        }
     }
 
     /* ========================================================================== */
 
     public void setUserType(ReliUserType userType) {
-        this.userType = userType;
+        put(Const.COL_NAME_USER_TYPE, userType.getUserTypeCode());
     }
 
     /* ========================================================================== */
 
-    public ProfilePictureView getPicture() {
-        ReliUserType userType = getUserType();
-        if (userType == ReliUserType.ANONYMOUS_USER) {
-            // TODO - change
-            return null;
-        }
-        else if (userType == ReliUserType.FACEBOOK_USER) {
-            return facebookPicture;
-        }
-
-        return null;
+    public String getFirstName() {
+        return getString(Const.COL_NAME_FIRST_NAME);
     }
 
     /* ========================================================================== */
 
-    public void setFacebookPicture(ProfilePictureView facebookPicture) {
-        this.facebookPicture = facebookPicture;
-    }
-
-    /* ========================================================================== */
-
-    public Date getLastLoginDate() {
-        return lastLoginDate;
-    }
-
-    /* ========================================================================== */
-
-    public void setLastLoginDate(Date lastLoginDate) {
-        this.lastLoginDate = lastLoginDate;
-    }
-
-
-    /* ========================================================================== */
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    /* ========================================================================== */
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+    public void setFirstName(String firstName) {
+        put(Const.COL_NAME_FIRST_NAME, firstName);
     }
 
     /* ========================================================================== */
 
     public String getFullName() {
-        return fullName;
+        return getString(Const.COL_NAME_FULL_NAME);
     }
 
     /* ========================================================================== */
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        put(Const.COL_NAME_FULL_NAME, fullName);
     }
 
     /* ========================================================================== */
 
-    public String getId() {
-        return id;
+    public ProfilePictureView getFacebookPicture() {
+        // TODO
+        return facebookPicture;
     }
 
     /* ========================================================================== */
 
-    public void setId(String id) {
-        this.id = id;
+    public void setFacebookPicture(ProfilePictureView facebookPicture) {
+        // TODO
+        this.facebookPicture = facebookPicture;
     }
 
     /* ========================================================================== */
 
-    public Location getLocation() {
-        return location;
+    public ParseGeoPoint getLocation() {
+        return getParseGeoPoint(Const.COL_NAME_LOCATION);
     }
 
     /* ========================================================================== */
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(ParseGeoPoint location) {
+        put(Const.COL_NAME_LOCATION, location);
     }
 }
