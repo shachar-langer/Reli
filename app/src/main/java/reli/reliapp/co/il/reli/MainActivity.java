@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -150,14 +151,12 @@ public class MainActivity extends CustomActivity
                 v = getLayoutInflater().inflate(R.layout.chat_item, null);
             }
 
-//            ParseUser c = getItem(pos);
-//            TextView userLabel = (TextView) v;
-//            userLabel.setText(c.getUsername());
-//            userLabel.setCompoundDrawablesWithIntrinsicBounds(
-//                    0,
-//                    0,
-//                    R.drawable.arrow,
-//                    0);
+            TextView userLabel = (TextView) v;
+            userLabel.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    0,
+                    R.drawable.arrow,
+                    0);
 
             return v;
         }
