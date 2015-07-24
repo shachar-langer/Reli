@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     tools:context="reli.reliapp.co.il.reli.sidebar.FaqFragment">
 
+    <!-- TODO -->
     <TextView android:layout_width="match_parent" android:layout_height="match_parent"
         android:text="This is FAQ Fragment" />
 
