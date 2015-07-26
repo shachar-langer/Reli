@@ -72,12 +72,26 @@
 
     <!-- Nav Drawer Menu Items -->
     <string name="nav_drawer_inbox">Inbox</string>
+    <string name="nav_drawer_inbox_sub">See all the Relis around you</string>
+
     <string name="nav_drawer_sign_out">Sign Out</string>
+    <string name="nav_drawer_sign_out_sub">But come back soon!</string>
+
     <string name="nav_drawer_notification_settings">Notification Settings</string>
+    <string name="nav_drawer_notification_settings_sub">Get notified about everything!</string>
+
     <string name="nav_drawer_default_settings">Default Settings</string>
+    <string name="nav_drawer_default_settings_sub">Change Reli Default Settings</string>
+
     <string name="nav_drawer_tour">Grand Tour</string>
+    <string name="nav_drawer_tour_sub">We want to show you around!</string>
+
     <string name="nav_drawer_faq">FAQ</string>
+    <string name="nav_drawer_faq_sub">What do you want to know?</string>
+
     <string name="nav_drawer_about">About</string>
+    <string name="nav_drawer_about_sub">Who are we?</string>
+
     <string-array name="nav_drawer_items">
         <item>@string/nav_drawer_inbox</item>
         <item>@string/nav_drawer_notification_settings</item>
@@ -87,6 +101,17 @@
         <item>@string/nav_drawer_about</item>
         <item>@string/nav_drawer_sign_out</item>
     </string-array>
+    <string-array name="nav_drawer_items_sub">
+        <item>@string/nav_drawer_inbox_sub</item>
+        <item>@string/nav_drawer_notification_settings_sub</item>
+        <item>@string/nav_drawer_default_settings_sub</item>
+        <item>@string/nav_drawer_tour_sub</item>
+        <item>@string/nav_drawer_faq_sub</item>
+        <item>@string/nav_drawer_about_sub</item>
+        <item>@string/nav_drawer_sign_out_sub</item>
+    </string-array>
+
+
     <string name="title_activity_about">AboutActivity</string>
 
     <string name="hello_world">Hello world!</string>

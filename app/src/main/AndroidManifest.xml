@@ -72,8 +72,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
+
+
         <activity
-            android:name=".FutureMainActivity"
+            android:name=".NewTryActivity"
             android:label="@string/title_activity_future_main" >
         </activity>
 
