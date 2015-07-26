@@ -3,6 +3,7 @@ package reli.reliapp.co.il.reli.main;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 //import android.app.Fragment;
@@ -18,8 +19,10 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,13 @@ public class MainAllRelisFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(ctx, "You clicked me!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), CreateReliActivity.class);
+
+                Location location = ((MainActivity) getActivity()).getLocation();
+                if (location == null) {
+                    Toast.makeText(getActivity(), "Can not find your location", Toast.LENGTH_SHORT).show();
+                }
+                intent.putExtra(Const.LATITUDE, location.getLatitude());
+                intent.putExtra(Const.ALTITUDE, location.getAltitude());
                 startActivity(intent);
             }
         });

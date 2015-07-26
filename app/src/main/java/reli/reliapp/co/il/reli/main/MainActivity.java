@@ -54,8 +54,7 @@ import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
  */
 public class MainActivity extends CustomActivity implements LocationListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        Serializable {
+        GoogleApiClient.OnConnectionFailedListener {
 
     /*
     * Define a request code to send to Google Play services This code is returned in
@@ -356,7 +355,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     /*
      * Helper method to get the Parse GEO point representation of a location
      */
-    private ParseGeoPoint geoPointFromLocation(Location loc) {
+    public ParseGeoPoint geoPointFromLocation(Location loc) {
         return new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
     }
 
@@ -467,7 +466,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     /*
      * Get the current location
      */
-    private Location getLocation() {
+    public Location getLocation() {
         // If Google Play Services is available
         if (servicesConnected()) {
             // Get the current location

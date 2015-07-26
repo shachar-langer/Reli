@@ -1,24 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/white"
-    android:orientation="vertical" >
-
-<!--// This was the only thing in this file!!!!!!! Shachar added the rest of it, but it should be redundant-->
-<!--<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:tools="http://schemas.android.com/tools" android:id="@+id/pager"-->
-    <!--android:layout_width="match_parent" android:layout_height="match_parent"-->
-    <!--tools:context="reli.reliapp.co.il.reli.createReli.CreateReliActivity" />-->
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/just_another_button"
-        android:gravity="center_vertical|center|center_horizontal"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="100dp" />
-</LinearLayout>
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/pager"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:context="reli.reliapp.co.il.reli.createReli.CreateReliActivity" />
