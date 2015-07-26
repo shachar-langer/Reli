@@ -24,4 +24,14 @@ public class Const
     public static final String COL_NAME_FULL_NAME = "fullName";
     public static final String COL_NAME_FACEBOOK_PICTURE = "facebookPicture";
     public static final String COL_NAME_LOCATION = "location";
+
+    // Columns in Parse for AbstructDiscussion
+    public static final String COL_DISCUSSION_NAME = "discussionName";
+    public static final String COL_DISCUSSION_LOCATION = "discussionLocation";
+    public static final String COL_DISCUSSION_RADIUS = "discussionRadius";
+    public static final String COL_DISCUSSION_LOGO = "discussionLogo";
+    public static final String COL_DISCUSSION_CREATION_DATE = "discussionCreationDate";
+    public static final String COL_DISCUSSION_EXPIRATION_DATE = "discussionexpirationDate";
+    public static final String COL_DISCUSSION_OWNER_PARSE_ID = "discussionOwnerParseID";
+
 }

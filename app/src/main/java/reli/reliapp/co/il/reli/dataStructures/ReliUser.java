@@ -11,7 +11,6 @@ import reli.reliapp.co.il.reli.utils.Const;
 
 public class ReliUser extends ParseUser {
 
-    private String parseID;
     private ReliUserType userType;
     private String firstName;
     private String fullName;

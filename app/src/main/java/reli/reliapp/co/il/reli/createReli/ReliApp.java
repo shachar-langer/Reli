@@ -3,8 +3,11 @@ package reli.reliapp.co.il.reli.createReli;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import reli.reliapp.co.il.reli.dataStructures.AbstractDiscussion;
+import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 
 public class ReliApp extends Application {
@@ -24,6 +27,10 @@ public class ReliApp extends Application {
 
         // Register the extended ParseUser (aka ReliUser)
         ParseUser.registerSubclass(ReliUser.class);
+
+        // Register the extended ParseObject (aka AbstractDiscussion)
+        ParseObject.registerSubclass(AbstractDiscussion.class);
+        ParseObject.registerSubclass(Discussion.class);
 
         // Initialize Parse
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);

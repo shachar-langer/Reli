@@ -1,5 +1,6 @@
 package reli.reliapp.co.il.reli;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
+import reli.reliapp.co.il.reli.createReli.CreateReliActivity;
 import reli.reliapp.co.il.reli.createReli.ReliApp;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
@@ -49,7 +52,8 @@ import reli.reliapp.co.il.reli.utils.Utils;
  */
 public class MainActivity extends CustomActivity implements LocationListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener
+        GoogleApiClient.OnConnectionFailedListener,
+        Serializable
 {
 
     /*
@@ -120,7 +124,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        Toast.makeText(getApplicationContext(), "In OnCreate", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnCreate", Toast.LENGTH_SHORT).show();
 
         // *** Location starts
 
@@ -145,8 +149,22 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         // *** Location ends
 
+        Button addDiscussionBtn = (Button) findViewById(R.id.add_discussion_btn);
+
+        addDiscussionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "You clicked me!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, CreateReliActivity.class);
+//                intent.putExtra(Const.CURRENT_LOCATION, );
+                startActivity(intent);
+                
+            }
+        });
 
 
+
+        // TODO - what does this funciton do? Why false and not true?
         getActionBar().setDisplayHomeAsUpEnabled(false);
 
         user = ReliUser.getCurrentReliUser();
@@ -161,7 +179,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     public void onStop() {
 
-        Toast.makeText(getApplicationContext(), "In onStop", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In onStop", Toast.LENGTH_SHORT).show();
 
         // If the client is connected
         if (locationClient.isConnected()) {
@@ -182,7 +200,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     public void onStart() {
 
-        Toast.makeText(getApplicationContext(), "In OnStart", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnStart", Toast.LENGTH_SHORT).show();
 
         super.onStart();
 
@@ -195,7 +213,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     protected void onDestroy()
     {
-        Toast.makeText(getApplicationContext(), "In OnDistroy", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnDistroy", Toast.LENGTH_SHORT).show();
 
         super.onDestroy();
         updateUserStatus(false);
@@ -207,7 +225,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     protected void onResume()
     {
 
-        Toast.makeText(getApplicationContext(), "In OnResume", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnResume", Toast.LENGTH_SHORT).show();
 
         super.onResume();
         loadUserList();
@@ -247,7 +265,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
                                     Intent intent = new Intent(MainActivity.this, DiscussionActivity.class);
                                     intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getUsername());
-//                                    intent.putExtra(Const.CURRENT_LOCATION, )
                                     startActivity(intent);
                                 }
                             });
@@ -317,7 +334,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     public void onConnected(Bundle bundle) {
 
-        Toast.makeText(getApplicationContext(), "In OnConnected", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnConnected", Toast.LENGTH_SHORT).show();
 
         if (ReliApp.APPDEBUG) {
             Log.d("Connected to loc_s", ReliApp.APPTAG);
@@ -335,7 +352,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     public void onDisconnected() {
 
-        Toast.makeText(getApplicationContext(), "In OnDisconnected", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnDisconnected", Toast.LENGTH_SHORT).show();
 
         if (ReliApp.APPDEBUG) {
             Log.d("Disconnected from loc_s", ReliApp.APPTAG);
@@ -347,7 +364,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     public void onConnectionSuspended(int i) {
 
-        Toast.makeText(getApplicationContext(), "In OnConnectionSuspended", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnConnectionSuspended", Toast.LENGTH_SHORT).show();
 
         Log.i(ReliApp.APPTAG, "GoogleApiClient connection has been suspend");
     }
@@ -359,7 +376,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
-        Toast.makeText(getApplicationContext(), "In OnConnectionFailed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnConnectionFailed", Toast.LENGTH_SHORT).show();
 
         // Google Play services can resolve some errors it detects. If the error has a resolution, try
         // sending an Intent to start a Google Play services activity that can resolve error.
@@ -399,7 +416,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     public void onLocationChanged(Location location) {
 
-        Toast.makeText(getApplicationContext(), "In OnLocationChanged", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In OnLocationChanged", Toast.LENGTH_SHORT).show();
 
         currentLocation = location;
         if (lastLocation != null
@@ -441,7 +458,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     private void startPeriodicUpdates() {
 
-        Toast.makeText(getApplicationContext(), "In startPeriodUpdates", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In startPeriodUpdates", Toast.LENGTH_SHORT).show();
 
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 locationClient, locationRequest, this);
@@ -455,7 +472,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     private void stopPeriodicUpdates() {
 
-        Toast.makeText(getApplicationContext(), "In stopPeriodUpdates", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "In stopPeriodUpdates", Toast.LENGTH_SHORT).show();
 
         locationClient.disconnect();
     }
