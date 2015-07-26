@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
 
-            if (position == 0) {
+            if (position == 1) {
                 return new MainMyRelisFragment();
             }
 
