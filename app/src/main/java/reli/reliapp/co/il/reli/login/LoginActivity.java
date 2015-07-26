@@ -1,18 +1,11 @@
 package reli.reliapp.co.il.reli.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-import com.facebook.Profile;
 
 import android.support.v4.app.FragmentActivity;
 
-import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.R;
 
 
@@ -27,33 +20,11 @@ public class LoginActivity extends FragmentActivity {
 
         // Fragment
         if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new LoginFragment())
-                    .commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.container_login, new LoginFragment())
+                        .commit();
         }
-
-        // TODO -  delete
-        Button b = (Button) findViewById(R.id.test_button);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Profile.getCurrentProfile() == null) {
-                    Toast.makeText(getApplicationContext(), "NULL", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), Profile.getCurrentProfile().getName(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        Button b2 = (Button) findViewById(R.id.continue_button);
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
     }
 
     /* ========================================================================== */

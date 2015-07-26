@@ -52,7 +52,7 @@ public class MainMyRelisFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_main_my_relis, container, false);
 
         ctx = getActivity().getApplicationContext();
-        Button addDiscussionBtn = (Button) v.findViewById(R.id.add_discussion_btn);
+        Button addDiscussionBtn = (Button) v.findViewById(R.id.add_discussion_btn_my_relis);
         addDiscussionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +104,7 @@ public class MainMyRelisFragment extends Fragment {
                             }
 
                             chatsList = new ArrayList<ParseUser>(li);
-                            ListView list = (ListView) v.findViewById(R.id.list);
+                            ListView list = (ListView) v.findViewById(R.id.list_my_relis);
                             list.setAdapter(new UserAdapter());
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

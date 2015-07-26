@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -25,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.app.Dialog;
 import android.content.IntentSender;
 import android.location.Location;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -46,6 +48,7 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.location.LocationActivity;
 import reli.reliapp.co.il.reli.sidebar.AboutFragment;
 import reli.reliapp.co.il.reli.sidebar.FaqFragment;
+import reli.reliapp.co.il.reli.sidebar.GuidedTourActivity;
 import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
 
 /**
@@ -195,12 +198,16 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         // *** Location ends
 
-
         user = ReliUser.getCurrentReliUser();
         updateUserStatus(true);
 
 
-
+//        ImageView iv = (ImageView) findViewById(R.id.avatar);
+//        iv.setImageResource(R.drawable.user_chat2);
+//        iv.setImageBitmap(user.getPicture());
+//        iv.setImageBitmap(user.getFacebookPicture().getDrawingCache());
+        TextView tv = (TextView) findViewById(R.id.userName);
+        tv.setText(user.getFullName());
 
         // Start
         getSupportFragmentManager().beginTransaction()
@@ -516,7 +523,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     private Class findClass(String positionMeaning) {
         // Return the Grand Tour class
         if (positionMeaning.equals(getString(R.string.nav_drawer_tour)))
-            return LocationActivity.class;
+            return GuidedTourActivity.class;
 
         return null;
     }
@@ -561,8 +568,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
         if (positionMeaning.equals(getString(R.string.nav_drawer_faq)))
             return new FaqFragment();
 
-        // TODO - uncomment
-//        Return the About class
+        // Return the About class
         if (positionMeaning.equals(getString(R.string.nav_drawer_about)))
             return new AboutFragment();
 
@@ -648,6 +654,11 @@ public class MainActivity extends CustomActivity implements LocationListener,
         } else if (c != null) {
             Intent intent = new Intent(this, c);
             startActivity(intent);
+        } else if (positionMeaning.equals(getString(R.string.nav_drawer_sign_out))) {
+            // TODO - change
+            Toast.makeText(getApplicationContext(), "You logged out", Toast.LENGTH_SHORT).show();
+            ParseUser.logOut();
+            finish();
         }
 
         // Update selected item

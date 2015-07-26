@@ -5,29 +5,11 @@
     android:layout_height="fill_parent"
     android:background="@color/white"
     android:orientation="vertical" >
-    <!--<ListView-->
-    <!--android:id="@+id/list"-->
-    <!--android:layout_width="wrapl_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:divider="@color/main_color_green"-->
-    <!--android:dividerHeight="1dp"-->
-    <!--tools:listitem="@layout/discussion_item" >-->
-    <!--</ListView>-->
-
-    <!--<Button-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:background="@drawable/round_button"-->
-    <!--android:gravity="center_vertical|center_horizontal|right"-->
-    <!--android:text="hello"-->
-    <!--android:textColor="#fff" />-->
-
-
 
     <Button
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/add_discussion_btn"
+        android:id="@+id/add_discussion_btn_all_relis"
         android:text="+"
         android:background="@drawable/round_button"
         android:layout_marginRight="@dimen/pad_10dp"
@@ -38,22 +20,15 @@
 
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/list_all_relis"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:divider="@color/main_color_green"
         android:dividerHeight="1dp"
         tools:listitem="@layout/discussion_item"
         android:layout_alignParentTop="true"
-        android:layout_above="@id/add_discussion_btn" >
+        android:layout_above="@id/add_discussion_btn_all_relis" >
 
     </ListView>
-
-    <!--<ListView-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="fill_parent"-->
-    <!--android:id="@+id/list"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:layout_above="@id/testbutton" />-->
 
 </RelativeLayout>

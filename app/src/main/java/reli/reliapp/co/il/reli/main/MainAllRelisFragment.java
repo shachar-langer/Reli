@@ -26,8 +26,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import reli.reliapp.co.il.reli.createReli.DiscussionActivity;
 import reli.reliapp.co.il.reli.R;
+import reli.reliapp.co.il.reli.createReli.DiscussionActivity;
 import reli.reliapp.co.il.reli.createReli.CreateReliActivity;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.utils.Const;
@@ -54,7 +54,7 @@ public class MainAllRelisFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_main_all_relis, container, false);
 
         ctx = getActivity().getApplicationContext();
-        Button addDiscussionBtn = (Button) v.findViewById(R.id.add_discussion_btn);
+        Button addDiscussionBtn = (Button) v.findViewById(R.id.add_discussion_btn_all_relis);
         addDiscussionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,7 +104,7 @@ public class MainAllRelisFragment extends Fragment {
                             }
 
                             chatsList = new ArrayList<ParseUser>(li);
-                            ListView list = (ListView) v.findViewById(R.id.list);
+                            ListView list = (ListView) v.findViewById(R.id.list_all_relis);
                             list.setAdapter(new UserAdapter());
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

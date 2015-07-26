@@ -1,10 +1,14 @@
 package reli.reliapp.co.il.reli.login;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -21,6 +25,11 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 
 import reli.reliapp.co.il.reli.main.MainActivity;
@@ -73,9 +82,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-
-            }
+            public void onSuccess(LoginResult loginResult) {}
 
             @Override
             public void onCancel() {}
@@ -115,6 +122,9 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         }
 
         else {
+
+            Log.w("dfd", "I'm in else");
+
             Profile profile = Profile.getCurrentProfile();
 
             // Check if we are disconnected
@@ -129,12 +139,28 @@ public class LoginFragment extends android.support.v4.app.Fragment {
             // final ProgressDialog dia = ProgressDialog.show(this, null, getString(R.string.alert_wait));
 
             profilePictureView.setProfileId(profile.getId());
+//            Bitmap profPict = null;
+
+            // TODO - check why it doesn't work :(
+//            try {
+//                String imageURL = "http://graph.facebook.com/105935396418298/picture";
+////                String imageURL = "http://graph.facebook.com/" + profile.getId()+ "/picture?type=small";
+//                URL url_value = new URL(imageURL);
+//                profPict = BitmapFactory.decodeStream(url_value.openConnection().getInputStream());
+////                profPict = BitmapFactory.decodeStream((InputStream)new URL(imageURL).getContent());
+//            }
+//            catch (Exception e) {
+//                Toast.makeText(getActivity().getApplicationContext(), "Error with Picture - " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                e.printStackTrace();
+//            }
 
             // Create a new ReliUser
-            final ReliUser reliUser = new ReliUser(ReliUserType.FACEBOOK_USER,
+            final ReliUser reliUser = new ReliUser(getActivity().getApplicationContext(),
+                    ReliUserType.FACEBOOK_USER,
                     profile.getFirstName(),
                     profile.getName(),
                     new ParseGeoPoint());
+//            reliUser.setPicture(profPict);
 
             // Add the new user to Parse
             reliUser.signUpInBackground(new SignUpCallback() {

@@ -1,5 +1,9 @@
 package reli.reliapp.co.il.reli.dataStructures;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.facebook.login.widget.ProfilePictureView;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
@@ -7,6 +11,7 @@ import com.parse.ParseUser;
 
 import java.util.UUID;
 
+import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.utils.Const;
 
 public class ReliUser extends ParseUser {
@@ -14,8 +19,10 @@ public class ReliUser extends ParseUser {
     private ReliUserType userType;
     private String firstName;
     private String fullName;
+    private Bitmap picture;
     private ProfilePictureView facebookPicture;
     private ParseGeoPoint location;
+    private Context ctx;
 
     /* ========================================================================== */
 
@@ -27,7 +34,8 @@ public class ReliUser extends ParseUser {
     /* ========================================================================== */
 
     // Constructor
-    public ReliUser(ReliUserType userType, String firstName, String fullName, ParseGeoPoint location) {
+    public ReliUser(Context ctx, ReliUserType userType, String firstName, String fullName, ParseGeoPoint location) {
+        this.ctx = ctx;
         String dummyUniqueString = UUID.randomUUID().toString();
         setUsername(dummyUniqueString);
         setPassword(dummyUniqueString);
@@ -100,7 +108,6 @@ public class ReliUser extends ParseUser {
     /* ========================================================================== */
 
     public ProfilePictureView getFacebookPicture() {
-        // TODO
         return facebookPicture;
     }
 
@@ -109,6 +116,22 @@ public class ReliUser extends ParseUser {
     public void setFacebookPicture(ProfilePictureView facebookPicture) {
         // TODO
         this.facebookPicture = facebookPicture;
+    }
+
+    /* ========================================================================== */
+
+    public Bitmap getPicture() {
+        // TODO
+        if (picture == null) {
+            return BitmapFactory.decodeResource(ctx.getResources(), R.drawable.useravatar);
+        }
+        return picture;
+    }
+
+    /* ========================================================================== */
+
+    public void setPicture(Bitmap picture) {
+        this.picture = picture;
     }
 
     /* ========================================================================== */

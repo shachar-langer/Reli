@@ -40,7 +40,6 @@
                 android:layout_toRightOf="@+id/avatar"
                 android:orientation="vertical" >
 
-                <!-- TODO change -->
                 <TextView
                     android:id="@+id/userName"
                     android:layout_width="wrap_content"
