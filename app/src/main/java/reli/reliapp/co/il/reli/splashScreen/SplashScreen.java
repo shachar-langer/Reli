@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.login.LoginActivity;
+import reli.reliapp.co.il.reli.sidebar.GuidedTourActivity;
 
 public class SplashScreen extends Activity {
 

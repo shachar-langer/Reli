@@ -23,8 +23,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-import reli.reliapp.co.il.reli.DiscussionActivity;
-import reli.reliapp.co.il.reli.MainActivity;
+import reli.reliapp.co.il.reli.createReli.DiscussionActivity;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.createReli.CreateReliActivity;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;

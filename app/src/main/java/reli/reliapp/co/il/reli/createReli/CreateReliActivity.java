@@ -2,30 +2,19 @@ package reli.reliapp.co.il.reli.createReli;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 
 import java.util.Date;
 
-import reli.reliapp.co.il.reli.DiscussionActivity;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
-import reli.reliapp.co.il.reli.dataStructures.AbstractDiscussion;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
-import reli.reliapp.co.il.reli.dataStructures.MessageStatus;
 import reli.reliapp.co.il.reli.utils.Const;
 
 public class CreateReliActivity extends CustomActivity { //extends AppCompatActivity implements ActionBar.TabListener {

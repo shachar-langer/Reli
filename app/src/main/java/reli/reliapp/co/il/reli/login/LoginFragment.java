@@ -23,7 +23,7 @@ import com.parse.SignUpCallback;
 
 import java.util.Arrays;
 
-import reli.reliapp.co.il.reli.MainActivity;
+import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.dataStructures.ReliUserType;

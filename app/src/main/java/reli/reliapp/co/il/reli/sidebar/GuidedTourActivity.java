@@ -1,4 +1,4 @@
-package reli.reliapp.co.il.reli.splashScreen;
+package reli.reliapp.co.il.reli.sidebar;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;

@@ -1,8 +1,7 @@
-package reli.reliapp.co.il.reli;
+package reli.reliapp.co.il.reli.main;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.support.v4.app.Fragment;
 //import android.app.FragmentManager;
@@ -24,21 +23,8 @@ import android.widget.RelativeLayout;
 
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -50,22 +36,17 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
-import reli.reliapp.co.il.reli.createReli.CreateReliActivity;
-import reli.reliapp.co.il.reli.createReli.ReliApp;
+import reli.reliapp.co.il.reli.R;
+import reli.reliapp.co.il.reli.ReliApp;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.location.LocationActivity;
-import reli.reliapp.co.il.reli.login.LoginFragment;
 import reli.reliapp.co.il.reli.sidebar.AboutFragment;
 import reli.reliapp.co.il.reli.sidebar.FaqFragment;
-import reli.reliapp.co.il.reli.utils.Const;
 import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
-import reli.reliapp.co.il.reli.utils.Utils;
 
 /**
  * The Class UserList is the Activity class. It shows a list of all users of

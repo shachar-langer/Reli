@@ -1,4 +1,4 @@
-package reli.reliapp.co.il.reli;
+package reli.reliapp.co.il.reli.main;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import reli.reliapp.co.il.reli.R;
+import reli.reliapp.co.il.reli.main.NavItem;
 
 class DrawerListAdapter extends BaseAdapter {
 

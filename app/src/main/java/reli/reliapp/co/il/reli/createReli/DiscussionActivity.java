@@ -1,4 +1,4 @@
-package reli.reliapp.co.il.reli;
+package reli.reliapp.co.il.reli.createReli;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,9 +25,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.Message;
 import reli.reliapp.co.il.reli.dataStructures.MessageStatus;
+import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
 
 /**

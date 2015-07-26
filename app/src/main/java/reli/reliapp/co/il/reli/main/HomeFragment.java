@@ -1,4 +1,4 @@
-package reli.reliapp.co.il.reli;
+package reli.reliapp.co.il.reli.main;
 
 import java.util.Locale;
 
@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import reli.reliapp.co.il.reli.main.MainAllRelisFragment;
-import reli.reliapp.co.il.reli.main.MainMyRelisFragment;
+import reli.reliapp.co.il.reli.R;
 
 public class HomeFragment extends Fragment {
 
+    public static final int MIDDLE_FRAGMENT = 1;
     public static final String TAG = HomeFragment.class.getSimpleName();
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
@@ -34,11 +34,11 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(
-                getChildFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(MIDDLE_FRAGMENT);
 
         return v;
     }
@@ -76,12 +76,13 @@ public class HomeFragment extends Fragment {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
+                    return "Relis Around Me";
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
+                    return "My Reli";
                 case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return "All Relis";
             }
+
             return null;
         }
     }
@@ -96,12 +97,9 @@ public class HomeFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
-                    container, false);
-            TextView dummyTextView = (TextView) rootView
-                    .findViewById(R.id.section_label);
-            dummyTextView.setText(Integer.toString(getArguments().getInt(
-                    ARG_SECTION_NUMBER)));
+            View rootView = inflater.inflate(R.layout.fragment_tabbed_content, container, false);
+            TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
+            dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }

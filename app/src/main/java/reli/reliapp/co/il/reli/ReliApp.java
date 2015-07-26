@@ -1,4 +1,4 @@
-package reli.reliapp.co.il.reli.createReli;
+package reli.reliapp.co.il.reli;
 
 import android.app.Application;
 

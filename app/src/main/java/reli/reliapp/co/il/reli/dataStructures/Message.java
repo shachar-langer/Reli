@@ -2,7 +2,7 @@ package reli.reliapp.co.il.reli.dataStructures;
 
 import java.util.Date;
 
-import reli.reliapp.co.il.reli.MainActivity;
+import reli.reliapp.co.il.reli.main.MainActivity;
 
 public class Message
 {

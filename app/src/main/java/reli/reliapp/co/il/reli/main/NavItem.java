@@ -1,4 +1,4 @@
-package reli.reliapp.co.il.reli;
+package reli.reliapp.co.il.reli.main;
 
 class NavItem {
     String mTitle;
