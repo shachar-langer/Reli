@@ -1,7 +1,6 @@
 package reli.reliapp.co.il.reli.main;
 
 import java.util.Locale;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,14 +9,13 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import reli.reliapp.co.il.reli.R;
 
 public class HomeFragment extends Fragment {
 
     public static final int MIDDLE_FRAGMENT = 1;
-    public static final String TAG = HomeFragment.class.getSimpleName();
+
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
 
@@ -33,7 +31,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
@@ -51,19 +49,17 @@ public class HomeFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-
-            if (position == 1) {
-                return new MainMyRelisFragment();
+            switch (position) {
+                case 0:
+                    return new MainMyRelisFragment();
+                case 1:
+                    return new MainAllRelisFragment();
+                case 2:
+                    // TODO - shachar - change
+                    return new MainMyRelisFragment();
             }
-            else if (position == 2) {
-                return new MainAllRelisFragment();
-            }
 
-            Fragment fragment = new TabbedContentFragment();
-            Bundle args = new Bundle();
-            args.putInt(TabbedContentFragment.ARG_SECTION_NUMBER, position + 1);
-            fragment.setArguments(args);
-            return fragment;
+            return null;
         }
 
         @Override
@@ -76,32 +72,14 @@ public class HomeFragment extends Fragment {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return "Relis Around Me";
+                    return getString(R.string.left_tab).toUpperCase(l);
                 case 1:
-                    return "My Reli";
+                    return getString(R.string.middle_tab).toUpperCase(l);
                 case 2:
-                    return "All Relis";
+                    return getString(R.string.right_tab).toUpperCase(l);
             }
 
             return null;
         }
     }
-
-    public static class TabbedContentFragment extends Fragment {
-
-        public static final String ARG_SECTION_NUMBER = "section_number";
-
-        public TabbedContentFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_tabbed_content, container, false);
-            TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-            dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
 }

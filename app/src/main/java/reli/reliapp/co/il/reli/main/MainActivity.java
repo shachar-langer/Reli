@@ -115,7 +115,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
 
     // UI Stuff
-
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -127,7 +126,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_try);
+        setContentView(R.layout.activity_main_with_drawer);
 
         // Enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -139,7 +138,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
         // DrawerLayout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
-        // Populate the Navigtion Drawer with options
+        // Populate the Navigation Drawer with options
         mDrawerPane = (RelativeLayout) findViewById(R.id.drawerPane);
         mDrawerList = (ListView) findViewById(R.id.navList);
         DrawerListAdapter adapter = new DrawerListAdapter(this, mNavItems);
@@ -200,6 +199,9 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         user = ReliUser.getCurrentReliUser();
         updateUserStatus(true);
+
+
+
 
         // Start
         getSupportFragmentManager().beginTransaction()

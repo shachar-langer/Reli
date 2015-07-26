@@ -43,7 +43,9 @@
     <string name="login_welcome_string">Welcome to Reli!</string>
     <string name="title_activity_location">LocationActivity</string>
 
-
+    <string name="left_tab">Relis Around Me</string>
+    <string name="middle_tab">My Reli</string>
+    <string name="right_tab">All Relis</string>
 
     <!-- Todo - New -->
     <string name="type_msg">Type message</string>
