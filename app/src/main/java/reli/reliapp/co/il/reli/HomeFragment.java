@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import reli.reliapp.co.il.reli.main.MainAllRelisFragment;
 import reli.reliapp.co.il.reli.main.MainMyRelisFragment;
 
 public class HomeFragment extends Fragment {
@@ -53,6 +54,9 @@ public class HomeFragment extends Fragment {
 
             if (position == 1) {
                 return new MainMyRelisFragment();
+            }
+            else if (position == 2) {
+                return new MainAllRelisFragment();
             }
 
             Fragment fragment = new TabbedContentFragment();
