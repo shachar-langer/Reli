@@ -72,13 +72,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
-
-
         <activity
             android:name=".NewTryActivity"
             android:label="@string/title_activity_future_main" >
         </activity>
-
+        <activity
+            android:name=".splashScreen.GuidedTourActivity"
+            android:label="@string/title_activity_guided_tour" >
+        </activity>
     </application>
 
 </manifest>

@@ -115,5 +115,6 @@
     <string name="title_activity_about">AboutActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_guided_tour">GuidedTourActivity</string>
 
 </resources>

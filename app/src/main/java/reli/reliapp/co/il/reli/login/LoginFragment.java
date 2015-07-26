@@ -112,7 +112,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 //        ParseUser.logOut();
 
         if (ParseUser.getCurrentUser() != null) {
-            startActivity(new Intent(getActivity(), NewTryActivity.class));
+            startActivity(new Intent(getActivity(), MainActivity.class));
         }
 
         else {
@@ -145,7 +145,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                         //                    dia.dismiss();
                         MainActivity.user = reliUser;
                         Toast.makeText(getActivity().getApplicationContext(), ReliUser.getCurrentReliUser().getUserType().toString(), Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), NewTryActivity.class));
+                        startActivity(new Intent(getActivity(), MainActivity.class));
                         getActivity().finish();
                     } else {
                         // TODO - change

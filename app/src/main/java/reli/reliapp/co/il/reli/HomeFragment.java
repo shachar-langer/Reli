@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import reli.reliapp.co.il.reli.main.MainMyRelisFragment;
+
 public class HomeFragment extends Fragment {
 
     public static final String TAG = HomeFragment.class.getSimpleName();
@@ -30,7 +32,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_main, container, false);
         mSectionsPagerAdapter = new SectionsPagerAdapter(
                 getChildFragmentManager());
 
@@ -48,6 +50,11 @@ public class HomeFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
+
+            if (position == 0) {
+                return new MainMyRelisFragment();
+            }
+
             Fragment fragment = new TabbedContentFragment();
             Bundle args = new Bundle();
             args.putInt(TabbedContentFragment.ARG_SECTION_NUMBER, position + 1);
@@ -96,15 +103,3 @@ public class HomeFragment extends Fragment {
     }
 
 }
-
-
-//    public HomeFragment(){}
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//
-//        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-//        return rootView;
-//    }
-//}

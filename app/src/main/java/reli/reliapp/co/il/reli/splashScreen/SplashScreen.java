@@ -1,6 +1,7 @@
 package reli.reliapp.co.il.reli.splashScreen;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,12 +22,25 @@ public class SplashScreen extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                // TODO - check that it works
+                handleFirstLogin();
+
                 // This method will be executed once the timer is over
-                Intent i = new Intent(SplashScreen.this, LoginActivity.class);
-                startActivity(i);
+                Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
+                startActivity(intent);
 
                 // close this activity
                 finish();
+            }
+
+            private void handleFirstLogin() {
+                boolean firstRun = getPreferences(Context.MODE_PRIVATE).getBoolean("firstRun", true);
+                if (firstRun) {
+                    getPreferences(Context.MODE_PRIVATE).edit().putBoolean("firstRun", false).commit();
+
+                    Intent intent = new Intent(SplashScreen.this, GuidedTourActivity.class);
+                    startActivity(intent);
+                }
             }
         }, SPLASH_TIME_OUT_MILLIS);
     }

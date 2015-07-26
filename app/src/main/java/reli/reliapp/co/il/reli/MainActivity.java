@@ -25,13 +25,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import com.google.android.gms.fitness.data.Application;
 import com.google.android.gms.location.LocationListener;
 //import android.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -40,7 +38,6 @@ import com.parse.ParseUser;
 import reli.reliapp.co.il.reli.createReli.CreateReliActivity;
 import reli.reliapp.co.il.reli.createReli.ReliApp;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
-import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.utils.Const;
 import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
@@ -86,15 +83,11 @@ public class MainActivity extends CustomActivity implements LocationListener,
     /*
      * Constants for handling location results
      */
-    // Conversion from feet to meters
     private static final float METERS_PER_FEET = 0.3048f;
-
-    // Conversion from kilometers to meters
     private static final int METERS_PER_KILOMETER = 1000;
 
     // Maximum results returned from a Parse query
     private static final int MAX_POST_SEARCH_RESULTS = 20;
-
     // Maximum post search radius for map in kilometers
     private static final int MAX_POST_SEARCH_DISTANCE = 100;
 
@@ -122,8 +115,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
+
         Toast.makeText(getApplicationContext(), "In OnCreate", Toast.LENGTH_SHORT).show();
 
         // *** Location starts
@@ -149,22 +141,9 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         // *** Location ends
 
-        Button addDiscussionBtn = (Button) findViewById(R.id.add_discussion_btn);
-
-        addDiscussionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "You clicked me!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, CreateReliActivity.class);
-//                intent.putExtra(Const.CURRENT_LOCATION, );
-                startActivity(intent);
-                
-            }
-        });
 
 
-
-        // TODO - what does this funciton do? Why false and not true?
+        // TODO - what does this function do? Why false and not true?
         getActionBar().setDisplayHomeAsUpEnabled(false);
 
         user = ReliUser.getCurrentReliUser();
@@ -213,7 +192,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     protected void onDestroy()
     {
-        Toast.makeText(getApplicationContext(), "In OnDistroy", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "In OnDestroy", Toast.LENGTH_SHORT).show();
 
         super.onDestroy();
         updateUserStatus(false);
@@ -228,7 +207,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         Toast.makeText(getApplicationContext(), "In OnResume", Toast.LENGTH_SHORT).show();
 
         super.onResume();
-        loadUserList();
     }
 
     /* ========================================================================== */
@@ -238,90 +216,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
     {
         user.put("online", online);
         user.saveEventually();
-    }
-
-    /* ========================================================================== */
-
-    private void loadUserList()
-    {
-        final ProgressDialog dia = ProgressDialog.show(this, null, getString(R.string.alert_loading));
-        ParseUser.getQuery().whereNotEqualTo("username", user.getUsername())
-                .findInBackground(new FindCallback<ParseUser>() {
-
-                    @Override
-                    public void done(List<ParseUser> li, ParseException e) {
-                        dia.dismiss();
-                        if (li != null) {
-                            if (li.size() == 0) {
-                                Toast.makeText(MainActivity.this, R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
-                            }
-
-                            chatsList = new ArrayList<ParseUser>(li);
-                            ListView list = (ListView) findViewById(R.id.list);
-                            list.setAdapter(new UserAdapter());
-                            list.setOnItemClickListener(new OnItemClickListener() {
-
-                                @Override
-                                public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                                    Intent intent = new Intent(MainActivity.this, DiscussionActivity.class);
-                                    intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getUsername());
-                                    startActivity(intent);
-                                }
-                            });
-                        }
-                        else {
-                            Utils.showDialog (MainActivity.this, getString(R.string.err_users) + " " + e.getMessage());
-                            e.printStackTrace();
-                        }
-                    }
-                });
-    }
-
-    /* ========================================================================== */
-
-    /**
-     * The Class UserAdapter is the adapter class for User ListView. This
-     * adapter shows the user name and its only online status for each item.
-     */
-    private class UserAdapter extends BaseAdapter
-    {
-
-        @Override
-        public int getCount()
-        {
-            return chatsList.size();
-        }
-
-        /* ========================================================================== */
-
-        @Override
-        public ParseUser getItem(int arg0)
-        {
-            return chatsList.get(arg0);
-        }
-
-        /* ========================================================================== */
-
-        @Override
-        public long getItemId(int arg0)
-        {
-            return arg0;
-        }
-
-        /* ========================================================================== */
-
-        @Override
-        public View getView(int pos, View v, ViewGroup arg2)
-        {
-            if (v == null) {
-                v = getLayoutInflater().inflate(R.layout.discussion_item, null);
-            }
-
-            TextView userLabel = (TextView) v.findViewById(R.id.dummy);
-            userLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow, 0);
-
-            return v;
-        }
     }
 
    /* ========================================================================== */
@@ -528,6 +422,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     /* ========================================================================== */
 
+    // TODO - move to Utils
     /*
      * Show a dialog returned by Google Play services for the connection error code
      */
