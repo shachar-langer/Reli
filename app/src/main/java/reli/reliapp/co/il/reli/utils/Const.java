@@ -11,9 +11,11 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
  */
 public class Const
 {
+    // Columns in Parse for DiscussionActivity (the chat itself
 	public static final String BUDDY_NAME = "buddyName";
-    public static final String CURRENT_LOCATION = "currentLocation";
+    public static final String DISCUSSION_TABLE_NAME = "discussionTableName";
 
+    public static final String CURRENT_LOCATION = "currentLocation";
     public static final String DUMMY_PASSWORD = "Dummy";
     public static final String ANONYMOUS_NAME = "Anonymous";
 
@@ -38,4 +40,6 @@ public class Const
     public static final String ALTITUDE = "altitude";
     public static final String LATITUDE = "latitude";
 
+    // Radius argument to pass between the fragment and activity of ReliNearMe
+    public static final String RADIUS = "radius";
 }
