@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/add_discussion_btn_around_relis"
+        android:text="+"
+        android:background="@drawable/round_button"
+        android:layout_marginRight="@dimen/pad_10dp"
+        android:layout_marginBottom="@dimen/pad_10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+    <ListView
+        android:id="@+id/list_around_relis"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="@color/main_color_green"
+        android:dividerHeight="1dp"
+        tools:listitem="@layout/discussion_item"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/add_discussion_btn_around_relis" >
+
+    </ListView>
+
+</RelativeLayout>

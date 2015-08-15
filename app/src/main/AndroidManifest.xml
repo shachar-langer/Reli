@@ -76,6 +76,10 @@
             android:name=".sidebar.GuidedTourActivity"
             android:label="@string/title_activity_guided_tour" >
         </activity>
+        <activity
+            android:name=".main.MainRelisAroundMeActivity"
+            android:label="@string/title_activity_main_relis_around_me" >
+        </activity>
     </application>
 
 </manifest>

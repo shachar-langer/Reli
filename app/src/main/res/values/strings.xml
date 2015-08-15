@@ -118,5 +118,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_guided_tour">GuidedTourActivity</string>
+    <string name="title_activity_main_relis_around_me">MainRelisAroundMeActivity</string>
 
 </resources>

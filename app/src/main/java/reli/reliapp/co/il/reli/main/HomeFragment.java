@@ -51,11 +51,10 @@ public class HomeFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new MainMyRelisFragment();
+                    return new MainRelisAroundMeFragment();
                 case 1:
                     return new MainAllRelisFragment();
                 case 2:
-                    // TODO - shachar - change
                     return new MainMyRelisFragment();
             }
 

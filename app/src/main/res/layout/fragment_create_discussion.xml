@@ -3,30 +3,100 @@
     android:layout_height="match_parent"
     tools:context="reli.reliapp.co.il.reli.createReli.CreateDiscussionFragment">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="462dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create a Reli Discussion"
+            android:id="@+id/textView2"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:layout_marginTop="50dp"
+            android:id="@+id/linearLayout">
+            <!--android:layout_width="56dp"-->
+            <!--android:layout_height="31dp"-->
+            <TextView
+                android:layout_width="103dp"
+                android:layout_height="wrap_content"
+                android:text="@string/discussion_text_topicTitle"
+                android:id="@+id/discussion_txt_topic" />
 
-            <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-                android:text="@string/discussion_text_topicTitle" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/discussion_edt_question"
                 android:editable="true"
                 android:enabled="true"
                 android:inputType="text"
-                android:text="@string/discussion_edt_topic" />
+                android:text="@string/discussion_edt_topic"
+                android:layout_toRightOf="@+id/discussion_txt_topic" />
+
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2"
+            android:layout_below="@+id/linearLayout"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Radius:"
+                android:id="@+id/textView"
+                android:layout_gravity="center_horizontal" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/seekBar"
+                android:layout_marginBottom="73dp"
+                android:layout_toRightOf="@+id/textView"
+                android:layout_gravity="center_horizontal"
+                android:progress="2"/>
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true"-->
+
+                <!--android:layout_alignRight="@+id/textView2"-->
+                <!--android:layout_alignEnd="@+id/textView2"-->
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/LinearLayout3"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expiration Date:"
+                android:id="@+id/textView34"
+                android:layout_alignBottom="@+id/LinearLayout3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -40,6 +110,7 @@
             android:layout_height="wrap_content"
             android:text="@string/discussion_btn_text"
             android:id="@+id/discussion_btn_create" />
+
     </LinearLayout>
 
 </FrameLayout>

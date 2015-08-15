@@ -42,6 +42,7 @@ public class DiscussionActivity extends CustomActivity
 	private ArrayList<Message> messagesList;
 	private ChatAdapter chatAdapter;
 	private String buddy;
+	private String discussionTableName;
 	private Date lastMsgDate;
 
 	/** Flag to hold if the activity is running or not. */
@@ -73,6 +74,7 @@ public class DiscussionActivity extends CustomActivity
 		setTouchNClick(R.id.btnSend);
 
 		buddy = getIntent().getStringExtra(Const.BUDDY_NAME);
+		discussionTableName = getIntent().getStringExtra(Const.DISCUSSION_TABLE_NAME);
 		getActionBar().setTitle(buddy);
 
 		handler = new Handler();
@@ -127,7 +129,7 @@ public class DiscussionActivity extends CustomActivity
 		chatAdapter.notifyDataSetChanged();
 		messageTxt.setText(null);
 
-		ParseObject po = new ParseObject("Chat");
+		ParseObject po = new ParseObject(discussionTableName);
 		po.put("sender", MainActivity.user.getUsername());
 		po.put("receiver", buddy);
 //		po.put("createdAt", "");
@@ -150,7 +152,7 @@ public class DiscussionActivity extends CustomActivity
 	 */
 	private void loadConversationList()
 	{
-		ParseQuery<ParseObject> q = ParseQuery.getQuery("Chat");
+		ParseQuery<ParseObject> q = ParseQuery.getQuery(discussionTableName);
 		if (messagesList.size() == 0)
 		{
 			// load all messages...

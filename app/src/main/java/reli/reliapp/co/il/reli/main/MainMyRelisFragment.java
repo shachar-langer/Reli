@@ -63,11 +63,13 @@ public class MainMyRelisFragment extends Fragment {
                 if (location == null) {
                     Toast.makeText(getActivity(), "Can not find your location", Toast.LENGTH_SHORT).show();
                 }
-                intent.putExtra(Const.LATITUDE, location.getLatitude());
-                intent.putExtra(Const.ALTITUDE, location.getAltitude());
-                startActivity(intent);
+                else {
+                    intent.putExtra(Const.LATITUDE, location.getLatitude());
+                    intent.putExtra(Const.ALTITUDE, location.getAltitude());
+                    startActivity(intent);
+                }
 
-                startActivity(intent);
+
             }
         });
 

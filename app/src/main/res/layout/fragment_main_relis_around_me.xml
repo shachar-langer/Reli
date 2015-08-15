@@ -1,0 +1,50 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="reli.reliapp.co.il.reli.main.MainRelisAroundMeFragment">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/blabla" >
+
+        <!--<com.codepath.example.simpledrawapp.SimpleDrawingView-->
+            <!--android:id="@+id/simpleDrawingView1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentTop="true" />-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/textInnerCircle"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/textOuterCircle"
+            android:layout_alignStart="@+id/textOuterCircle"
+            android:layout_alignParentEnd="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/textMiddleCircle"
+            android:layout_marginTop="41dp"
+            android:layout_below="@+id/textInnerCircle"
+            android:layout_alignLeft="@+id/textInnerCircle"
+            android:layout_alignStart="@+id/textInnerCircle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/textOuterCircle"
+            android:layout_marginTop="46dp"
+            android:layout_below="@+id/textMiddleCircle"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</FrameLayout>
