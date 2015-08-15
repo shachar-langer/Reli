@@ -69,6 +69,10 @@
     <string name="err_users">Error occurred while finding users:</string>
     <string name="alert_loading">Loading...</string>
 
+    <string name="search_tag">Search tag...</string>
+
+
+
     <string name="msg_no_user_found">No users were found</string>
     <string name="title_activity_future_main">FutureMainActivity</string>
 
@@ -118,6 +122,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_guided_tour">GuidedTourActivity</string>
+    <string name="title_activity_tag_selection">TagSelectionActivity</string>
     <string name="title_activity_main_relis_around_me">MainRelisAroundMeActivity</string>
 
 </resources>

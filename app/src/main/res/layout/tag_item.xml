@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- Single ListItem -->
+
+    <CheckedTextView
+        android:id="@+id/tag_name"
+        android:padding="10dip"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/listPreferredItemHeightSmall"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/txt_12sp"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+        android:paddingRight="?android:attr/listPreferredItemPaddingRight"/>
+
+    <!--<TextView android:id="@+id/tag_name"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="10dip" />-->
+
+</LinearLayout>

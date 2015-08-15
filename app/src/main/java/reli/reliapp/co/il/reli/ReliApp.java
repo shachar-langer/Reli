@@ -9,6 +9,7 @@ import com.parse.ParseUser;
 import reli.reliapp.co.il.reli.dataStructures.AbstractDiscussion;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
+import reli.reliapp.co.il.reli.dataStructures.ReliTag;
 
 public class ReliApp extends Application {
 
@@ -31,6 +32,9 @@ public class ReliApp extends Application {
         // Register the extended ParseObject (aka AbstractDiscussion)
         ParseObject.registerSubclass(AbstractDiscussion.class);
         ParseObject.registerSubclass(Discussion.class);
+
+        // Register the extended ParseObject (aka ReliTag)
+        ParseObject.registerSubclass(ReliTag.class);
 
         // Initialize Parse
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);

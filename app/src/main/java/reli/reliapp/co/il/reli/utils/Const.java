@@ -36,6 +36,9 @@ public class Const
     public static final String COL_DISCUSSION_EXPIRATION_DATE = "discussionexpirationDate";
     public static final String COL_DISCUSSION_OWNER_PARSE_ID = "discussionOwnerParseID";
 
+    // Columns in Parse for Tag
+    public static final String COL_TAG_NAME = "tagName";
+
     // Location argument to pass between activities
     public static final String ALTITUDE = "altitude";
     public static final String LATITUDE = "latitude";

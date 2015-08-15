@@ -77,6 +77,10 @@
             android:label="@string/title_activity_guided_tour" >
         </activity>
         <activity
+            android:name=".tags.TagSelectionActivity"
+            android:label="@string/title_activity_tag_selection" >
+        </activity>
+        <activity
             android:name=".main.MainRelisAroundMeActivity"
             android:label="@string/title_activity_main_relis_around_me" >
         </activity>
