@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/notifications_interesting_radius"
+        android:text="@string/default_settings_radius"
         android:paddingTop="@dimen/pad_10dp"
         android:paddingLeft="@dimen/pad_10dp"
         android:textStyle="bold" />
@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/current_radius_value"
+        android:id="@+id/current_radius_value_settings"
         android:gravity="center_vertical|center_horizontal" />
 
     <TextView
@@ -33,46 +33,27 @@
         android:paddingTop="@dimen/pad_30dp"
         android:paddingLeft="@dimen/pad_10dp"
         android:paddingBottom="@dimen/pad_10dp"
-        android:text="@string/notifications_interesting_tags"
+        android:text="@string/default_settings_expiration"
         android:textStyle="bold" />
-
-    <ListView
-        android:id="@+id/tags_list_view"
-        android:paddingTop="@dimen/pad_10dp"
-        android:background="@color/main_color_green"
-        android:layout_width="365dp"
-        android:layout_height="234dp"
-        android:layout_gravity="center_horizontal" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:paddingTop="@dimen/pad_10dp"
-        android:paddingLeft="@dimen/pad_10dp"
-        android:paddingRight="@dimen/pad_10dp"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <NumberPicker
+            android:id="@+id/numberPicker1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/toolbar_find"
-            android:paddingRight="@dimen/pad_5dp"
-            android:id="@+id/imageView" />
+            android:layout_centerInParent="true"  />
 
-        <EditText android:id="@+id/tags_search"
-            android:layout_width="fill_parent"
+        <NumberPicker
+            android:id="@+id/numberPicker2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="@string/search_tag"
-            android:inputType="textVisiblePassword"
-            android:textSize="@dimen/txt_12sp" />
-    </LinearLayout>
+            android:layout_centerInParent="true" >
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_all"
-        android:id="@+id/selectAllCheckBox"
-        android:paddingTop="@dimen/pad_10dp"
-        android:checked="false" />
+        </NumberPicker>
+    </LinearLayout>
 
 </LinearLayout>

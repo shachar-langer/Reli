@@ -46,9 +46,9 @@ import reli.reliapp.co.il.reli.utils.Utils;
 
 public class MainRelisAroundMeFragment extends Fragment {
 
-    private static int INNER_RADIUS = 50;
-    private static int MIDDLE_RADIUS = 100;
-    private static int OUTER_RADIUS = 150;
+    private static final int INNER_RADIUS = 50;
+    private static final int MIDDLE_RADIUS = 100;
+    private static final int OUTER_RADIUS = 150;
 
     View v;
 

@@ -7,54 +7,248 @@ import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.ReliTag;
+import reli.reliapp.co.il.reli.dataStructures.ReliUser;
+import reli.reliapp.co.il.reli.main.MainActivity;
 
 public class TagSelectionActivity extends CustomActivity {
 
-    private ArrayAdapter<String> adapter;
-    private ListView lv;
-    private Button button;
+    /* ========================================================================== */
+
+    private ListView mListView;
+    private TextView mRadius;
+    private SeekBar mSeekBar;
+    private ReliUser currentUser;
+
+    private ArrayList<String> tagsNames = new ArrayList<String>();
+    private ArrayList<ReliTag> tagsAsObjects;
+    ArrayAdapter<String> mArrayAdapter;
+
+    /* ========================================================================== */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag_selection);
 
-        // Listview Data
-        ReliTag reliTags[] = getTagList();
-        String tagsNames[] = new String[reliTags.length];
-        for (int i = 0; i < reliTags.length; i++) {
-            tagsNames[i] = reliTags[i].getTagName();
+        currentUser = MainActivity.user;
+        mRadius = (TextView) findViewById(R.id.current_radius_value);
+        mSeekBar = (SeekBar) findViewById(R.id.seek_bar_radius);
+
+        // TODO - remove
+        if (currentUser == null) {
+            Toast.makeText(getApplicationContext(), "NULL", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        button =  (Button) findViewById(R.id.testbutton);
-        button.setOnClickListener(this);
+        addTagsToScreen();
+        addSeekBarToScreen();
+        addCheckBoxToScreen();
 
-        lv = (ListView) findViewById(R.id.tags_list_view);
-        EditText inputSearch = (EditText) findViewById(R.id.tags_search);
+        enableTagSearch();
+    }
 
-        // Adding items to listview
-        adapter = new ArrayAdapter<String>(this, R.layout.tag_item, R.id.tag_name, tagsNames);
-//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, tagsNames);
-        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        lv.setAdapter(adapter);
+    /* ========================================================================== */
 
+//    public void onClick(View v) {
+//        ArrayList<ReliTag> selectedItems = getCheckedTags();
+//
+//        String[] outputStrArr = new String[selectedItems.size()];
+//        for (int i = 0; i < selectedItems.size(); i++) {
+//            outputStrArr[i] = selectedItems.get(i).getTagName();
+//        }
+//
+//        Toast.makeText(getApplicationContext(), Arrays.toString(outputStrArr), Toast.LENGTH_SHORT).show();
+//    }
+//
+//    /* ========================================================================== */
+//
+//    private class MyArrayAdapter extends ArrayAdapter<String>{
+//
+//        private HashMap<Integer, Boolean> myChecked = new HashMap<Integer, Boolean>();
+//
+//        /* ========================================================================== */
+//
+//        public MyArrayAdapter(Context context, int resource,
+//                              int textViewResourceId, List<String> objects) {
+//            super(context, resource, textViewResourceId, objects);
+//
+//            for (int i = 0; i < objects.size(); i++) {
+//                myChecked.put(i, false);
+//            }
+//        }
+//
+//        /* ========================================================================== */
+//
+//        public void toggleChecked(int position){
+//            myChecked.put(position, !myChecked.get(position));
+//            notifyDataSetChanged();
+//        }
+//
+//        /* ========================================================================== */
+//
+//        public List<String> getCheckedItems(){
+//            List<String> checkedItems = new ArrayList<String>();
+//
+//            for(int i = 0; i < myChecked.size(); i++){
+//                if (myChecked.get(i)) {
+//                    checkedItems.add(tagsNames.get(i));
+//                }
+//            }
+//
+//            return checkedItems;
+//        }
+//
+//        /* ========================================================================== */
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            View row = convertView;
+//
+//            if(row == null){
+//                LayoutInflater inflater=getLayoutInflater();
+//                row = inflater.inflate(R.layout.tag_item, parent, false);
+//            }
+//
+//            CheckedTextView checkedTextView = (CheckedTextView)row.findViewById(R.id.tag_name);
+//            checkedTextView.setText(tagsNames.get(position));
+//
+//            Boolean checked = myChecked.get(position);
+//            if (checked != null) {
+//                checkedTextView.setChecked(checked);
+//            }
+//
+//            return row;
+//        }
+//    }
 
+    /* ========================================================================== */
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        boolean isChanged = saveNewRadius();
+        isChanged |= saveNewTags();
+
+        if (isChanged) {
+            Toast.makeText(getApplicationContext(), "The settings have been saved", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /* ========================================================================== */
+
+    private boolean saveNewRadius() {
+        boolean isChanged = false;
+        int wantedRadius = mSeekBar.getProgress();
+
+        if (currentUser.getNotificationsRadius() != wantedRadius) {
+            currentUser.setNotificationsRadius(wantedRadius);
+            currentUser.saveEventually();
+            isChanged = true;
+        }
+
+        return isChanged ;
+    }
+
+    /* ========================================================================== */
+
+    private boolean saveNewTags() {
+        boolean isChanged = false;
+        ArrayList<ReliTag> wantedTags = getCheckedTags();
+
+        // Save the new notifications
+        if (!currentUser.getNotificationsTags().equals(wantedTags)) {
+            currentUser.setNotificationsTags(wantedTags);
+            currentUser.saveEventually();
+            isChanged = true;
+        }
+
+        return isChanged;
+    }
+
+    /* ========================================================================== */
+
+    private ArrayList<ReliTag> getCheckedTags() {
+        SparseBooleanArray checked = mListView.getCheckedItemPositions();
+        ArrayList<ReliTag> selectedItems = new ArrayList<ReliTag>();
+        for (int i = 0; i < checked.size(); i++) {
+            // Item position in adapter
+            int position = checked.keyAt(i);
+            // Add sport if it is checked i.e.) == TRUE!
+            if (checked.valueAt(i)) {
+                //                selectedItems.add(mArrayAdapter.getItem(position));
+                selectedItems.add(tagsAsObjects.get(position));
+            }
+        }
+
+        return selectedItems;
+    }
+
+    /* ========================================================================== */
+
+    private void addTagsToScreen() {
+        ParseQuery<ReliTag> query = ParseQuery.getQuery("ReliTag");
+        query.findInBackground(new FindCallback<ReliTag>() {
+            @Override
+            public void done(List<ReliTag> reliTags, ParseException e) {
+                tagsAsObjects = new ArrayList<ReliTag>(reliTags);
+                for (ReliTag reliTag : reliTags) {
+                    tagsNames.add(reliTag.getTagName());
+                }
+
+                mListView = (ListView)findViewById(R.id.tags_list_view);
+
+//                mArrayAdapter = new MyArrayAdapter(getApplicationContext(), R.layout.tag_item, R.id.tag_name, tagsNames);
+//                mListView.setAdapter(mArrayAdapter);
+//                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        mArrayAdapter.toggleChecked(position);
+//                    }
+//                });
+
+                mArrayAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_multiple_choice, tagsNames);
+
+//                mArrayAdapter = new ArrayAdapter(getApplicationContext(), R.layout.tag_item, R.id.tag_name, tagsNames);
+
+                mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+                mListView.setAdapter(mArrayAdapter);
+
+                selectAlreadyChosenTags();
+            }
+        });
+
+    }
+
+    /* ========================================================================== */
+
+    private void enableTagSearch() {
         // Enabling Search Filter
+        EditText inputSearch = (EditText) findViewById(R.id.tags_search);
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 // When user changed the Text
-                TagSelectionActivity.this.adapter.getFilter().filter(cs);
+                TagSelectionActivity.this.mArrayAdapter.getFilter().filter(cs);
             }
 
             @Override
@@ -67,30 +261,81 @@ public class TagSelectionActivity extends CustomActivity {
         });
     }
 
-    public void onClick(View v) {
-        SparseBooleanArray checked = lv.getCheckedItemPositions();
-        ArrayList<String> selectedItems = new ArrayList<String>();
-        for (int i = 0; i < checked.size(); i++) {
-            // Item position in adapter
-            int position = checked.keyAt(i);
-            // Add sport if it is checked i.e.) == TRUE!
-            if (checked.valueAt(i))
-                selectedItems.add(adapter.getItem(position));
-        }
+    /* ========================================================================== */
 
-        String[] outputStrArr = new String[selectedItems.size()];
-        for (int i = 0; i < selectedItems.size(); i++) {
-            outputStrArr[i] = selectedItems.get(i);
+    private void addSeekBarToScreen() {
+        int progress;
+        try {
+            progress = currentUser.getNotificationsRadius();
+        } catch (Exception e) {
+            progress = 150;
         }
+        mSeekBar.setProgress(progress);
+        setRadiusValue(progress);
 
-        Toast.makeText(getApplicationContext(), Arrays.toString(outputStrArr), Toast.LENGTH_SHORT).show();
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                setRadiusValue(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
     }
-        
 
-    private ReliTag[] getTagList() {
-        // TODO - change (so we will retrieve it from the parse table)
-        ReliTag[] reliTagArray = {new ReliTag("Tag One"), new ReliTag("Tag Two")};
-        return reliTagArray;
+    /* ========================================================================== */
+
+    private void addCheckBoxToScreen() {
+        CheckBox cb = (CheckBox) findViewById(R.id.selectAllCheckBox);
+        cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v.findViewById(R.id.selectAllCheckBox)).isChecked()) {
+                    selectAll();
+                } else {
+                    deselectAll();
+                }
+            }
+        });
+    }
+
+    /* ========================================================================== */
+
+    private void setRadiusValue(int progress) {
+        mRadius.setText(String.valueOf(progress) + " meters");
+    }
+
+    /* ========================================================================== */
+
+    private void selectAll() {
+        for (int i = 0; i < mArrayAdapter.getCount(); i++) {
+            mListView.setItemChecked(i, true);
+        }
+    }
+
+    /* ========================================================================== */
+
+    private void deselectAll() {
+        for (int i = 0; i < mArrayAdapter.getCount(); i++) {
+            mListView.setItemChecked(i, false);
+        }
+    }
+
+    /* ========================================================================== */
+
+    private void selectAlreadyChosenTags() {
+        for (int i = 0; i < mArrayAdapter.getCount(); i++) {
+            if (currentUser.getNotificationsTags().contains(mArrayAdapter.getItem(i))) {
+                mListView.setItemChecked(i, true);
+            }
+        }
     }
 }
 
@@ -100,155 +345,19 @@ public class TagSelectionActivity extends CustomActivity {
 
 
 
-
-
-//
-//
-//
-//
-//    ListView myListView;
-//    Button getResult;
-//
-//    private ArrayList<String> dayOfWeekList = new ArrayList<String>();
-//
-//    private void initDayOfWeekList(){
-//        dayOfWeekList.add("Sunday");
-//        dayOfWeekList.add("Monday");
-//        dayOfWeekList.add("Tuesday");
-//        dayOfWeekList.add("Wednesday");
-//        dayOfWeekList.add("Thursday");
-//        dayOfWeekList.add("Friday");
-//        dayOfWeekList.add("Saturday");
-//
-//    }
-//
-//    MyArrayAdapter myArrayAdapter;
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        initDayOfWeekList();
-//        setContentView(R.layout.activity_main);
-//
-//        myListView = (ListView)findViewById(R.id.list);
-//
-//        myArrayAdapter = new MyArrayAdapter(
-//                this,
-//                R.layout.row,
-//                android.R.id.text1,
-//                dayOfWeekList
-//        );
-//
-//        myListView.setAdapter(myArrayAdapter);
-//        myListView.setOnItemClickListener(myOnItemClickListener);
-//
-//        getResult = (Button)findViewById(R.id.getresult);
-//        getResult.setOnClickListener(new OnClickListener(){
+//        getResult = (Button)findViewById(R.id.testbutton);
+//        getResult.setOnClickListener(new View.OnClickListener(){
 //
 //            @Override
 //            public void onClick(View v) {
 //                String result = "";
+//                List<String> resultList = mArrayAdapter.getCheckedItems();
 //
-//    /*
-//    //getCheckedItemPositions
-//    List<Integer> resultList = myArrayAdapter.getCheckedItemPositions();
-//    for(int i = 0; i < resultList.size(); i++){
-//     result += String.valueOf(resultList.get(i)) + " ";
-//    }
-//    */
-//
-//                //getCheckedItems
-//                List<String> resultList = myArrayAdapter.getCheckedItems();
 //                for(int i = 0; i < resultList.size(); i++){
 //                    result += String.valueOf(resultList.get(i)) + "\n";
 //                }
 //
-//                myArrayAdapter.getCheckedItemPositions().toString();
-//                Toast.makeText(
-//                        getApplicationContext(),
-//                        result,
-//                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
 //            }});
-//
-//    }
-//
-//    OnItemClickListener myOnItemClickListener
-//            = new OnItemClickListener(){
-//
-//        @Override
-//        public void onItemClick(AdapterView<?> parent, View view, int position,
-//                                long id) {
-//            myArrayAdapter.toggleChecked(position);
-//
-//        }};
-//
-//    private class MyArrayAdapter extends ArrayAdapter<String>{
-//
-//        private HashMap<Integer, Boolean> myChecked = new HashMap<Integer, Boolean>();
-//
-//        public MyArrayAdapter(Context context, int resource,
-//                              int textViewResourceId, List<String> objects) {
-//            super(context, resource, textViewResourceId, objects);
-//
-//            for(int i = 0; i < objects.size(); i++){
-//                myChecked.put(i, false);
-//            }
-//        }
-//
-//        public void toggleChecked(int position){
-//            if(myChecked.get(position)){
-//                myChecked.put(position, false);
-//            }else{
-//                myChecked.put(position, true);
-//            }
-//
-//            notifyDataSetChanged();
-//        }
-//
-//        public List<Integer> getCheckedItemPositions(){
-//            List<Integer> checkedItemPositions = new ArrayList<Integer>();
-//
-//            for(int i = 0; i < myChecked.size(); i++){
-//                if (myChecked.get(i)){
-//                    (checkedItemPositions).add(i);
-//                }
-//            }
-//
-//            return checkedItemPositions;
-//        }
-//
-//        public List<String> getCheckedItems(){
-//            List<String> checkedItems = new ArrayList<String>();
-//
-//            for(int i = 0; i < myChecked.size(); i++){
-//                if (myChecked.get(i)){
-//                    (checkedItems).add(dayOfWeekList.get(i));
-//                }
-//            }
-//
-//            return checkedItems;
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            View row = convertView;
-//
-//            if(row==null){
-//                LayoutInflater inflater=getLayoutInflater();
-//                row=inflater.inflate(R.layout.row, parent, false);
-//            }
-//
-//            CheckedTextView checkedTextView = (CheckedTextView)row.findViewById(R.id.text1);
-//            checkedTextView.setText(dayOfWeekList.get(position));
-//
-//            Boolean checked = myChecked.get(position);
-//            if (checked != null) {
-//                checkedTextView.setChecked(checked);
-//            }
-//
-//            return row;
-//        }
-//
-//    }
-//
-//}
+
+// http://theopentutorials.com/post/uncategorized/android-multiple-selection-listview/

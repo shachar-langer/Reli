@@ -10,7 +10,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create a Reli Discussion"
+            android:hint="Create a Reli Discussion"
             android:id="@+id/textView2"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
@@ -55,16 +55,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Radius:"
-                android:id="@+id/textView"
+                android:id="@+id/current_radius_value"
                 android:layout_gravity="center_horizontal" />
 
             <SeekBar
-                android:layout_width="match_parent"
+                android:layout_width="295dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/seekBar"
                 android:layout_marginBottom="73dp"
-                android:layout_toRightOf="@+id/textView"
-                android:layout_gravity="center_horizontal"
+                android:layout_toRightOf="@+id/current_radius_value"
+                android:layout_gravity="center_horizontal|right"
                 android:progress="2"/>
                 <!--android:layout_alignParentBottom="true"-->
                 <!--android:layout_alignParentLeft="true"-->

@@ -47,8 +47,10 @@ import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.location.LocationActivity;
 import reli.reliapp.co.il.reli.sidebar.AboutFragment;
+import reli.reliapp.co.il.reli.sidebar.DefaultSettingsFragment;
 import reli.reliapp.co.il.reli.sidebar.FaqFragment;
 import reli.reliapp.co.il.reli.sidebar.GuidedTourActivity;
+import reli.reliapp.co.il.reli.tags.TagSelectionActivity;
 import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
 
 /**
@@ -373,7 +375,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     public void onLocationChanged(Location location) {
 
-        Toast.makeText(getApplicationContext(), "In OnLocationChanged", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "In OnLocationChanged", Toast.LENGTH_SHORT).show();
 
         currentLocation = location;
         if (lastLocation != null
@@ -525,6 +527,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
         if (positionMeaning.equals(getString(R.string.nav_drawer_tour)))
             return GuidedTourActivity.class;
 
+        // Return the Notification Settings fragment
+        if (positionMeaning.equals(getString(R.string.nav_drawer_notification_settings)))
+            return TagSelectionActivity.class;
+
         return null;
     }
 
@@ -555,14 +561,9 @@ public class MainActivity extends CustomActivity implements LocationListener,
             return new HomeFragment();
 
         // TODO - change
-        // Return the Notification Settings fragment
-        if (positionMeaning.equals(getString(R.string.nav_drawer_notification_settings)))
-            return new FaqFragment();
-
-        // TODO - change
         // Return the Default Settings class
         if (positionMeaning.equals(getString(R.string.nav_drawer_default_settings)))
-            return new FaqFragment();
+            return new DefaultSettingsFragment();
 
         // Return FAQ class
         if (positionMeaning.equals(getString(R.string.nav_drawer_faq)))

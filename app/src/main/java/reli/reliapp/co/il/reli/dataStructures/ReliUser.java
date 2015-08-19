@@ -9,6 +9,9 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import reli.reliapp.co.il.reli.R;
@@ -22,6 +25,8 @@ public class ReliUser extends ParseUser {
     private Bitmap picture;
     private ProfilePictureView facebookPicture;
     private ParseGeoPoint location;
+    private int notificationsRadius;
+    private ArrayList<ReliTag> notificationsTags;
     private Context ctx;
 
     /* ========================================================================== */
@@ -44,6 +49,10 @@ public class ReliUser extends ParseUser {
         setFirstName(firstName);
         setFullName(fullName);
         setLocation(location);
+
+        setNotificationsRadius(Const.DEFAULT_RADIUS);
+        // TODO - which tags should be the default ones?
+//        setNotificationsTags();
     }
 
     /* ========================================================================== */
@@ -150,4 +159,38 @@ public class ReliUser extends ParseUser {
         // Update the user location in this object
         this.location = location;
     }
+
+       /* ========================================================================== */
+
+    public void setNotificationsRadius(int notificationsRadius) {
+        // TODO - don't we want to add saveEventually() to each setter?
+        put(Const.COL_NAME_NOTIFICATIONS_RADIUS, notificationsRadius);
+    }
+
+    /* ========================================================================== */
+
+    public int getNotificationsRadius() {
+        return getInt(Const.COL_NAME_NOTIFICATIONS_RADIUS);
+    }
+
+   /* ========================================================================== */
+
+    public void setNotificationsTags(ArrayList<ReliTag> notificationsTags) {
+        // TODO - make sure that it works
+//        // Remove the old list
+//        removeAll(Const.COL_NAME_NOTIFICATIONS_TAGS, Arrays.asList(getNotificationsTags()));
+//        // Add the new one
+//        addAllUnique(Const.COL_NAME_NOTIFICATIONS_TAGS, notificationsTags);
+    }
+
+    /* ========================================================================== */
+
+    public ArrayList<ReliTag> getNotificationsTags() {
+        // TODO - make sure that it works
+//        List<ReliTag> l = getList(Const.COL_NAME_NOTIFICATIONS_TAGS);
+//        return new ArrayList<ReliTag>(l);
+
+        return new ArrayList<ReliTag>();
+    }
+
 }

@@ -122,7 +122,17 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_guided_tour">GuidedTourActivity</string>
-    <string name="title_activity_tag_selection">TagSelectionActivity</string>
+    <string name="title_activity_tag_selection">Notification Settings</string>
     <string name="title_activity_main_relis_around_me">MainRelisAroundMeActivity</string>
+
+    <string name="notifications_interesting_radius">Interesting radius:</string>
+    <string name="notifications_interesting_tags">Interesting tags:</string>
+    <string name="select_all">Select all</string>
+
+    <string name="default_settings_radius">Default radius for new Relis:</string>
+    <string name="default_settings_expiration">Default expiration time for new Relis:</string>
+
+
+
 
 </resources>
