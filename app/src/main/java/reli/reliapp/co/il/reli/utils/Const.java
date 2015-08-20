@@ -11,8 +11,9 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
  */
 public class Const
 {
-    // Default radius for receiving notifications
-    public static final int DEFAULT_RADIUS = 50;
+    // Default radius for receiving
+    public static final int DEFAULT_RADIUS_FOR_NOTIFICATIONS = 50;
+    public static final int DEFAULT_RADIUS_FOR_RELIS = 50;
 
     // Columns in Parse for DiscussionActivity (the chat itself
 	public static final String BUDDY_NAME = "buddyName";
@@ -29,7 +30,9 @@ public class Const
     public static final String COL_NAME_FULL_NAME = "fullName";
     public static final String COL_NAME_FACEBOOK_PICTURE = "facebookPicture";
     public static final String COL_NAME_LOCATION = "location";
-    public static final String COL_NAME_NOTIFICATIONS_RADIUS = "radius";
+    public static final String COL_NAME_RELIS_RADIUS = "relisRadius";
+    public static final String COL_NAME_RELIS_EXPIRATION = "relisExpirationInMinutes";
+    public static final String COL_NAME_NOTIFICATIONS_RADIUS = "notificationsRadius";
     public static final String COL_NAME_NOTIFICATIONS_TAGS = "tags";
 
     // Columns in Parse for AbstructDiscussion

@@ -27,6 +27,7 @@ import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.ReliTag;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.main.MainActivity;
+import reli.reliapp.co.il.reli.utils.Const;
 
 public class TagSelectionActivity extends CustomActivity {
 
@@ -49,7 +50,7 @@ public class TagSelectionActivity extends CustomActivity {
         setContentView(R.layout.activity_tag_selection);
 
         currentUser = MainActivity.user;
-        mRadius = (TextView) findViewById(R.id.current_radius_value);
+        mRadius = (TextView) findViewById(R.id.tag_selection_current_radius_value);
         mSeekBar = (SeekBar) findViewById(R.id.seek_bar_radius);
 
         // TODO - remove
@@ -149,7 +150,8 @@ public class TagSelectionActivity extends CustomActivity {
         isChanged |= saveNewTags();
 
         if (isChanged) {
-            Toast.makeText(getApplicationContext(), "The settings have been saved", Toast.LENGTH_SHORT).show();
+            currentUser.saveEventually();
+            Toast.makeText(getApplicationContext(), R.string.new_settings_saved, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -161,11 +163,10 @@ public class TagSelectionActivity extends CustomActivity {
 
         if (currentUser.getNotificationsRadius() != wantedRadius) {
             currentUser.setNotificationsRadius(wantedRadius);
-            currentUser.saveEventually();
             isChanged = true;
         }
 
-        return isChanged ;
+        return isChanged;
     }
 
     /* ========================================================================== */
@@ -177,7 +178,6 @@ public class TagSelectionActivity extends CustomActivity {
         // Save the new notifications
         if (!currentUser.getNotificationsTags().equals(wantedTags)) {
             currentUser.setNotificationsTags(wantedTags);
-            currentUser.saveEventually();
             isChanged = true;
         }
 
@@ -265,19 +265,20 @@ public class TagSelectionActivity extends CustomActivity {
 
     private void addSeekBarToScreen() {
         int progress;
+
+        // Set the initial progress
         try {
+            // TODO - check why in the first time it doesn't show the correct values
             progress = currentUser.getNotificationsRadius();
         } catch (Exception e) {
-            progress = 150;
+            progress = Const.DEFAULT_RADIUS_FOR_NOTIFICATIONS;
         }
-        mSeekBar.setProgress(progress);
-        setRadiusValue(progress);
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                setRadiusValue(progress);
+                mRadius.setText(String.valueOf(progress) + " meters");
             }
 
             @Override
@@ -288,6 +289,7 @@ public class TagSelectionActivity extends CustomActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+        mSeekBar.setProgress(progress);
     }
 
     /* ========================================================================== */
@@ -304,12 +306,6 @@ public class TagSelectionActivity extends CustomActivity {
                 }
             }
         });
-    }
-
-    /* ========================================================================== */
-
-    private void setRadiusValue(int progress) {
-        mRadius.setText(String.valueOf(progress) + " meters");
     }
 
     /* ========================================================================== */

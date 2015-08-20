@@ -1,21 +1,36 @@
 package reli.reliapp.co.il.reli.sidebar;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import reli.reliapp.co.il.reli.R;
+import reli.reliapp.co.il.reli.dataStructures.ReliUser;
+import reli.reliapp.co.il.reli.main.MainActivity;
+import reli.reliapp.co.il.reli.utils.Const;
 
 public class DefaultSettingsFragment extends Fragment {
+
+    /* ========================================================================== */
+
+    private static final int MINIMUM_TIME = 0;
+    private static final int MAX_HOURS = 24;
+    private static final int MAX_MINUTES = 59;
+    private static final int MINUTES_IN_HOUR = 60;
+
+    /* ========================================================================== */
+
+    private ReliUser currentUser;
+    private NumberPicker npHours, npMinutes;
+    private SeekBar mSeekBar;
+
+    /* ========================================================================== */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -23,19 +38,111 @@ public class DefaultSettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_default_settings, container, false);
 
-        NumberPicker np = (NumberPicker) v.findViewById(R.id.numberPicker1);
-        np.setMinValue(0);
-        np.setMaxValue(24);
-        np.setWrapSelectorWheel(true);
+        currentUser = MainActivity.user;
 
+        npHours   = (NumberPicker) v.findViewById(R.id.numberPicker_hours);
+        npMinutes = (NumberPicker) v.findViewById(R.id.numberPicker_minutes);
+        mSeekBar  = (SeekBar) v.findViewById(R.id.default_settings_seek_bar_radius);
 
-        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        addSeekBarToScreen(v);
+        setTimePickers();
+
+        return v;
+    }
+
+    /* ========================================================================== */
+
+    private void addSeekBarToScreen(View v) {
+        int progress;
+        final View finalView = v;
+
+        // Set the initial progress
+        try {
+            // TODO - check why in the first time it doesn't show the correct values
+            progress = currentUser.getRelisRadius();
+        } catch (Exception e) {
+            progress = Const.DEFAULT_RADIUS_FOR_RELIS;
+        }
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                TextView mRadius = (TextView) finalView.findViewById(R.id.default_settings_current_radius_value);
+                mRadius.setText(String.valueOf(progress) + " meters");
+            }
 
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Toast.makeText(getActivity().getApplicationContext(), "Old: " + String.valueOf(oldVal) + ", new: " + String.valueOf(newVal), Toast.LENGTH_SHORT).show();
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        return v;
+        mSeekBar.setProgress(progress);
+    }
+
+    /* ========================================================================== */
+
+    private void setTimePickers() {
+        // TODO - check why in the first time it doesn't show the correct values
+
+        int currentExpirationInMinutes = currentUser.getRelisExpirationInMinutes();
+        int hours = currentExpirationInMinutes / MINUTES_IN_HOUR;
+        int minutes = currentExpirationInMinutes - hours * MINUTES_IN_HOUR;
+
+        // Set the hours picker
+        npHours.setMinValue(MINIMUM_TIME);
+        npHours.setMaxValue(MAX_HOURS);
+        npHours.setValue(hours);
+
+        // Set the minutes picker
+        npMinutes.setMinValue(MINIMUM_TIME);
+        npMinutes.setMaxValue(MAX_MINUTES);
+        npMinutes.setValue(minutes);
+    }
+
+    /* ========================================================================== */
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        boolean isChanged = saveNewRadius();
+        isChanged |= saveNewExpiration();
+
+        if (isChanged) {
+            currentUser.saveEventually();
+            Toast.makeText(getActivity().getApplicationContext(), R.string.new_settings_saved, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    /* ========================================================================== */
+
+    private boolean saveNewRadius() {
+        boolean isChanged = false;
+        int wantedRadius = mSeekBar.getProgress();
+
+        if (currentUser.getRelisRadius() != wantedRadius) {
+            currentUser.setRelisRadius(wantedRadius);
+            isChanged = true;
+        }
+
+        return isChanged;
+    }
+
+    /* ========================================================================== */
+
+    private boolean saveNewExpiration() {
+        boolean isChanged = false;
+        int wantedExpiration = npHours.getValue() * MINUTES_IN_HOUR + npMinutes.getValue();
+
+        if (currentUser.getRelisExpirationInMinutes() != wantedExpiration) {
+            currentUser.setRelisExpirationInMinutes(wantedExpiration);
+            isChanged = true;
+        }
+
+        return isChanged;
     }
 }

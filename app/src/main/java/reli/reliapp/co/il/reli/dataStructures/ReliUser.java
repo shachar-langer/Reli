@@ -25,6 +25,8 @@ public class ReliUser extends ParseUser {
     private Bitmap picture;
     private ProfilePictureView facebookPicture;
     private ParseGeoPoint location;
+    private int relisRadius;
+    private int relisExpirationInMinutes;
     private int notificationsRadius;
     private ArrayList<ReliTag> notificationsTags;
     private Context ctx;
@@ -50,8 +52,10 @@ public class ReliUser extends ParseUser {
         setFullName(fullName);
         setLocation(location);
 
-        setNotificationsRadius(Const.DEFAULT_RADIUS);
+        setRelisRadius(Const.DEFAULT_RADIUS_FOR_RELIS);
+
         // TODO - which tags should be the default ones?
+        setNotificationsRadius(Const.DEFAULT_RADIUS_FOR_NOTIFICATIONS);
 //        setNotificationsTags();
     }
 
@@ -160,7 +164,31 @@ public class ReliUser extends ParseUser {
         this.location = location;
     }
 
-       /* ========================================================================== */
+   /* ========================================================================== */
+
+    public int getRelisRadius() {
+        return getInt(Const.COL_NAME_RELIS_RADIUS);
+    }
+
+    /* ========================================================================== */
+
+    public void setRelisRadius(int relisRadius) {
+        put(Const.COL_NAME_RELIS_RADIUS, relisRadius);
+    }
+
+    /* ========================================================================== */
+
+    public int getRelisExpirationInMinutes() {
+        return getInt(Const.COL_NAME_RELIS_EXPIRATION);
+    }
+
+    /* ========================================================================== */
+
+    public void setRelisExpirationInMinutes(int relisExpirationInMinutes) {
+        put(Const.COL_NAME_RELIS_EXPIRATION, relisExpirationInMinutes);
+    }
+
+    /* ========================================================================== */
 
     public void setNotificationsRadius(int notificationsRadius) {
         // TODO - don't we want to add saveEventually() to each setter?
