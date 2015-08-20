@@ -50,7 +50,7 @@ import reli.reliapp.co.il.reli.sidebar.AboutFragment;
 import reli.reliapp.co.il.reli.sidebar.DefaultSettingsFragment;
 import reli.reliapp.co.il.reli.sidebar.FaqFragment;
 import reli.reliapp.co.il.reli.sidebar.GuidedTourActivity;
-import reli.reliapp.co.il.reli.tags.TagSelectionActivity;
+import reli.reliapp.co.il.reli.sidebar.TagSelectionFragment;
 import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
 
 /**
@@ -527,10 +527,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         if (positionMeaning.equals(getString(R.string.nav_drawer_tour)))
             return GuidedTourActivity.class;
 
-        // Return the Notification Settings fragment
-        if (positionMeaning.equals(getString(R.string.nav_drawer_notification_settings)))
-            return TagSelectionActivity.class;
-
         return null;
     }
 
@@ -559,6 +555,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
 //        Return to home screen
         if (positionMeaning.equals(getString(R.string.nav_drawer_inbox)))
             return new HomeFragment();
+
+        // Return the Notification Settings fragment
+        if (positionMeaning.equals(getString(R.string.nav_drawer_notification_settings)))
+            return new TagSelectionFragment();
 
         // TODO - change
         // Return the Default Settings class

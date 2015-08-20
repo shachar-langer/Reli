@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notifications_interesting_radius"
+        android:paddingTop="@dimen/pad_10dp"
+        android:paddingLeft="@dimen/pad_10dp"
+        android:textStyle="bold" />
+
+    <SeekBar
+        android:layout_width="295dp"
+        android:id="@+id/seek_bar_radius"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/pad_10dp"
+        android:layout_gravity="center_horizontal"
+        android:max="2000"
+        android:progress="1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tag_selection_current_radius_value"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/pad_30dp"
+        android:paddingLeft="@dimen/pad_10dp"
+        android:paddingBottom="@dimen/pad_10dp"
+        android:text="@string/notifications_interesting_tags"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/tags_list_view"
+        android:paddingTop="@dimen/pad_10dp"
+        android:background="@color/main_color_green"
+        android:layout_width="365dp"
+        android:layout_height="234dp"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:paddingTop="@dimen/pad_10dp"
+        android:paddingLeft="@dimen/pad_10dp"
+        android:paddingRight="@dimen/pad_10dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/toolbar_find"
+            android:paddingRight="@dimen/pad_5dp"
+            android:id="@+id/imageView" />
+
+        <EditText android:id="@+id/tags_search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_tag"
+            android:inputType="textVisiblePassword"
+            android:textSize="@dimen/txt_12sp" />
+    </LinearLayout>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_all"
+        android:id="@+id/selectAllCheckBox"
+        android:paddingTop="@dimen/pad_10dp"
+        android:checked="false" />
+
+</LinearLayout>
