@@ -36,6 +36,7 @@ import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
+import reli.reliapp.co.il.reli.utils.Const;
 
 
 public class LoginFragment extends android.support.v4.app.Fragment {
@@ -118,6 +119,10 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 //        ParseUser.logOut();
 
         if (ParseUser.getCurrentUser() != null) {
+
+            // TODO - delete this line. It was only for testing
+            ParseUser.getCurrentUser().put(Const.COL_NAME_DISCUSSIONS_IM_IN, "");
+
             startActivity(new Intent(getActivity(), MainActivity.class));
         }
 
@@ -160,6 +165,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                     profile.getFirstName(),
                     profile.getName(),
                     new ParseGeoPoint());
+            reliUser.put(Const.COL_NAME_DISCUSSIONS_IM_IN, "");
 //            reliUser.setPicture(profPict);
 
             // Add the new user to Parse

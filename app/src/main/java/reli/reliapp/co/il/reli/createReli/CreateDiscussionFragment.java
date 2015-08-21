@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.Date;
@@ -68,6 +70,11 @@ public class CreateDiscussionFragment extends Fragment {
                             @Override
                             public void done(ParseException e) {
 
+                                // Adding the new discussion to the user discussions
+                                String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
+                                MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + DiscussionEntry.getParseID());
+
+                                // Opening the new discussion activity
                                 EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
                                 String topic = topicEditText.getText().toString();
 

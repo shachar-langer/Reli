@@ -53,9 +53,9 @@ public class HomeFragment extends Fragment {
                 case 0:
                     return new MainRelisAroundMeFragment();
                 case 1:
-                    return new MainAllRelisFragment();
-                case 2:
                     return new MainMyRelisFragment();
+                case 2:
+                    return new MainAllRelisFragment();
             }
 
             return null;

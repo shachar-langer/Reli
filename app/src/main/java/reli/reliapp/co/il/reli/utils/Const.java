@@ -34,6 +34,7 @@ public class Const
     public static final String COL_NAME_RELIS_EXPIRATION = "relisExpirationInMinutes";
     public static final String COL_NAME_NOTIFICATIONS_RADIUS = "notificationsRadius";
     public static final String COL_NAME_NOTIFICATIONS_TAGS = "tags";
+    public static final String COL_NAME_DISCUSSIONS_IM_IN = "discussionsImIn";
 
     // Columns in Parse for AbstructDiscussion
     public static final String COL_DISCUSSION_NAME = "discussionName";
