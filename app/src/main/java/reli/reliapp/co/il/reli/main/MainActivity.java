@@ -9,15 +9,6 @@ package reli.reliapp.co.il.reli.main;
 // ***********************************************************************************
 
 
-
-
-
-
-
-
-
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -78,6 +69,10 @@ import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
 public class MainActivity extends CustomActivity implements LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
+
+
+    // TODO - delete
+    boolean isShachar = false;
 
     /*
     * Define a request code to send to Google Play services This code is returned in
@@ -193,7 +188,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        Toast.makeText(getApplicationContext(), "In OnCreate", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In OnCreate", Toast.LENGTH_SHORT).show();
 
         // *** Location starts
 
@@ -244,7 +239,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     public void onStop() {
 
-        Toast.makeText(getApplicationContext(), "In onStop", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In onStop", Toast.LENGTH_SHORT).show();
 
         // If the client is connected
         if (locationClient.isConnected()) {
@@ -265,7 +260,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     public void onStart() {
 
-        Toast.makeText(getApplicationContext(), "In OnStart", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In OnStart", Toast.LENGTH_SHORT).show();
 
         super.onStart();
 
@@ -277,7 +272,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     @Override
     protected void onDestroy() {
-        Toast.makeText(getApplicationContext(), "In OnDestroy", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In OnDestroy", Toast.LENGTH_SHORT).show();
 
         super.onDestroy();
         updateUserStatus(false);
@@ -288,7 +283,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     protected void onResume() {
 
-        Toast.makeText(getApplicationContext(), "In OnResume", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In OnResume", Toast.LENGTH_SHORT).show();
 
         super.onResume();
     }
@@ -311,7 +306,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     public void onConnected(Bundle bundle) {
 
-        Toast.makeText(getApplicationContext(), "In OnConnected", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In OnConnected", Toast.LENGTH_SHORT).show();
 
         if (ReliApp.APPDEBUG) {
             Log.d("Connected to loc_s", ReliApp.APPTAG);
@@ -329,7 +324,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     public void onDisconnected() {
 
-        Toast.makeText(getApplicationContext(), "In OnDisconnected", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In OnDisconnected", Toast.LENGTH_SHORT).show();
 
         if (ReliApp.APPDEBUG) {
             Log.d("Disconnected from loc_s", ReliApp.APPTAG);
@@ -341,7 +336,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     @Override
     public void onConnectionSuspended(int i) {
 
-        Toast.makeText(getApplicationContext(), "In OnConnectionSuspended", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In OnConnectionSuspended", Toast.LENGTH_SHORT).show();
 
         Log.i(ReliApp.APPTAG, "GoogleApiClient connection has been suspend");
     }
@@ -353,7 +348,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
-        Toast.makeText(getApplicationContext(), "In OnConnectionFailed", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In OnConnectionFailed", Toast.LENGTH_SHORT).show();
 
         // Google Play services can resolve some errors it detects. If the error has a resolution, try
         // sending an Intent to start a Google Play services activity that can resolve error.
@@ -435,7 +430,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     private void startPeriodicUpdates() {
 
-        Toast.makeText(getApplicationContext(), "In startPeriodUpdates", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In startPeriodUpdates", Toast.LENGTH_SHORT).show();
 
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 locationClient, locationRequest, this);
@@ -449,7 +444,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     private void stopPeriodicUpdates() {
 
-        Toast.makeText(getApplicationContext(), "In stopPeriodUpdates", Toast.LENGTH_SHORT).show();
+        if (isShachar) Toast.makeText(getApplicationContext(), "In stopPeriodUpdates", Toast.LENGTH_SHORT).show();
 
         locationClient.disconnect();
     }

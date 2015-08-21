@@ -153,4 +153,11 @@
         <item>@string/faq_a3</item>
     </string-array>
 
+    <string name="about_discussion_title_creation">Creation date:</string>
+    <string name="about_discussion_title_expiration">Expiration date:</string>
+    <string name="about_discussion_title_owner">Owner:</string>
+    <string name="about_discussion_title_radius">Radius:</string>
+    <string name="about_discussion_title_tags">Tags:</string>
+
+
 </resources>

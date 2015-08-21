@@ -102,7 +102,9 @@ public class MainMyRelisFragment extends Fragment {
         String discussionsUserIsIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
 
         // If there are no discussions I'm in, the frament should be empty
-        if (discussionsUserIsIn.equals("")) {
+        // TODO - should not be compared to null
+        if (discussionsUserIsIn == null || discussionsUserIsIn.equals("")) {
+            dia.dismiss();
             return;
         }
 

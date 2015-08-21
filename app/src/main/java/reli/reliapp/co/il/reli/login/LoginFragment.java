@@ -115,10 +115,9 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     /* ========================================================================== */
 
     private void changeUser() {
-        // TODO - add a logout function in the drawer
-//        ParseUser.logOut();
-
         if (ParseUser.getCurrentUser() != null) {
+
+            Toast.makeText(getActivity().getApplicationContext(), "in if", Toast.LENGTH_SHORT).show();
 
             // TODO - delete this line. It was only for testing
             ParseUser.getCurrentUser().put(Const.COL_NAME_DISCUSSIONS_IM_IN, "");
@@ -128,6 +127,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         else {
 
+            Toast.makeText(getActivity().getApplicationContext(), "in else", Toast.LENGTH_SHORT).show();
             Log.w("dfd", "I'm in else");
 
             Profile profile = Profile.getCurrentProfile();

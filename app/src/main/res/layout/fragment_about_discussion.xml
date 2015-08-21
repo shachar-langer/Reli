@@ -1,0 +1,118 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="reli.reliapp.co.il.reli.main.AboutDiscussionFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Creation date -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/pad_5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/pad_15dp"
+                android:textStyle="bold"
+                android:text="@string/about_discussion_title_creation"
+                android:id="@+id/about_discussion_title_creation" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_discussion_value_creation" />
+        </LinearLayout>
+
+        <!-- Expiration -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/pad_5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/pad_15dp"
+                android:textStyle="bold"
+                android:text="@string/about_discussion_title_expiration"
+                android:id="@+id/about_discussion_title_expiration" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_discussion_value_expiration" />
+        </LinearLayout>
+
+        <!-- Owner -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/pad_5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/pad_15dp"
+                android:textStyle="bold"
+                android:text="@string/about_discussion_title_owner"
+                android:id="@+id/about_discussion_title_owner" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_discussion_value_owner" />
+        </LinearLayout>
+
+        <!-- Radius -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/pad_5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/pad_15dp"
+                android:textStyle="bold"
+                android:text="@string/about_discussion_title_radius"
+                android:id="@+id/about_discussion_title_radius" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_discussion_value_radius" />
+        </LinearLayout>
+
+        <!-- Tags -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/pad_5dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/pad_15dp"
+                android:textStyle="bold"
+                android:text="@string/about_discussion_title_tags"
+                android:id="@+id/about_discussion_title_tags" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_discussion_value_tags" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
