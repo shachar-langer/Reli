@@ -22,6 +22,15 @@ public class SplashScreen extends Activity {
     // Splash screen timer
     private static int SPLASH_TIME_OUT_MILLIS = 1000;
 
+    private void initLoginScreen() {
+        // This method will be executed once the timer is over
+        Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
+        startActivity(intent);
+
+        // close this activity
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,34 +42,21 @@ public class SplashScreen extends Activity {
 
                 ReliUser user = (ReliUser) (ParseUser.getCurrentUser());
 
-                user.fetchInBackground(new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject parseObject, ParseException e) {
+                if (user == null) {
+                    initLoginScreen();
+                }
+                else {
+                    user.fetchInBackground(new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject parseObject, ParseException e) {
 
-                        MainActivity.user = (ReliUser) parseObject;
+                            MainActivity.user = (ReliUser) parseObject;
 
-                        // TODO - check that it works
-                        handleFirstLogin();
-
-                        // This method will be executed once the timer is over
-                        Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
-                        startActivity(intent);
-
-                        // close this activity
-                        finish();
-                    }
-
-                    private void handleFirstLogin() {
-                        boolean firstRun = getPreferences(Context.MODE_PRIVATE).getBoolean("firstRun", true);
-                        if (firstRun) {
-                            getPreferences(Context.MODE_PRIVATE).edit().putBoolean("firstRun", false).commit();
-
-                            Intent intent = new Intent(SplashScreen.this, GuidedTourActivity.class);
-                            startActivity(intent);
+                            initLoginScreen();
                         }
-                    }
-                });
 
+                    });
+                }
             }
 
 
