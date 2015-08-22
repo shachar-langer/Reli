@@ -60,23 +60,23 @@ public class MainAllRelisFragment extends Fragment {
         v = inflater.inflate(R.layout.fragment_main_all_relis, container, false);
 
         ctx = getActivity().getApplicationContext();
-        Button addDiscussionBtn = (Button) v.findViewById(R.id.add_discussion_btn_all_relis);
-        addDiscussionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(ctx, "You clicked me!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), CreateReliActivity.class);
-
-                Location location = ((MainActivity) getActivity()).getLocation();
-                if (location == null) {
-                    Toast.makeText(getActivity(), "Can not find your location", Toast.LENGTH_SHORT).show();
-                } else {
-                    intent.putExtra(Const.LATITUDE, location.getLatitude());
-                    intent.putExtra(Const.ALTITUDE, location.getAltitude());
-                    startActivity(intent);
-                }
-            }
-        });
+//        Button addDiscussionBtn = (Button) v.findViewById(R.id.add_discussion_btn_all_relis);
+//        addDiscussionBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(ctx, "You clicked me!", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(getActivity(), CreateReliActivity.class);
+//
+//                Location location = ((MainActivity) getActivity()).getLocation();
+//                if (location == null) {
+//                    Toast.makeText(getActivity(), "Can not find your location", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    intent.putExtra(Const.LATITUDE, location.getLatitude());
+//                    intent.putExtra(Const.ALTITUDE, location.getAltitude());
+//                    startActivity(intent);
+//                }
+//            }
+//        });
 
         return v;
     }
@@ -94,7 +94,7 @@ public class MainAllRelisFragment extends Fragment {
 
     private void loadUserList() {
 
-        ReliUser user = ReliUser.getCurrentReliUser();
+        ReliUser user = MainActivity.user;
 
         final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
         // TODO - change 10 to the users radius choice
@@ -117,19 +117,19 @@ public class MainAllRelisFragment extends Fragment {
                                 @Override
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 
-                                    // Adding the new discussion to the user discussions if needed
-                                    String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
-                                    String[] listOfDiscussion = discussionsImIn.split(",");
-                                    String newDiscussion = chatsList.get(pos).getParseID();
-                                    boolean isNewDiscussion = true;
-                                    for (int i = 0; i < listOfDiscussion.length; i++) {
-                                        if (listOfDiscussion[i].equals(newDiscussion)) {
-                                            isNewDiscussion = false;
-                                        }
-                                    }
-                                    if (isNewDiscussion) {
-                                        MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + newDiscussion);
-                                    }
+//                                    // Adding the new discussion to the user discussions if needed
+//                                    String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
+//                                    String[] listOfDiscussion = discussionsImIn.split(",");
+//                                    String newDiscussion = chatsList.get(pos).getParseID();
+//                                    boolean isNewDiscussion = true;
+//                                    for (int i = 0; i < listOfDiscussion.length; i++) {
+//                                        if (listOfDiscussion[i].equals(newDiscussion)) {
+//                                            isNewDiscussion = false;
+//                                        }
+//                                    }
+//                                    if (isNewDiscussion) {
+//                                        MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + newDiscussion);
+//                                    }
 
                                     // Switching to the user activity
 

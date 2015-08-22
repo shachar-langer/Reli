@@ -101,7 +101,7 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
     private void loadUserList()
     {
 
-        ReliUser user = ReliUser.getCurrentReliUser();
+        ReliUser user = MainActivity.user;
 
         final ProgressDialog dia = ProgressDialog.show(this, null, getString(R.string.alert_loading));
         // TODO - change the last argument we gave to whereWithinKilometers
@@ -123,19 +123,19 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
 
                                 @Override
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                                    // Adding the new discussion to the user discussions if needed
-                                    String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
-                                    String[] listOfDiscussion = discussionsImIn.split(",");
-                                    String newDiscussion = chatsList.get(pos).getParseID();
-                                    boolean isNewDiscussion = true;
-                                    for (int i = 0; i < listOfDiscussion.length; i++) {
-                                        if (listOfDiscussion[i].equals(newDiscussion)) {
-                                            isNewDiscussion = false;
-                                        }
-                                    }
-                                    if (isNewDiscussion) {
-                                        MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + newDiscussion);
-                                    }
+//                                    // Adding the new discussion to the user discussions if needed
+//                                    String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
+//                                    String[] listOfDiscussion = discussionsImIn.split(",");
+//                                    String newDiscussion = chatsList.get(pos).getParseID();
+//                                    boolean isNewDiscussion = true;
+//                                    for (int i = 0; i < listOfDiscussion.length; i++) {
+//                                        if (listOfDiscussion[i].equals(newDiscussion)) {
+//                                            isNewDiscussion = false;
+//                                        }
+//                                    }
+//                                    if (isNewDiscussion) {
+//                                        MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + newDiscussion);
+//                                    }
 
                                     // Switching to the user activity
                                     Intent intent = new Intent(getApplicationContext(), DiscussionActivity.class);

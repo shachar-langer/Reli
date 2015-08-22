@@ -39,6 +39,7 @@ import reli.reliapp.co.il.reli.utils.Const;
  */
 public class DiscussionActivity extends CustomActivity
 {
+
 	private ArrayList<Message> messagesList;
 	private ChatAdapter chatAdapter;
 	private String buddy;
@@ -111,10 +112,34 @@ public class DiscussionActivity extends CustomActivity
 		}
 	}
 
+	/* ========================================================================== */
+
+	private void insertDiscussionToMYRelis() {
+		// Adding the new discussion to the user discussions if needed
+		String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
+		String currentDiscussion = discussionTableName;
+
+		if (discussionsImIn.equals("")) {
+			MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, currentDiscussion);
+		}
+		else {
+			MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + currentDiscussion);
+		}
+
+		MainActivity.user.saveEventually();
+	}
+
     /* ========================================================================== */
 
 	private void sendMessage()
 	{
+
+		if (!MainActivity.discussionsImIn.contains(discussionTableName)) {
+			MainActivity.discussionsImIn.add(discussionTableName);
+			insertDiscussionToMYRelis();
+		}
+
+
         EditText messageTxt = (EditText) findViewById(R.id.txt);
 		if (messageTxt.length() == 0) {
             return;

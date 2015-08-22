@@ -90,7 +90,18 @@ public class CreateDiscussionFragment extends Fragment {
 
                                 // Adding the new discussion to the user discussions
                                 String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
-                                MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + DiscussionEntry.getParseID());
+                                String currentDiscussion = DiscussionEntry.getParseID();
+                                if (discussionsImIn.isEmpty()) {
+                                    MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, currentDiscussion);
+                                }
+                                else {
+                                    MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + currentDiscussion);
+                                }
+                                MainActivity.discussionsImIn.add(currentDiscussion);
+
+                                MainActivity.user.saveEventually();
+
+                                Toast.makeText(getActivity().getApplicationContext(), "In create discussion" , Toast.LENGTH_SHORT).show();
 
                                 // Opening the new discussion activity
                                 EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);

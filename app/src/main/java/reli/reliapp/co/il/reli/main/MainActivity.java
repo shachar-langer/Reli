@@ -11,6 +11,7 @@ package reli.reliapp.co.il.reli.main;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import android.support.v4.app.Fragment;
 //import android.app.FragmentManager;
@@ -137,6 +138,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     ArrayList<NavItem> mNavItems;
+    public static HashSet<String> discussionsImIn = new HashSet<String>();
 
     /* ========================================================================== */
 
@@ -213,7 +215,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         // *** Location ends
 
-        user = ReliUser.getCurrentReliUser();
+//        user = ReliUser.getCurrentReliUser();
         updateUserStatus(true);
 
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 //import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,12 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -93,28 +97,37 @@ public class MainMyRelisFragment extends Fragment {
 
     private void loadUserList() {
 
-        ReliUser user = ReliUser.getCurrentReliUser();
+        final ReliUser user = MainActivity.user;
 
         final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
 
-
-        ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
-        String discussionsUserIsIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
+        String discussionsUserIsIn = (String) user.getString(Const.COL_NAME_DISCUSSIONS_IM_IN);
 
         // If there are no discussions I'm in, the frament should be empty
         // TODO - should not be compared to null
-        if (discussionsUserIsIn == null || discussionsUserIsIn.equals("")) {
+        if (discussionsUserIsIn == null) {
+            user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, "");
+            user.saveEventually();
             dia.dismiss();
+            Toast.makeText(getActivity().getApplicationContext(), "None", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String[] listOfDiscussion = discussionsUserIsIn.split(",");
-
-        for (int i = 0; i < listOfDiscussion.length; i++) {
-            //TODO - ##########################################################################
-            discussionQuery.whereEqualTo("objectId", "1");
-            discussionQuery.whereEqualTo("objectId", "2");
+        if (discussionsUserIsIn.equals("")) {
+            dia.dismiss();
+            Toast.makeText(getActivity().getApplicationContext(), "Empty", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
+        String[] listOfDiscussion = discussionsUserIsIn.split(",");
+        ArrayList<String> discussionsArray = new ArrayList<String>(Arrays.asList(listOfDiscussion));
+        discussionQuery.whereContainedIn("objectId", discussionsArray);
+
+        for (String discussion : discussionsArray) {
+            MainActivity.discussionsImIn.add(discussion);
+        }
+
 
         // TODO - change 10 to the users radius choice
         discussionQuery.whereWithinKilometers(Const.COL_DISCUSSION_LOCATION, user.getLocation(), 1000000)
@@ -136,20 +149,23 @@ public class MainMyRelisFragment extends Fragment {
                                 @Override
                                 public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 
-                                    // Adding the new discussion to the user discussions if needed
-                                    String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
-                                    String[] listOfDiscussion = discussionsImIn.split(",");
-                                    String newDiscussion = chatsList.get(pos).getParseID();
-                                    boolean isNewDiscussion = true;
-                                    for (int i = 0; i < listOfDiscussion.length; i++) {
-                                        if (listOfDiscussion[i].equals(newDiscussion)) {
-                                            isNewDiscussion = false;
-                                        }
-                                    }
-                                    if (isNewDiscussion) {
-                                        MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + newDiscussion);
-                                    }
-                                    
+//                                    // Adding the new discussion to the user discussions if needed
+//                                    String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
+//                                    String[] listOfDiscussion = discussionsImIn.split(",");
+//                                    String newDiscussion = chatsList.get(pos).getParseID();
+//                                    boolean isNewDiscussion = true;
+//                                    for (int i = 0; i < listOfDiscussion.length; i++) {
+//                                        if (listOfDiscussion[i].equals(newDiscussion)) {
+//                                            Toast.makeText(getActivity().getApplicationContext(), "I'm toasted", Toast.LENGTH_SHORT).show();
+//                                            isNewDiscussion = false;
+//                                        }
+//                                    }
+//                                    if (isNewDiscussion) {
+//                                        Toast.makeText(getActivity().getApplicationContext(), "I'm not toasted", Toast.LENGTH_SHORT).show();
+//                                        MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + newDiscussion);
+//                                        MainActivity.user.saveEventually();
+//                                    }
+
                                     // Switching to the user activity
                                     Intent intent = new Intent(ctx, DiscussionActivity.class);
                                     intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getDiscussionName());
@@ -163,6 +179,18 @@ public class MainMyRelisFragment extends Fragment {
                         }
                     }
                 });
+
+//        user.fetchInBackground(new GetCallback<Object>() {
+//            @Override
+//            public void done(Object object, ParseException e) {
+//
+//                String discussionsUserIsIn = (String) object;
+//
+//
+//            }
+//        });
+        
+
     }
 
     /* ========================================================================== */
