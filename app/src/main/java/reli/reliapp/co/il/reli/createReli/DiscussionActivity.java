@@ -60,7 +60,12 @@ public class DiscussionActivity extends CustomActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_discussion);
 
+		discussionTopic = getIntent().getStringExtra(Const.DISCUSSION_TOPIC);
+		discussionTableName = getIntent().getStringExtra(Const.DISCUSSION_TABLE_NAME);
+		getActionBar().setTitle(discussionTopic);
+
 		messagesList = new ArrayList<Message>();
+
 		ListView list = (ListView) findViewById(R.id.list);
 		chatAdapter = new ChatAdapter();
 		list.setAdapter(chatAdapter);
@@ -73,10 +78,6 @@ public class DiscussionActivity extends CustomActivity
 
         // Custom send button
 		setTouchNClick(R.id.btnSend);
-
-		discussionTopic = getIntent().getStringExtra(Const.DISCUSSION_TOPIC);
-		discussionTableName = getIntent().getStringExtra(Const.DISCUSSION_TABLE_NAME);
-		getActionBar().setTitle(discussionTopic);
 
 		handler = new Handler();
 	}
@@ -139,7 +140,6 @@ public class DiscussionActivity extends CustomActivity
 			insertDiscussionToMYRelis();
 		}
 
-
         EditText messageTxt = (EditText) findViewById(R.id.txt);
 		if (messageTxt.length() == 0) {
             return;
@@ -176,22 +176,22 @@ public class DiscussionActivity extends CustomActivity
 	private void loadConversationList()
 	{
 		ParseQuery<ParseObject> q = ParseQuery.getQuery(discussionTableName);
-		if (messagesList.size() == 0)
+		if (messagesList.size() != 0)
 		{
-			// load all messages...
-			ArrayList<String> al = new ArrayList<String>();
-			al.add(discussionTopic);
-			al.add(MainActivity.user.getParseID());
-			q.whereContainedIn("sender", al);
-		}
-		else {
+//			// load all messages...
+//			ArrayList<String> al = new ArrayList<String>();
+//			al.add(discussionTopic);
+//			al.add(MainActivity.user.getParseID());
+//			q.whereContainedIn("sender", al);
+//		}
+//		else {
 			// load only newly received message..
 			if (lastMsgDate != null)
 				q.whereGreaterThan("createdAt", lastMsgDate);
-			q.whereEqualTo("sender", discussionTopic);
+//			q.whereEqualTo("sender", discussionTopic);
 		}
 		q.orderByDescending("createdAt");
-		q.setLimit(30);
+		q.setLimit(100);
 		q.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
