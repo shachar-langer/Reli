@@ -22,4 +22,6 @@ public enum MessageStatus {
     public String statusDescription() {
         return this.statusDescription;
     }
+
+    /* ========================================================================== */
 }

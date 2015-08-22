@@ -18,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -162,6 +163,7 @@ public class DiscussionActivity extends CustomActivity
 			public void done(ParseException e)
 			{
 				message.setStatus((e == null) ? MessageStatus.STATUS_SENT : MessageStatus.STATUS_FAILED);
+
 				chatAdapter.notifyDataSetChanged();
 			}
 		});
@@ -187,35 +189,39 @@ public class DiscussionActivity extends CustomActivity
 //		else {
 			// load only newly received message..
 			if (lastMsgDate != null)
+				// Load only new messages, that weren't send by me
 				q.whereGreaterThan("createdAt", lastMsgDate);
-//			q.whereEqualTo("sender", discussionTopic);
+				q.whereNotEqualTo("sender", MainActivity.user.getParseID());
 		}
 		q.orderByDescending("createdAt");
 		q.setLimit(100);
 		q.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
-			public void done(List<ParseObject> li, ParseException e)
-			{
-				if (li != null && li.size() > 0)
-				{
-					for (int i = li.size() - 1; i >= 0; i--)
-					{
+			public void done(List<ParseObject> li, ParseException e) {
+				if (li != null && li.size() > 0) {
+					for (int i = li.size() - 1; i >= 0; i--) {
 						ParseObject po = li.get(i);
-						Message message = new Message(po.getString("message"), po.getCreatedAt(), po.getString("senderID"));
+
+						Message message = new Message(po.getString("message"), po.getCreatedAt(), po.getString("sender"));
+
+						// TODO - change? It means the message was always in status sent and not failed (which me sense,
+						// TODO - because If we get here, it was sent.
+						message.setStatus(MessageStatus.STATUS_SENT);
+
+
 						messagesList.add(message);
 
 						if (lastMsgDate == null || lastMsgDate.before(message.getDate())) {
-                            lastMsgDate = message.getDate();
-                        }
+							lastMsgDate = message.getDate();
+						}
 						chatAdapter.notifyDataSetChanged();
 					}
 				}
 				handler.postDelayed(new Runnable() {
 
 					@Override
-					public void run()
-					{
+					public void run() {
 						if (isRunning)
 							loadConversationList();
 					}
@@ -264,6 +270,7 @@ public class DiscussionActivity extends CustomActivity
 		public View getView(int pos, View v, ViewGroup arg2)
 		{
 			Message c = getItem(pos);
+			
 			if (c.isSentByUser())
 				v = getLayoutInflater().inflate(R.layout.message_item_sent, null);
 			else

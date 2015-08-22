@@ -69,35 +69,36 @@ public class CreateDiscussionFragment extends Fragment {
                 DiscussionEntry.saveEventually(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        // Creating a new Table for the new Discussion
-                        ParseObject discussionTable = ParseObject.create(DiscussionEntry.getParseID());
-                        discussionTable.saveEventually(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
+//                        // Creating a new Table for the new Discussion
+//                        ParseObject discussionTable = ParseObject.create(DiscussionEntry.getParseID());
+//                        discussionTable.saveEventually(new SaveCallback() {
+//                            @Override
+//                            public void done(ParseException e) {
+//
+//
+//                            }
+//                        });
+                        // Adding the new discussion to the user discussions
+                        String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
+                        String currentDiscussion = DiscussionEntry.getParseID();
+                        if (discussionsImIn.isEmpty()) {
+                            MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, currentDiscussion);
+                        }
+                        else {
+                            MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + currentDiscussion);
+                        }
+                        MainActivity.discussionsImIn.add(currentDiscussion);
 
-                                // Adding the new discussion to the user discussions
-                                String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
-                                String currentDiscussion = DiscussionEntry.getParseID();
-                                if (discussionsImIn.isEmpty()) {
-                                    MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, currentDiscussion);
-                                }
-                                else {
-                                    MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + currentDiscussion);
-                                }
-                                MainActivity.discussionsImIn.add(currentDiscussion);
+                        MainActivity.user.saveEventually();
 
-                                MainActivity.user.saveEventually();
+                        // Opening the new discussion activity
+                        EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
+                        String topic = topicEditText.getText().toString();
 
-                                // Opening the new discussion activity
-                                EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
-                                String topic = topicEditText.getText().toString();
-
-                                Intent intent = new Intent(getActivity(), DiscussionActivity.class);
-                                intent.putExtra(Const.DISCUSSION_TOPIC, topic);
-                                intent.putExtra(Const.DISCUSSION_TABLE_NAME, DiscussionEntry.getParseID());
-                                startActivity(intent);
-                            }
-                        });
+                        Intent intent = new Intent(getActivity(), DiscussionActivity.class);
+                        intent.putExtra(Const.DISCUSSION_TOPIC, topic);
+                        intent.putExtra(Const.DISCUSSION_TABLE_NAME, DiscussionEntry.getParseID());
+                        startActivity(intent);
                     }
                 });
             }
