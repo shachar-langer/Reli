@@ -2,8 +2,6 @@ package reli.reliapp.co.il.reli.main;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.location.Location;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -139,7 +137,7 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
 
                                     // Switching to the user activity
                                     Intent intent = new Intent(getApplicationContext(), DiscussionActivity.class);
-                                    intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getDiscussionName());
+                                    intent.putExtra(Const.DISCUSSION_TOPIC, chatsList.get(pos).getDiscussionName());
                                     intent.putExtra(Const.DISCUSSION_TABLE_NAME, chatsList.get(pos).getParseID());
                                     startActivity(intent);
                                 }
@@ -178,7 +176,7 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
 //                                @Override
 //                                public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 //                                    Intent intent = new Intent(ctx, DiscussionActivity.class);
-//                                    intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getUsername());
+//                                    intent.putExtra(Const.DISCUSSION_TOPIC, chatsList.get(pos).getUsername());
 //                                    startActivity(intent);
 //                                }
 //                            });

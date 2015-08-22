@@ -16,7 +16,7 @@ public class Const
     public static final int DEFAULT_RADIUS_FOR_RELIS = 50;
 
     // Columns in Parse for DiscussionActivity (the chat itself
-	public static final String BUDDY_NAME = "buddyName";
+	public static final String DISCUSSION_TOPIC = "buddyName";
     public static final String DISCUSSION_TABLE_NAME = "discussionTableName";
 
     public static final String CURRENT_LOCATION = "currentLocation";

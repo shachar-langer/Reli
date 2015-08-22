@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,22 +18,16 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import bolts.Task;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
-import reli.reliapp.co.il.reli.main.HomeFragment;
 import reli.reliapp.co.il.reli.main.MainActivity;
-import reli.reliapp.co.il.reli.sidebar.FaqFragment;
 import reli.reliapp.co.il.reli.utils.Const;
-import reli.reliapp.co.il.reli.utils.Utils;
 
 public class CreateDiscussionFragment extends Fragment {
 
@@ -65,15 +58,9 @@ public class CreateDiscussionFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
-                String topic = topicEditText.getText().toString();
-                if (topic.equals("")) {
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.dialog_title)
-                            .setMessage(R.string.dialog_message)
-                            .setPositiveButton(R.string.ok_button, null)
-                            .create()
-                            .show();
+                // Handle empty topic
+                boolean isEmpty = checkAndHandleEmptyTitle();
+                if (isEmpty) {
                     return;
                 }
 
@@ -101,14 +88,12 @@ public class CreateDiscussionFragment extends Fragment {
 
                                 MainActivity.user.saveEventually();
 
-                                Toast.makeText(getActivity().getApplicationContext(), "In create discussion" , Toast.LENGTH_SHORT).show();
-
                                 // Opening the new discussion activity
                                 EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
                                 String topic = topicEditText.getText().toString();
 
                                 Intent intent = new Intent(getActivity(), DiscussionActivity.class);
-                                intent.putExtra(Const.BUDDY_NAME, topic);
+                                intent.putExtra(Const.DISCUSSION_TOPIC, topic);
                                 intent.putExtra(Const.DISCUSSION_TABLE_NAME, DiscussionEntry.getParseID());
                                 startActivity(intent);
                             }
@@ -205,5 +190,25 @@ public class CreateDiscussionFragment extends Fragment {
         npMinutes.setMinValue(Const.MINIMUM_TIME);
         npMinutes.setMaxValue(Const.MAX_MINUTES);
         npMinutes.setValue(minutes);
+    }
+
+    /* ========================================================================== */
+
+    private boolean checkAndHandleEmptyTitle() {
+        EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
+        String topic = topicEditText.getText().toString();
+
+        boolean isEmpty = false;
+        if (topic.equals("")) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(R.string.dialog_title)
+                    .setMessage(R.string.dialog_message)
+                    .setPositiveButton(R.string.ok_button, null)
+                    .create()
+                    .show();
+            isEmpty = true;
+        }
+
+        return isEmpty;
     }
 }

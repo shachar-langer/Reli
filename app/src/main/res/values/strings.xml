@@ -40,8 +40,6 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_welcome_string">Welcome to Reli!</string>
     <string name="title_activity_location">LocationActivity</string>
 
@@ -49,7 +47,6 @@
     <string name="middle_tab">My Reli</string>
     <string name="right_tab">All Relis</string>
 
-    <!-- Todo - New -->
     <string name="type_msg">Type message</string>
     <string name="or">or</string>
     <string name="email">Email</string>

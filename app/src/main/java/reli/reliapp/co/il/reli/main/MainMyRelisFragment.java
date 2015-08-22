@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 //import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,12 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -168,7 +164,7 @@ public class MainMyRelisFragment extends Fragment {
 
                                     // Switching to the user activity
                                     Intent intent = new Intent(ctx, DiscussionActivity.class);
-                                    intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getDiscussionName());
+                                    intent.putExtra(Const.DISCUSSION_TOPIC, chatsList.get(pos).getDiscussionName());
                                     intent.putExtra(Const.DISCUSSION_TABLE_NAME, chatsList.get(pos).getParseID());
                                     startActivity(intent);
                                 }

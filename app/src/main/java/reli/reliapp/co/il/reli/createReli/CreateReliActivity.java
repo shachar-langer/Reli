@@ -76,7 +76,7 @@ public class CreateReliActivity extends CustomActivity implements ActionBar.TabL
 //////                        chatAdapter.notifyDataSetChanged();
 ////                    }
 ////                });
-//                intent.putExtra(Const.BUDDY_NAME, "Subject");
+//                intent.putExtra(Const.DISCUSSION_TOPIC, "Subject");
 //                startActivity(intent);
 //            }
 //        });

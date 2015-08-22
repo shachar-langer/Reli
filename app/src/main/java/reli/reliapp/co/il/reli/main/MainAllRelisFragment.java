@@ -3,7 +3,6 @@ package reli.reliapp.co.il.reli.main;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 //import android.app.Fragment;
@@ -12,29 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.createReli.DiscussionActivity;
-import reli.reliapp.co.il.reli.createReli.CreateReliActivity;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
-import reli.reliapp.co.il.reli.dataStructures.Message;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.utils.Const;
 import reli.reliapp.co.il.reli.utils.Utils;
@@ -134,7 +126,7 @@ public class MainAllRelisFragment extends Fragment {
                                     // Switching to the user activity
 
                                     Intent intent = new Intent(ctx, DiscussionActivity.class);
-                                    intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getDiscussionName());
+                                    intent.putExtra(Const.DISCUSSION_TOPIC, chatsList.get(pos).getDiscussionName());
                                     intent.putExtra(Const.DISCUSSION_TABLE_NAME, chatsList.get(pos).getParseID());
                                     startActivity(intent);
                                 }
@@ -172,7 +164,7 @@ public class MainAllRelisFragment extends Fragment {
 //                                @Override
 //                                public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
 //                                    Intent intent = new Intent(ctx, DiscussionActivity.class);
-//                                    intent.putExtra(Const.BUDDY_NAME, chatsList.get(pos).getUsername());
+//                                    intent.putExtra(Const.DISCUSSION_TOPIC, chatsList.get(pos).getUsername());
 //                                    startActivity(intent);
 //                                }
 //                            });

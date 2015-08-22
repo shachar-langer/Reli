@@ -42,7 +42,7 @@ public class DiscussionActivity extends CustomActivity
 
 	private ArrayList<Message> messagesList;
 	private ChatAdapter chatAdapter;
-	private String buddy;
+	private String discussionTopic;
 	private String discussionTableName;
 	private Date lastMsgDate;
 
@@ -74,9 +74,9 @@ public class DiscussionActivity extends CustomActivity
         // Custom send button
 		setTouchNClick(R.id.btnSend);
 
-		buddy = getIntent().getStringExtra(Const.BUDDY_NAME);
+		discussionTopic = getIntent().getStringExtra(Const.DISCUSSION_TOPIC);
 		discussionTableName = getIntent().getStringExtra(Const.DISCUSSION_TABLE_NAME);
-		getActionBar().setTitle(buddy);
+		getActionBar().setTitle(discussionTopic);
 
 		handler = new Handler();
 	}
@@ -155,9 +155,7 @@ public class DiscussionActivity extends CustomActivity
 		messageTxt.setText(null);
 
 		ParseObject po = new ParseObject(discussionTableName);
-		po.put("sender", MainActivity.user.getUsername());
-		po.put("receiver", buddy);
-//		po.put("createdAt", "");
+		po.put("sender", MainActivity.user.getParseID());
 		po.put("message", s);
 		po.saveEventually(new SaveCallback() {
 			@Override
@@ -182,17 +180,15 @@ public class DiscussionActivity extends CustomActivity
 		{
 			// load all messages...
 			ArrayList<String> al = new ArrayList<String>();
-			al.add(buddy);
-			al.add(MainActivity.user.getUsername());
+			al.add(discussionTopic);
+			al.add(MainActivity.user.getParseID());
 			q.whereContainedIn("sender", al);
-			q.whereContainedIn("receiver", al);
 		}
 		else {
 			// load only newly received message..
 			if (lastMsgDate != null)
 				q.whereGreaterThan("createdAt", lastMsgDate);
-			q.whereEqualTo("sender", buddy);
-			q.whereEqualTo("receiver", MainActivity.user.getUsername());
+			q.whereEqualTo("sender", discussionTopic);
 		}
 		q.orderByDescending("createdAt");
 		q.setLimit(30);
