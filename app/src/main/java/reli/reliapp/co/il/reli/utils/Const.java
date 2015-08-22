@@ -54,4 +54,10 @@ public class Const
 
     // Radius argument to pass between the fragment and activity of ReliNearMe
     public static final String RADIUS = "radius";
+
+    // Expiration of Relis
+    public static final int MINIMUM_TIME = 0;
+    public static final int MAX_HOURS = 24;
+    public static final int MAX_MINUTES = 59;
+    public static final int MINUTES_IN_HOUR = 60;
 }

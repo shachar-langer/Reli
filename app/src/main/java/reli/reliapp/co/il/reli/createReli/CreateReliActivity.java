@@ -5,12 +5,14 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseGeoPoint;
@@ -20,6 +22,7 @@ import java.util.Date;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
+import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
 
 public class CreateReliActivity extends CustomActivity implements ActionBar.TabListener {
@@ -153,6 +156,7 @@ public class CreateReliActivity extends CustomActivity implements ActionBar.TabL
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
     }
 
     /* ========================================================================== */

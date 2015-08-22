@@ -1,5 +1,6 @@
 package reli.reliapp.co.il.reli.createReli;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -9,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -18,18 +23,25 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import bolts.Task;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
+import reli.reliapp.co.il.reli.main.HomeFragment;
 import reli.reliapp.co.il.reli.main.MainActivity;
+import reli.reliapp.co.il.reli.sidebar.FaqFragment;
 import reli.reliapp.co.il.reli.utils.Const;
+import reli.reliapp.co.il.reli.utils.Utils;
 
 public class CreateDiscussionFragment extends Fragment {
 
     private View v;
+    private SeekBar mSeekBar;
+    private ReliUser currentUser;
+    private NumberPicker npHours, npMinutes;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,8 +50,16 @@ public class CreateDiscussionFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_create_discussion, container, false);
 
-        Button createDiscussionBtn = (Button) v.findViewById(R.id.discussion_btn_create);
+        currentUser = MainActivity.user;
+        mSeekBar  = (SeekBar) v.findViewById(R.id.create_discussion_seek_bar_radius);
+        npHours   = (NumberPicker) v.findViewById(R.id.create_discussion_numberPicker_hours);
+        npMinutes = (NumberPicker) v.findViewById(R.id.create_discussion_numberPicker_minutes);
 
+        addSeekBarToScreen(v);
+        setTimePickers();
+
+        // Set the behavior "Let's Reli" button
+        Button createDiscussionBtn = (Button) v.findViewById(R.id.discussion_btn_create);
         createDiscussionBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -47,20 +67,18 @@ public class CreateDiscussionFragment extends Fragment {
 
                 EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
                 String topic = topicEditText.getText().toString();
-                Toast.makeText(getActivity().getApplicationContext(), topic, Toast.LENGTH_SHORT).show();
+                if (topic.equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.dialog_title)
+                            .setMessage(R.string.dialog_message)
+                            .setPositiveButton(R.string.ok_button, null)
+                            .create()
+                            .show();
+                    return;
+                }
 
                 // Enter a new discussion entry in the Discussion Table
-                Bundle extras = getActivity().getIntent().getExtras();
-                double latitude = extras.getDouble(Const.LATITUDE);
-                double altitude = extras.getDouble(Const.ALTITUDE);
-                ParseGeoPoint location = new ParseGeoPoint(latitude, altitude);
-                int radius = 27;
-                Bitmap discussionLogo = null;
-                Date creationDate = new Date();
-                Date expirationDate = new Date();
-                String ownerParseID = MainActivity.user.getParseID();
-                final Discussion DiscussionEntry = new Discussion(topic, location, radius, discussionLogo,
-                        creationDate, expirationDate, ownerParseID);
+                final Discussion DiscussionEntry = createDiscussionObject();
                 DiscussionEntry.saveEventually(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -84,14 +102,8 @@ public class CreateDiscussionFragment extends Fragment {
                                 startActivity(intent);
                             }
                         });
-
-
                     }
                 });
-
-
-
-
             }
         });
 
@@ -99,4 +111,88 @@ public class CreateDiscussionFragment extends Fragment {
 
     }
 
+    /* ========================================================================== */
+
+    private Discussion createDiscussionObject() {
+        // Get the current topic
+        EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
+        String topic = topicEditText.getText().toString();
+
+        // Get the current location
+        Bundle extras = getActivity().getIntent().getExtras();
+        double latitude = extras.getDouble(Const.LATITUDE);
+        double altitude = extras.getDouble(Const.ALTITUDE);
+        ParseGeoPoint location = new ParseGeoPoint(latitude, altitude);
+
+        // Get the radius
+        int radius = mSeekBar.getProgress();
+
+        // Get the logo
+        Bitmap discussionLogo = null;
+
+        // Calculate the creation date
+        Date creationDate = new Date();
+
+        // Calculate the expiration date
+        Calendar c = Calendar.getInstance();
+        c.setTime(creationDate);
+        c.add(Calendar.HOUR, npHours.getValue());
+        c.add(Calendar.MINUTE, npMinutes.getValue());
+        Date expirationDate = c.getTime();
+
+        // Get the owner
+        String ownerParseID = MainActivity.user.getParseID();
+
+        // Create the discussion
+        return new Discussion(topic, location, radius, discussionLogo, creationDate, expirationDate, ownerParseID);
+    }
+
+    /* ========================================================================== */
+
+    private void addSeekBarToScreen(View v) {
+        int progress;
+        final View finalView = v;
+
+        // Set the initial progress
+        try {
+            progress = currentUser.getRelisRadius();
+        } catch (Exception e) {
+            progress = Const.DEFAULT_RADIUS_FOR_RELIS;
+        }
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                TextView mRadius = (TextView) finalView.findViewById(R.id.create_discussion_current_radius_value);
+                mRadius.setText(String.valueOf(progress) + " meters");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        mSeekBar.setProgress(progress);
+    }
+
+    /* ========================================================================== */
+
+    private void setTimePickers() {
+        int currentExpirationInMinutes = currentUser.getRelisExpirationInMinutes();
+        int hours = currentExpirationInMinutes / Const.MINUTES_IN_HOUR;
+        int minutes = currentExpirationInMinutes - hours * Const.MINUTES_IN_HOUR;
+
+        // Set the hours picker
+        npHours.setMinValue(Const.MINIMUM_TIME);
+        npHours.setMaxValue(Const.MAX_HOURS);
+        npHours.setValue(hours);
+
+        // Set the minutes picker
+        npMinutes.setMinValue(Const.MINIMUM_TIME);
+        npMinutes.setMaxValue(Const.MAX_MINUTES);
+        npMinutes.setValue(minutes);
+    }
 }

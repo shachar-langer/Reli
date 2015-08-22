@@ -3,33 +3,24 @@
     android:layout_height="match_parent"
     tools:context="reli.reliapp.co.il.reli.createReli.CreateDiscussionFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="462dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Create a Reli Discussion"
-            android:id="@+id/textView2"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingTop="@dimen/pad_10dp"
+        android:paddingLeft="@dimen/pad_10dp">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1"
-            android:layout_marginTop="50dp"
-            android:id="@+id/linearLayout">
-            <!--android:layout_width="56dp"-->
-            <!--android:layout_height="31dp"-->
-            <TextView
-                android:layout_width="103dp"
-                android:layout_height="wrap_content"
-                android:text="@string/discussion_text_topicTitle"
-                android:id="@+id/discussion_txt_topic" />
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/pad_5dp"
+                android:textStyle="bold"
+                android:text="@string/discussion_text_topicTitle" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -38,78 +29,88 @@
                 android:editable="true"
                 android:enabled="true"
                 android:inputType="text"
-                android:text="@string/discussion_edt_topic"
-                android:layout_toRightOf="@+id/discussion_txt_topic" />
-
+                android:hint="@string/discussion_edt_topic" />
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearLayout2"
-            android:layout_below="@+id/linearLayout"
-            android:weightSum="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Radius:"
-                android:id="@+id/current_radius_value"
-                android:layout_gravity="center_horizontal" />
-
-            <SeekBar
-                android:layout_width="295dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/seekBar"
-                android:layout_marginBottom="73dp"
-                android:layout_gravity="center_horizontal|right"
-                android:progress="2"/>
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_alignParentStart="true"-->
-
-                <!--android:layout_alignRight="@+id/textView2"-->
-                <!--android:layout_alignEnd="@+id/textView2"-->
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/LinearLayout3"
-            android:layout_gravity="center_vertical"
-            android:layout_below="@+id/linearLayout2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Expiration Date:"
-                android:id="@+id/textView34"
-                android:layout_alignBottom="@+id/LinearLayout3"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="center_horizontal">
-
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/discussion_btn_text"
-            android:id="@+id/discussion_btn_create" />
+            android:text="@string/discussion_radius"
+            android:paddingTop="@dimen/pad_20dp"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:layout_width="295dp"
+            android:id="@+id/create_discussion_seek_bar_radius"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/pad_10dp"
+            android:layout_gravity="center_horizontal"
+            android:max="2000"
+            android:progress="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_discussion_current_radius_value"
+            android:gravity="center_vertical|center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/pad_20dp"
+            android:text="@string/discussion_expiration"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/pad_15dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/pad_chat_item">
+
+            <NumberPicker
+                android:id="@+id/create_discussion_numberPicker_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:text="hours"
+                android:paddingLeft="@dimen/pad_5dp"
+                android:paddingRight="@dimen/pad_10dp"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/create_discussion_numberPicker_minutes"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:paddingLeft="@dimen/pad_5dp"
+                android:text="minutes"
+                android:gravity="center_vertical|center_horizontal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal|bottom">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/discussion_btn_text"
+                android:id="@+id/discussion_btn_create" />
+        </LinearLayout>
 
     </LinearLayout>
 
 </FrameLayout>
+
+

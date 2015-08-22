@@ -11,6 +11,8 @@
     <string name="discussion_btn_text">Let\'s Reli!</string>
     <string name="discussion_text_topicTitle">Topic:</string>
     <string name="discussion_edt_topic">What do you want to discuss?</string>
+    <string name="discussion_radius">Reli\'s radius:</string>
+    <string name="discussion_expiration">Reli will be expired in:</string>
 
     <!-- Poll -->
     <string name="poll_title">Poll</string>
@@ -159,5 +161,11 @@
     <string name="about_discussion_title_radius">Radius:</string>
     <string name="about_discussion_title_tags">Tags:</string>
 
+    <string name="change_settings">Custom new Reli\'s settings</string>
 
+
+
+    <string name="dialog_title">Empty Topic</string>
+    <string name="dialog_message">We\'re sorry, but Relis cannot be created without a topic.</string>
+    <string name="ok_button">OK</string>
 </resources>

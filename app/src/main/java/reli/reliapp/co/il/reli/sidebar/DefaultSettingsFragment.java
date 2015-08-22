@@ -19,13 +19,6 @@ public class DefaultSettingsFragment extends Fragment {
 
     /* ========================================================================== */
 
-    private static final int MINIMUM_TIME = 0;
-    private static final int MAX_HOURS = 24;
-    private static final int MAX_MINUTES = 59;
-    private static final int MINUTES_IN_HOUR = 60;
-
-    /* ========================================================================== */
-
     private ReliUser currentUser;
     private NumberPicker npHours, npMinutes;
     private SeekBar mSeekBar;
@@ -88,17 +81,17 @@ public class DefaultSettingsFragment extends Fragment {
         // TODO - check why in the first time it doesn't show the correct values
 
         int currentExpirationInMinutes = currentUser.getRelisExpirationInMinutes();
-        int hours = currentExpirationInMinutes / MINUTES_IN_HOUR;
-        int minutes = currentExpirationInMinutes - hours * MINUTES_IN_HOUR;
+        int hours = currentExpirationInMinutes / Const.MINUTES_IN_HOUR;
+        int minutes = currentExpirationInMinutes - hours * Const.MINUTES_IN_HOUR;
 
         // Set the hours picker
-        npHours.setMinValue(MINIMUM_TIME);
-        npHours.setMaxValue(MAX_HOURS);
+        npHours.setMinValue(Const.MINIMUM_TIME);
+        npHours.setMaxValue(Const.MAX_HOURS);
         npHours.setValue(hours);
 
         // Set the minutes picker
-        npMinutes.setMinValue(MINIMUM_TIME);
-        npMinutes.setMaxValue(MAX_MINUTES);
+        npMinutes.setMinValue(Const.MINIMUM_TIME);
+        npMinutes.setMaxValue(Const.MAX_MINUTES);
         npMinutes.setValue(minutes);
     }
 
@@ -136,7 +129,7 @@ public class DefaultSettingsFragment extends Fragment {
 
     private boolean saveNewExpiration() {
         boolean isChanged = false;
-        int wantedExpiration = npHours.getValue() * MINUTES_IN_HOUR + npMinutes.getValue();
+        int wantedExpiration = npHours.getValue() * Const.MINUTES_IN_HOUR + npMinutes.getValue();
 
         if (currentUser.getRelisExpirationInMinutes() != wantedExpiration) {
             currentUser.setRelisExpirationInMinutes(wantedExpiration);
