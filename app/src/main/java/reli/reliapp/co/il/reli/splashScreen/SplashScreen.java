@@ -6,12 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import reli.reliapp.co.il.reli.R;
+import reli.reliapp.co.il.reli.dataStructures.ReliTag;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.login.LoginActivity;
 import reli.reliapp.co.il.reli.main.MainActivity;
@@ -39,6 +46,7 @@ public class SplashScreen extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                initTagsMaps();
 
                 ReliUser user = (ReliUser) (ParseUser.getCurrentUser());
 
@@ -61,5 +69,24 @@ public class SplashScreen extends Activity {
 
 
         }, SPLASH_TIME_OUT_MILLIS);
+    }
+
+    /* ========================================================================== */
+
+    private void initTagsMaps() {
+
+        ParseQuery<ReliTag> query = ReliTag.getReliTagQuery();
+        query.findInBackground(new FindCallback<ReliTag>() {
+            @Override
+            public void done(List<ReliTag> reliTags, ParseException e) {
+                ArrayList<ReliTag> bla = new ArrayList<ReliTag>(reliTags);
+
+                for (ReliTag tag : reliTags) {
+                    MainActivity.tagsIdToTag.put(tag.getObjectId(), tag);
+                }
+            }
+        });
+
+
     }
 }

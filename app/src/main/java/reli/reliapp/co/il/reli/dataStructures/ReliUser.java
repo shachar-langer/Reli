@@ -3,21 +3,29 @@ package reli.reliapp.co.il.reli.dataStructures;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.login.widget.ProfilePictureView;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import reli.reliapp.co.il.reli.R;
+import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
 
 public class ReliUser extends ParseUser {
+
 
     private ReliUserType userType;
     private String firstName;
@@ -203,22 +211,48 @@ public class ReliUser extends ParseUser {
 
    /* ========================================================================== */
 
-    public void setNotificationsTags(ArrayList<ReliTag> notificationsTags) {
+    public void setNotificationsTags(ArrayList<ReliTag> tags) {
         // TODO - make sure that it works
-//        // Remove the old list
-//        removeAll(Const.COL_NAME_NOTIFICATIONS_TAGS, Arrays.asList(getNotificationsTags()));
-//        // Add the new one
-//        addAllUnique(Const.COL_NAME_NOTIFICATIONS_TAGS, notificationsTags);
+        // Remove previous values
+        remove(Const.COL_NAME_NOTIFICATIONS_TAGS);
+
+        // Get tag ids
+        ArrayList<String> tagsIDs = new ArrayList<>();
+        if (!tags.isEmpty()) {
+            for (ReliTag reliTag : tags) {
+                tagsIDs.add(reliTag.getObjectId());
+
+                // Add new tags to the mapping
+                if (!MainActivity.tagsIdToTag.containsValue(reliTag)) {
+                    MainActivity.tagsIdToTag.put(reliTag.getObjectId(), reliTag);
+                }
+            }
+        }
+
+        // Add the new ones
+        addAllUnique(Const.COL_NAME_NOTIFICATIONS_TAGS, tagsIDs);
     }
 
     /* ========================================================================== */
 
     public ArrayList<ReliTag> getNotificationsTags() {
         // TODO - make sure that it works
-//        List<ReliTag> l = getList(Const.COL_NAME_NOTIFICATIONS_TAGS);
-//        return new ArrayList<ReliTag>(l);
+        List<String> tagIDs = getList(Const.COL_NAME_NOTIFICATIONS_TAGS);
 
-        return new ArrayList<ReliTag>();
+        ArrayList<ReliTag> res = new ArrayList<ReliTag>();
+
+        if ((tagIDs == null) || (tagIDs.isEmpty())) {
+            return res;
+        }
+
+        for (int i = 0; i < tagIDs.size(); i++) {
+            String currentID = tagIDs.get(i);
+            if (MainActivity.tagsIdToTag.containsKey(currentID)) {
+                res.add(MainActivity.tagsIdToTag.get(currentID));
+            }
+        }
+
+        return res;
     }
 
 }

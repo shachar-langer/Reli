@@ -119,20 +119,10 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     private void changeUser() {
         ReliUser user = MainActivity.user;
         if (user != null) {
-
-            Toast.makeText(getActivity().getApplicationContext(), "in if", Toast.LENGTH_SHORT).show();
-
-            // TODO - delete this line. It was only for testing
-//            ParseUser.getCurrentUser().put(Const.COL_NAME_DISCUSSIONS_IM_IN, "");
-
             startActivity(new Intent(getActivity(), MainActivity.class));
         }
 
         else {
-
-            Toast.makeText(getActivity().getApplicationContext(), "in else", Toast.LENGTH_SHORT).show();
-            Log.w("dfd", "I'm in else");
-
             Profile profile = Profile.getCurrentProfile();
 
             // Check if we are disconnected

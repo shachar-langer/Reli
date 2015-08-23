@@ -1,6 +1,7 @@
 package reli.reliapp.co.il.reli.createReli;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -8,23 +9,30 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
+import reli.reliapp.co.il.reli.dataStructures.ReliTag;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
@@ -35,6 +43,12 @@ public class CreateDiscussionFragment extends Fragment {
     private SeekBar mSeekBar;
     private ReliUser currentUser;
     private NumberPicker npHours, npMinutes;
+    private LinearLayout changeTag;
+    private ArrayList<String> tagsNames = new ArrayList<String>();
+    private ArrayList<ReliTag> tagsAsObjects;
+
+    CharSequence[] items;
+    boolean[] checkedItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,9 +61,11 @@ public class CreateDiscussionFragment extends Fragment {
         mSeekBar  = (SeekBar) v.findViewById(R.id.create_discussion_seek_bar_radius);
         npHours   = (NumberPicker) v.findViewById(R.id.create_discussion_numberPicker_hours);
         npMinutes = (NumberPicker) v.findViewById(R.id.create_discussion_numberPicker_minutes);
+        changeTag = (LinearLayout) v.findViewById(R.id.create_discussion_change_tag);
 
         addSeekBarToScreen(v);
         setTimePickers();
+        setChangeTagsBehavior();
 
         // Set the behavior "Let's Reli" button
         Button createDiscussionBtn = (Button) v.findViewById(R.id.discussion_btn_create);
@@ -204,12 +220,87 @@ public class CreateDiscussionFragment extends Fragment {
             new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.dialog_title)
                     .setMessage(R.string.dialog_message)
-                    .setPositiveButton(R.string.ok_button, null)
+                    .setPositiveButton(R.string.ok, null)
                     .create()
                     .show();
             isEmpty = true;
         }
 
         return isEmpty;
+    }
+
+    /* ========================================================================== */
+
+    private void setChangeTagsBehavior() {
+
+        addTagsToScreen();
+        changeTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                builder.setTitle(R.string.create_discussion_pick_tags);
+
+                // Specify the list array, the items to be selected by default (null for none),
+                // and the listener through which to receive callbacks when items are selected
+
+
+//                builder.setMultiChoiceItems(R.array.toppings, null,
+                builder.setMultiChoiceItems(items,
+                        checkedItems,
+                                new DialogInterface.OnMultiChoiceClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which,
+                                                        boolean isChecked) {
+                                        if (isChecked) {
+                                            // If the user checked the item, add it to the selected items
+                                            mSelectedItems.add(which);
+                                        } else if (mSelectedItems.contains(which)) {
+                                            // Else, if the item is already in the array, remove it
+                                            mSelectedItems.remove(Integer.valueOf(which));
+                                        }
+                                    }
+                                });
+
+                // Set the action buttons
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User clicked OK, so save the mSelectedItems results somewhere
+                                // or return them to the component that opened the dialog
+                                // TODO
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                return;
+                            }
+                        });
+
+                builder.create().show();
+            }
+        });
+
+    }
+
+    private void addTagsToScreen() {
+        ParseQuery<ReliTag> query = ParseQuery.getQuery("ReliTag");
+        query.findInBackground(new FindCallback<ReliTag>() {
+            @Override
+            public void done(List<ReliTag> reliTags, ParseException e) {
+                ArrayList<ReliTag> shouldBeChecked = currentUser.getNotificationsTags();
+
+                items = new String[reliTags.size()];
+                checkedItems = new boolean[reliTags.size()];
+
+                for (int i = 0; i < reliTags.size(); i++) {
+                    ReliTag currentReliTag = reliTags.get(i);
+                    items[i] = currentReliTag.getTagName();
+                    checkedItems[i] = shouldBeChecked.contains(currentReliTag);
+                }
+            }
+        });
     }
 }

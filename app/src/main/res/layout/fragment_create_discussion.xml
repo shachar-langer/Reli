@@ -71,7 +71,7 @@
             <NumberPicker
                 android:id="@+id/create_discussion_numberPicker_hours"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/number_picker_100dp"
                 android:gravity="center_horizontal" />
 
             <TextView
@@ -84,8 +84,8 @@
 
             <NumberPicker
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/create_discussion_numberPicker_minutes"
+                android:layout_height="@dimen/number_picker_100dp"
                 android:gravity="center_horizontal" />
 
             <TextView
@@ -95,6 +95,30 @@
                 android:text="minutes"
                 android:gravity="center_vertical|center_horizontal" />
         </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:paddingTop="@dimen/pad_30dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/create_discussion_change_tag">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_tag"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/pad_5dp"
+                android:paddingLeft="@dimen/pad_5dp"
+                android:textStyle="bold"
+                android:text="@string/discussion_text_changeTag" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:orientation="horizontal"

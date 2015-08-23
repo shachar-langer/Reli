@@ -4,6 +4,7 @@ import reli.reliapp.co.il.reli.utils.Const;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 @ParseClassName("ReliTag")
 public class ReliTag extends ParseObject {
@@ -11,11 +12,12 @@ public class ReliTag extends ParseObject {
 
     public ReliTag() {
         // Default Constructor is a must
+        super();
     }
 
     public ReliTag(String tagName) {
         setTagName(tagName);
-        saveEventually();
+//        saveEventually();
     }
 
     public String getTagName() {
@@ -36,5 +38,9 @@ public class ReliTag extends ParseObject {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public static ParseQuery<ReliTag> getReliTagQuery() {
+        return ParseQuery.getQuery(ReliTag.class);
     }
 }

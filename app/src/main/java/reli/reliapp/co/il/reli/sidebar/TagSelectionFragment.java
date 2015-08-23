@@ -21,6 +21,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import reli.reliapp.co.il.reli.R;
@@ -107,8 +108,11 @@ public class TagSelectionFragment extends Fragment {
         // Save the new notifications
         if (!currentUser.getNotificationsTags().equals(wantedTags)) {
             currentUser.setNotificationsTags(wantedTags);
+            currentUser.saveEventually();
             isChanged = true;
         }
+
+        Toast.makeText(getActivity().getApplicationContext(), "isChanged == " + isChanged + ", size = " + getCheckedTags().size(), Toast.LENGTH_SHORT).show();
 
         return isChanged;
     }
@@ -134,27 +138,19 @@ public class TagSelectionFragment extends Fragment {
     /* ========================================================================== */
 
     private void addTagsToScreen(View v) {
-        final View finalView = v;
-        ParseQuery<ReliTag> query = ParseQuery.getQuery("ReliTag");
-        query.findInBackground(new FindCallback<ReliTag>() {
-            @Override
-            public void done(List<ReliTag> reliTags, ParseException e) {
-                tagsAsObjects = new ArrayList<ReliTag>(reliTags);
-                for (ReliTag reliTag : reliTags) {
-                    tagsNames.add(reliTag.getTagName());
-                }
+        tagsAsObjects = new ArrayList<ReliTag>(MainActivity.tagsIdToTag.values());
+        for (ReliTag reliTag : tagsAsObjects) {
+            tagsNames.add(reliTag.getTagName());
+        }
 
-                mListView = (ListView) finalView.findViewById(R.id.tags_list_view);
-                mArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
-                        android.R.layout.simple_list_item_multiple_choice, tagsNames);
+        mListView = (ListView) v.findViewById(R.id.tags_list_view);
+        mArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                android.R.layout.simple_list_item_multiple_choice, tagsNames);
 
-                mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                mListView.setAdapter(mArrayAdapter);
+        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mListView.setAdapter(mArrayAdapter);
 
-                selectAlreadyChosenTags();
-            }
-        });
-
+        selectAlreadyChosenTags();
     }
 
     /* ========================================================================== */
@@ -245,8 +241,11 @@ public class TagSelectionFragment extends Fragment {
     /* ========================================================================== */
 
     private void selectAlreadyChosenTags() {
+        ArrayList<ReliTag> chosen = currentUser.getNotificationsTags();
+        HashMap<String, ReliTag> bla = MainActivity.tagsIdToTag;
+
         for (int i = 0; i < mArrayAdapter.getCount(); i++) {
-            if (currentUser.getNotificationsTags().contains(mArrayAdapter.getItem(i))) {
+            if (chosen.contains(mArrayAdapter.getItem(i))) {
                 mListView.setItemChecked(i, true);
             }
         }

@@ -11,6 +11,7 @@ package reli.reliapp.co.il.reli.main;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import android.support.v4.app.Fragment;
@@ -54,6 +55,7 @@ import com.parse.ParseUser;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.ReliApp;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
+import reli.reliapp.co.il.reli.dataStructures.ReliTag;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.location.LocationActivity;
 import reli.reliapp.co.il.reli.sidebar.AboutFragment;
@@ -139,6 +141,8 @@ public class MainActivity extends CustomActivity implements LocationListener,
     private DrawerLayout mDrawerLayout;
     ArrayList<NavItem> mNavItems;
     public static HashSet<String> discussionsImIn = new HashSet<String>();
+
+    public static HashMap<String, ReliTag> tagsIdToTag = new HashMap<>();
 
     /* ========================================================================== */
 
