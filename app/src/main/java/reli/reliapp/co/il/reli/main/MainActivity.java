@@ -220,6 +220,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
         // *** Location ends
 
 //        user = ReliUser.getCurrentReliUser();
+        // TODO - delete?
         updateUserStatus(true);
 
 

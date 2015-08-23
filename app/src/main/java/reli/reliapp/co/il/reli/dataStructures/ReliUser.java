@@ -211,23 +211,10 @@ public class ReliUser extends ParseUser {
 
    /* ========================================================================== */
 
-    public void setNotificationsTags(ArrayList<ReliTag> tags) {
+    public void setNotificationsTagsIDs(ArrayList<String> tagsIDs) {
         // TODO - make sure that it works
         // Remove previous values
         remove(Const.COL_NAME_NOTIFICATIONS_TAGS);
-
-        // Get tag ids
-        ArrayList<String> tagsIDs = new ArrayList<>();
-        if (!tags.isEmpty()) {
-            for (ReliTag reliTag : tags) {
-                tagsIDs.add(reliTag.getObjectId());
-
-                // Add new tags to the mapping
-                if (!MainActivity.tagsIdToTag.containsValue(reliTag)) {
-                    MainActivity.tagsIdToTag.put(reliTag.getObjectId(), reliTag);
-                }
-            }
-        }
 
         // Add the new ones
         addAllUnique(Const.COL_NAME_NOTIFICATIONS_TAGS, tagsIDs);
@@ -235,21 +222,15 @@ public class ReliUser extends ParseUser {
 
     /* ========================================================================== */
 
-    public ArrayList<ReliTag> getNotificationsTags() {
+    public ArrayList<String> getNotificationsTagsIDs() {
         // TODO - make sure that it works
         List<String> tagIDs = getList(Const.COL_NAME_NOTIFICATIONS_TAGS);
+        ArrayList<String> res;
 
-        ArrayList<ReliTag> res = new ArrayList<ReliTag>();
-
-        if ((tagIDs == null) || (tagIDs.isEmpty())) {
-            return res;
-        }
-
-        for (int i = 0; i < tagIDs.size(); i++) {
-            String currentID = tagIDs.get(i);
-            if (MainActivity.tagsIdToTag.containsKey(currentID)) {
-                res.add(MainActivity.tagsIdToTag.get(currentID));
-            }
+        if (tagIDs != null) {
+            res = new ArrayList<String>(tagIDs);
+        } else {
+            res = new ArrayList<>();
         }
 
         return res;

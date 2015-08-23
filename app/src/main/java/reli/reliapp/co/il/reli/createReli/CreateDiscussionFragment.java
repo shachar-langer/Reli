@@ -237,6 +237,25 @@ public class CreateDiscussionFragment extends Fragment {
         changeTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // TODO - i was here
+                String names[] ={"A","B","C","D","A","B","C","D","A","B","C","D","A","B","C","D","A","B","C","D"};
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getLayoutInflater(new Bundle());
+                View convertView = (View) inflater.inflate(R.layout.custom, null);
+                alertDialog.setView(convertView);
+                alertDialog.setTitle("List");
+                ListView lv = (ListView) convertView.findViewById(R.id.listView1);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,names);
+                lv.setAdapter(adapter);
+                alertDialog.show();
+
+
+
+
+
+/*
+
                 final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -280,27 +299,39 @@ public class CreateDiscussionFragment extends Fragment {
                         });
 
                 builder.create().show();
+                */
             }
         });
 
     }
 
     private void addTagsToScreen() {
-        ParseQuery<ReliTag> query = ParseQuery.getQuery("ReliTag");
-        query.findInBackground(new FindCallback<ReliTag>() {
-            @Override
-            public void done(List<ReliTag> reliTags, ParseException e) {
-                ArrayList<ReliTag> shouldBeChecked = currentUser.getNotificationsTags();
 
-                items = new String[reliTags.size()];
-                checkedItems = new boolean[reliTags.size()];
+//        ArrayList<ReliTag> reliTags = new ArrayList<ReliTag>(MainActivity.tagsIdToTag.values());
+//        ArrayList<String> shouldBeChecked = currentUser.getNotificationsTagsIDs();
+//
+//        items = new String[reliTags.size() * 2];
+//        checkedItems = new boolean[reliTags.size() * 2];
+//
+//        for (int i = 0; i < reliTags.size(); i=i+2) {
+//            ReliTag currentReliTag = reliTags.get(i);
+//            items[i] = currentReliTag.getTagName();
+//            items[i+1] = currentReliTag.getTagName();
+//            checkedItems[i] = shouldBeChecked.contains(currentReliTag.getTagParseID());
+//            checkedItems[i+1] = shouldBeChecked.contains(currentReliTag.getTagParseID());
+//        }
 
-                for (int i = 0; i < reliTags.size(); i++) {
-                    ReliTag currentReliTag = reliTags.get(i);
-                    items[i] = currentReliTag.getTagName();
-                    checkedItems[i] = shouldBeChecked.contains(currentReliTag);
-                }
-            }
-        });
+
+        ArrayList<ReliTag> reliTags = new ArrayList<ReliTag>(MainActivity.tagsIdToTag.values());
+        ArrayList<String> shouldBeChecked = currentUser.getNotificationsTagsIDs();
+
+        items = new String[reliTags.size()];
+        checkedItems = new boolean[reliTags.size()];
+
+        for (int i = 0; i < reliTags.size(); i++) {
+            ReliTag currentReliTag = reliTags.get(i);
+            items[i] = currentReliTag.getTagName();
+            checkedItems[i] = shouldBeChecked.contains(currentReliTag.getTagParseID());
+        }
     }
 }

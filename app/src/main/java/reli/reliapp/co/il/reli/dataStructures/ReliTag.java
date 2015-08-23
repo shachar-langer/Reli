@@ -9,14 +9,20 @@ import com.parse.ParseQuery;
 @ParseClassName("ReliTag")
 public class ReliTag extends ParseObject {
     private String tagName;
+    private String parseID;
 
     public ReliTag() {
         // Default Constructor is a must
-        super();
     }
 
     public ReliTag(String tagName) {
         setTagName(tagName);
+//        saveEventually();
+    }
+
+    public ReliTag(String tagName, String parseID) {
+        setTagName(tagName);
+        setTagParseID(parseID);
 //        saveEventually();
     }
 
@@ -26,7 +32,17 @@ public class ReliTag extends ParseObject {
 
     public void setTagName(String tagName) {
         put(Const.COL_TAG_NAME, tagName);
+        this.tagName = tagName;
     }
+
+    public void setTagParseID(String parseID) {
+        this.parseID = parseID;
+    }
+
+    public String getTagParseID() {
+        return this.parseID;
+    }
+
 
     @Override
     public boolean equals(Object o) {

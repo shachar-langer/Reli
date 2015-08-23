@@ -103,32 +103,36 @@ public class TagSelectionFragment extends Fragment {
 
     private boolean saveNewTags() {
         boolean isChanged = false;
-        ArrayList<ReliTag> wantedTags = getCheckedTags();
+        ArrayList<String> wantedTagsIDs = getCheckedTagsIDs();
 
         // Save the new notifications
-        if (!currentUser.getNotificationsTags().equals(wantedTags)) {
-            currentUser.setNotificationsTags(wantedTags);
+        if (!currentUser.getNotificationsTagsIDs().equals(wantedTagsIDs)) {
+            currentUser.setNotificationsTagsIDs(wantedTagsIDs);
             currentUser.saveEventually();
             isChanged = true;
         }
 
-        Toast.makeText(getActivity().getApplicationContext(), "isChanged == " + isChanged + ", size = " + getCheckedTags().size(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), "isChanged == " + isChanged + ", size = " + getCheckedTagsIDs().size(), Toast.LENGTH_SHORT).show();
 
         return isChanged;
     }
 
     /* ========================================================================== */
 
-    private ArrayList<ReliTag> getCheckedTags() {
+    private ArrayList<String> getCheckedTagsIDs() {
         SparseBooleanArray checked = mListView.getCheckedItemPositions();
-        ArrayList<ReliTag> selectedItems = new ArrayList<ReliTag>();
+        ArrayList<String> selectedItems = new ArrayList<>();
+
+        int position;
         for (int i = 0; i < checked.size(); i++) {
             // Item position in adapter
-            int position = checked.keyAt(i);
+            position = checked.keyAt(i);
+
             // Add sport if it is checked i.e.) == TRUE!
             if (checked.valueAt(i)) {
                 //                selectedItems.add(mArrayAdapter.getItem(position));
-                selectedItems.add(tagsAsObjects.get(position));
+                selectedItems.add(tagsAsObjects.get(position).getTagParseID());
+
             }
         }
 
@@ -241,11 +245,19 @@ public class TagSelectionFragment extends Fragment {
     /* ========================================================================== */
 
     private void selectAlreadyChosenTags() {
-        ArrayList<ReliTag> chosen = currentUser.getNotificationsTags();
-        HashMap<String, ReliTag> bla = MainActivity.tagsIdToTag;
+        ArrayList<String> chosenIDs = currentUser.getNotificationsTagsIDs();
+        ArrayList<String> chosenTagNames = new ArrayList<>();
 
+        String currentID;
+        for (int i = 0; i < chosenIDs.size(); i++) {
+            currentID = chosenIDs.get(i);
+            chosenTagNames.add(MainActivity.tagsIdToTag.get(currentID).getTagName());
+        }
+
+        String currentTagName;
         for (int i = 0; i < mArrayAdapter.getCount(); i++) {
-            if (chosen.contains(mArrayAdapter.getItem(i))) {
+            currentTagName = mArrayAdapter.getItem(i);
+            if (chosenTagNames.contains(currentTagName)) {
                 mListView.setItemChecked(i, true);
             }
         }

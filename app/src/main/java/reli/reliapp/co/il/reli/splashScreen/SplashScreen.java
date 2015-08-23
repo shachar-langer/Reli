@@ -23,6 +23,7 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.login.LoginActivity;
 import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.sidebar.GuidedTourActivity;
+import reli.reliapp.co.il.reli.utils.Const;
 
 public class SplashScreen extends Activity {
 
@@ -79,10 +80,12 @@ public class SplashScreen extends Activity {
         query.findInBackground(new FindCallback<ReliTag>() {
             @Override
             public void done(List<ReliTag> reliTags, ParseException e) {
-                ArrayList<ReliTag> bla = new ArrayList<ReliTag>(reliTags);
 
+                String currentID, currentTagName;
                 for (ReliTag tag : reliTags) {
-                    MainActivity.tagsIdToTag.put(tag.getObjectId(), tag);
+                    currentID = tag.getObjectId();
+                    currentTagName = tag.getString(Const.COL_TAG_NAME);
+                    MainActivity.tagsIdToTag.put(currentID, new ReliTag(currentTagName, currentID));
                 }
             }
         });
