@@ -44,6 +44,7 @@ public class Const
     public static final String COL_DISCUSSION_CREATION_DATE = "discussionCreationDate";
     public static final String COL_DISCUSSION_EXPIRATION_DATE = "discussionexpirationDate";
     public static final String COL_DISCUSSION_OWNER_PARSE_ID = "discussionOwnerParseID";
+    public static final String COL_DISCUSSION_TAG_IDS = "tagIDsForDiscussion";
 
     // Columns in Parse for Tag
     public static final String COL_TAG_NAME = "tagName";

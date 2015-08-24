@@ -8,7 +8,9 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import reli.reliapp.co.il.reli.utils.Const;
@@ -34,7 +36,7 @@ public abstract class AbstractDiscussion extends ParseObject {
 
     public AbstractDiscussion (String discussionName, ParseGeoPoint location, int radius,
                                Bitmap discussionLogo, Date creationDate, Date expirationDate,
-                               String ownerParseID) {
+                               String ownerParseID, ArrayList<String> tagIDsForDiscussion) {
         setDiscussionName(discussionName);
         setLocation(location);
         setRadius(radius);
@@ -42,7 +44,7 @@ public abstract class AbstractDiscussion extends ParseObject {
         setDiscussionCreationDate(creationDate);
         setDiscussionExpirationDate(expirationDate);
         setOwnerParseID(ownerParseID);
-
+        setTagIDsForDiscussion(tagIDsForDiscussion);
     }
 
     /* ========================================================================== */
@@ -135,5 +137,32 @@ public abstract class AbstractDiscussion extends ParseObject {
     public String getOwnerParseID() {
         return getString(Const.COL_DISCUSSION_OWNER_PARSE_ID);
     }
+
+    /* ========================================================================== */
+
+    public void setTagIDsForDiscussion(ArrayList<String> tagIDsForDiscussion) {
+        // Remove previous values
+        remove(Const.COL_DISCUSSION_TAG_IDS);
+
+        // Add the new ones
+        addAllUnique(Const.COL_DISCUSSION_TAG_IDS, tagIDsForDiscussion);
+    }
+
+    /* ========================================================================== */
+
+    public ArrayList<String> getTagIDsForDiscussion() {
+        // TODO - make sure that it works
+        List<String> tagIDs = getList(Const.COL_DISCUSSION_TAG_IDS);
+        ArrayList<String> res;
+
+        if (tagIDs != null) {
+            res = new ArrayList<String>(tagIDs);
+        } else {
+            res = new ArrayList<>();
+        }
+
+        return res;
+    }
+
 }
 

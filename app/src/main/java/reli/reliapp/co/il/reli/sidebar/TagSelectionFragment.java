@@ -108,11 +108,8 @@ public class TagSelectionFragment extends Fragment {
         // Save the new notifications
         if (!currentUser.getNotificationsTagsIDs().equals(wantedTagsIDs)) {
             currentUser.setNotificationsTagsIDs(wantedTagsIDs);
-            currentUser.saveEventually();
             isChanged = true;
         }
-
-        Toast.makeText(getActivity().getApplicationContext(), "isChanged == " + isChanged + ", size = " + getCheckedTagsIDs().size(), Toast.LENGTH_SHORT).show();
 
         return isChanged;
     }

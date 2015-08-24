@@ -9,26 +9,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
@@ -44,11 +38,12 @@ public class CreateDiscussionFragment extends Fragment {
     private ReliUser currentUser;
     private NumberPicker npHours, npMinutes;
     private LinearLayout changeTag;
-    private ArrayList<String> tagsNames = new ArrayList<String>();
-    private ArrayList<ReliTag> tagsAsObjects;
 
-    CharSequence[] items;
-    boolean[] checkedItems;
+    private ArrayList<ReliTag> allTags = new ArrayList<>(MainActivity.tagsIdToTag.values());
+    private ArrayList<String> tagIDsForDiscussion = new ArrayList<>();
+
+    CharSequence[] tagNames;
+    boolean[] checkedTagNames;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +68,6 @@ public class CreateDiscussionFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-
                 // Handle empty topic
                 boolean isEmpty = checkAndHandleEmptyTitle();
                 if (isEmpty) {
@@ -81,31 +75,12 @@ public class CreateDiscussionFragment extends Fragment {
                 }
 
                 // Enter a new discussion entry in the Discussion Table
-                final Discussion DiscussionEntry = createDiscussionObject();
-                DiscussionEntry.saveEventually(new SaveCallback() {
+                final Discussion discussionEntry = createDiscussionObject();
+                discussionEntry.saveEventually(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-//                        // Creating a new Table for the new Discussion
-//                        ParseObject discussionTable = ParseObject.create(DiscussionEntry.getParseID());
-//                        discussionTable.saveEventually(new SaveCallback() {
-//                            @Override
-//                            public void done(ParseException e) {
-//
-//
-//                            }
-//                        });
                         // Adding the new discussion to the user discussions
-                        String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
-                        String currentDiscussion = DiscussionEntry.getParseID();
-                        if (discussionsImIn.isEmpty()) {
-                            MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, currentDiscussion);
-                        }
-                        else {
-                            MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + currentDiscussion);
-                        }
-                        MainActivity.discussionsImIn.add(currentDiscussion);
-
-                        MainActivity.user.saveEventually();
+                        updateDiscussionsImIn(discussionEntry);
 
                         // Opening the new discussion activity
                         EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
@@ -113,7 +88,7 @@ public class CreateDiscussionFragment extends Fragment {
 
                         Intent intent = new Intent(getActivity(), DiscussionActivity.class);
                         intent.putExtra(Const.DISCUSSION_TOPIC, topic);
-                        intent.putExtra(Const.DISCUSSION_TABLE_NAME, DiscussionEntry.getParseID());
+                        intent.putExtra(Const.DISCUSSION_TABLE_NAME, discussionEntry.getParseID());
                         startActivity(intent);
                     }
                 });
@@ -141,6 +116,7 @@ public class CreateDiscussionFragment extends Fragment {
         int radius = mSeekBar.getProgress();
 
         // Get the logo
+        // TODO
         Bitmap discussionLogo = null;
 
         // Calculate the creation date
@@ -157,7 +133,7 @@ public class CreateDiscussionFragment extends Fragment {
         String ownerParseID = MainActivity.user.getParseID();
 
         // Create the discussion
-        return new Discussion(topic, location, radius, discussionLogo, creationDate, expirationDate, ownerParseID);
+        return new Discussion(topic, location, radius, discussionLogo, creationDate, expirationDate, ownerParseID, tagIDsForDiscussion);
     }
 
     /* ========================================================================== */
@@ -237,47 +213,21 @@ public class CreateDiscussionFragment extends Fragment {
         changeTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // TODO - i was here
-                String names[] ={"A","B","C","D","A","B","C","D","A","B","C","D","A","B","C","D","A","B","C","D"};
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = getLayoutInflater(new Bundle());
-                View convertView = (View) inflater.inflate(R.layout.custom, null);
-                alertDialog.setView(convertView);
-                alertDialog.setTitle("List");
-                ListView lv = (ListView) convertView.findViewById(R.id.listView1);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,names);
-                lv.setAdapter(adapter);
-                alertDialog.show();
-
-
-
-
-
-/*
-
-                final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
+                // Where we track the index of the selected items
+                final ArrayList mSelectedItemsIndices = new ArrayList();
+                final boolean[] originalCheckedTagNames = checkedTagNames.clone();
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
                 builder.setTitle(R.string.create_discussion_pick_tags);
-
-                // Specify the list array, the items to be selected by default (null for none),
-                // and the listener through which to receive callbacks when items are selected
-
-
-//                builder.setMultiChoiceItems(R.array.toppings, null,
-                builder.setMultiChoiceItems(items,
-                        checkedItems,
-                                new DialogInterface.OnMultiChoiceClickListener() {
+                builder.setMultiChoiceItems(
+                        tagNames,                   // Tags
+                        checkedTagNames,            // items to be selected by default
+                        new DialogInterface.OnMultiChoiceClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which,
-                                                        boolean isChecked) {
+                                    public void onClick(DialogInterface dialog, int index, boolean isChecked) {
                                         if (isChecked) {
-                                            // If the user checked the item, add it to the selected items
-                                            mSelectedItems.add(which);
-                                        } else if (mSelectedItems.contains(which)) {
-                                            // Else, if the item is already in the array, remove it
-                                            mSelectedItems.remove(Integer.valueOf(which));
+                                            mSelectedItemsIndices.add(index);
+                                        } else if (mSelectedItemsIndices.contains(index)) {
+                                            mSelectedItemsIndices.remove(Integer.valueOf(index));
                                         }
                                     }
                                 });
@@ -288,50 +238,55 @@ public class CreateDiscussionFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked OK, so save the mSelectedItems results somewhere
                                 // or return them to the component that opened the dialog
-                                // TODO
+                                for (int i = 0; i < mSelectedItemsIndices.size(); i++) {
+                                    tagIDsForDiscussion.add(allTags.get(i).getTagParseID());
+                                }
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                return;
+                                checkedTagNames = originalCheckedTagNames;
                             }
                         });
 
                 builder.create().show();
-                */
+
             }
         });
 
     }
 
+    /* ========================================================================== */
+
     private void addTagsToScreen() {
+        ArrayList<String> idsShouldBeChecked = currentUser.getNotificationsTagsIDs();
 
-//        ArrayList<ReliTag> reliTags = new ArrayList<ReliTag>(MainActivity.tagsIdToTag.values());
-//        ArrayList<String> shouldBeChecked = currentUser.getNotificationsTagsIDs();
-//
-//        items = new String[reliTags.size() * 2];
-//        checkedItems = new boolean[reliTags.size() * 2];
-//
-//        for (int i = 0; i < reliTags.size(); i=i+2) {
-//            ReliTag currentReliTag = reliTags.get(i);
-//            items[i] = currentReliTag.getTagName();
-//            items[i+1] = currentReliTag.getTagName();
-//            checkedItems[i] = shouldBeChecked.contains(currentReliTag.getTagParseID());
-//            checkedItems[i+1] = shouldBeChecked.contains(currentReliTag.getTagParseID());
-//        }
+        int numOfTags = allTags.size();
 
+        tagNames = new CharSequence[numOfTags];
+        checkedTagNames = new boolean[numOfTags];
 
-        ArrayList<ReliTag> reliTags = new ArrayList<ReliTag>(MainActivity.tagsIdToTag.values());
-        ArrayList<String> shouldBeChecked = currentUser.getNotificationsTagsIDs();
-
-        items = new String[reliTags.size()];
-        checkedItems = new boolean[reliTags.size()];
-
-        for (int i = 0; i < reliTags.size(); i++) {
-            ReliTag currentReliTag = reliTags.get(i);
-            items[i] = currentReliTag.getTagName();
-            checkedItems[i] = shouldBeChecked.contains(currentReliTag.getTagParseID());
+        for (int i = 0; i < numOfTags; i++) {
+            ReliTag currentReliTag = allTags.get(i);
+            tagNames[i] = currentReliTag.getTagName();
+            checkedTagNames[i] = idsShouldBeChecked.contains(currentReliTag.getTagParseID());
         }
+    }
+
+    /* ========================================================================== */
+
+    private void updateDiscussionsImIn(Discussion discussionEntry) {
+        String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
+        String currentDiscussion = discussionEntry.getParseID();
+        if (discussionsImIn.isEmpty()) {
+            MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, currentDiscussion);
+        }
+        else {
+            MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + currentDiscussion);
+        }
+        MainActivity.discussionsImIn.add(currentDiscussion);
+
+        MainActivity.user.saveEventually();
     }
 }

@@ -23,8 +23,8 @@ public class Discussion extends AbstractDiscussion {
 
     public Discussion(String discussionName, ParseGeoPoint location, int radius,
                       Bitmap discussionLogo, Date creationDate, Date expirationDate,
-                      String ownerParseID) {
-        super(discussionName, location, radius, discussionLogo, creationDate, expirationDate, ownerParseID);
+                      String ownerParseID, ArrayList<String> tagIDsForDiscussion) {
+        super(discussionName, location, radius, discussionLogo, creationDate, expirationDate, ownerParseID, tagIDsForDiscussion);
     }
 
     public void setDiscussionName(String discussionName){
