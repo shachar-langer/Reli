@@ -11,6 +11,8 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
  */
 public class Const
 {
+    public static final int STEP_SIZE = 20;
+
     // Default radius for receiving
     public static final int DEFAULT_RADIUS_FOR_NOTIFICATIONS = 50;
     public static final int DEFAULT_RADIUS_FOR_RELIS = 50;

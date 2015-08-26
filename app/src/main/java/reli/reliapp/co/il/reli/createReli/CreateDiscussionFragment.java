@@ -152,6 +152,8 @@ public class CreateDiscussionFragment extends Fragment {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress = ((int)Math.round(progress / Const.STEP_SIZE)) * Const.STEP_SIZE;
+                mSeekBar.setProgress(progress);
                 TextView mRadius = (TextView) finalView.findViewById(R.id.create_discussion_current_radius_value);
                 mRadius.setText(String.valueOf(progress) + " meters");
             }

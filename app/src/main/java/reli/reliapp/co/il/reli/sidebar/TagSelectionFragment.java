@@ -193,6 +193,8 @@ public class TagSelectionFragment extends Fragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress = ((int)Math.round(progress / Const.STEP_SIZE)) * Const.STEP_SIZE;
+                mSeekBar.setProgress(progress);
                 mRadius.setText(String.valueOf(progress) + " meters");
             }
 

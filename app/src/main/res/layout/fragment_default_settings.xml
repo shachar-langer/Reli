@@ -12,14 +12,9 @@
         android:paddingLeft="@dimen/pad_10dp"
         android:textStyle="bold" />
 
-    <SeekBar
-        android:layout_width="295dp"
-        android:id="@+id/default_settings_seek_bar_radius"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/pad_10dp"
-        android:layout_gravity="center_horizontal"
-        android:max="2000"
-        android:progress="1"/>
+    <include
+        layout="@layout/custom_seek_bar"
+        android:id="@+id/default_settings_seek_bar_radius" />
 
     <TextView
         android:layout_width="match_parent"
