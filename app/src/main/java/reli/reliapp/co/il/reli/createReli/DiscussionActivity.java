@@ -155,7 +155,8 @@ public class DiscussionActivity extends CustomActivity
 		messageTxt.setText(null);
 
 		ParseObject po = new ParseObject(discussionTableName);
-		po.put(Const.COL_MESSAGE_SENDER_ID, MainActivity.user.getParseID());
+		po.put(Const.COL_MESSAGE_SENDER_ID, user.getParseID());
+		po.put(Const.COL_MESSAGE_SENDER_NAME, user.getFullName());
 		po.put(Const.COL_MESSAGE_CONTENT, s);
 		po.saveEventually(new SaveCallback() {
 			@Override
