@@ -122,17 +122,8 @@ public class DiscussionActivity extends CustomActivity
 	/* ========================================================================== */
 
 	private void insertDiscussionToMYRelis() {
-		// Adding the new discussion to the user discussions if needed
-		String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
 		String currentDiscussion = discussionTableName;
-
-		if (discussionsImIn.equals("")) {
-			MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, currentDiscussion);
-		}
-		else {
-			MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + currentDiscussion);
-		}
-
+        MainActivity.user.addDiscussionImIn(currentDiscussion);
 		MainActivity.user.saveEventually();
 	}
 

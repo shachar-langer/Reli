@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -112,7 +111,7 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
                     public void done(List<Discussion> li, ParseException e) {
                         if (li != null) {
                             if (li.size() == 0) {
-                                Toast.makeText(getApplicationContext(), R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), R.string.msg_no_relis_found, Toast.LENGTH_SHORT).show();
                             }
 
                             chatsList = new ArrayList<Discussion>(li);

@@ -23,7 +23,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -95,38 +94,34 @@ public class MainMyRelisFragment extends Fragment {
     private void loadUserList() {
 
         final ReliUser user = MainActivity.user;
-
         final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
 
-        String discussionsUserIsIn = (String) user.getString(Const.COL_NAME_DISCUSSIONS_IM_IN);
+        ArrayList<String> discussionsUserIsIn = user.getDiscussionImIn();
+//        String discussionsUserIsIn = (String) user.getString(Const.COL_NAME_DISCUSSIONS_IM_IN);
 
-        // If there are no discussions I'm in, the frament should be empty
-        // TODO - should not be compared to null
+        // If there are no discussions I'm in, the frgament should be empty
         if (discussionsUserIsIn == null) {
-            user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, "");
+            user.initDiscussionImIn();
             user.saveEventually();
             dia.dismiss();
             Toast.makeText(getActivity().getApplicationContext(), "None", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (discussionsUserIsIn.equals("")) {
+        if (discussionsUserIsIn.size() == 0) {
             dia.dismiss();
             Toast.makeText(getActivity().getApplicationContext(), "Empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
         ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
-        String[] listOfDiscussion = discussionsUserIsIn.split(",");
-        ArrayList<String> discussionsArray = new ArrayList<String>(Arrays.asList(listOfDiscussion));
-        discussionQuery.whereContainedIn("objectId", discussionsArray);
+        discussionQuery.whereContainedIn("objectId", discussionsUserIsIn);
 
-        for (String discussion : discussionsArray) {
+        for (String discussion : discussionsUserIsIn) {
             MainActivity.discussionsImIn.add(discussion);
         }
 
-
-        // TODO - change 10 to the users radius choice
+        // TODO (Shachar) - change 10 to the users radius choice
         discussionQuery.whereWithinKilometers(Const.COL_DISCUSSION_LOCATION, user.getLocation(), 1000000)
                 .findInBackground(new FindCallback<Discussion>() {
 
@@ -135,7 +130,7 @@ public class MainMyRelisFragment extends Fragment {
 
                         if (li != null) {
                             if (li.size() == 0) {
-                                Toast.makeText(ctx, R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ctx, R.string.msg_no_relis_found, Toast.LENGTH_SHORT).show();
                             }
 
                             chatsList = new ArrayList<Discussion>(li);

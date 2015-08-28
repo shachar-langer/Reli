@@ -595,11 +595,11 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     @Override
     public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-        } else {
+//        if (getFragmentManager().getBackStackEntryCount() > 0) {
+//            getFragmentManager().popBackStack();
+//        } else {
             super.onBackPressed();
-        }
+//        }
     }
 
     /* ========================================================================== */

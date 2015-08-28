@@ -280,16 +280,10 @@ public class CreateDiscussionFragment extends Fragment {
     /* ========================================================================== */
 
     private void updateDiscussionsImIn(Discussion discussionEntry) {
-        String discussionsImIn = (String) MainActivity.user.get(Const.COL_NAME_DISCUSSIONS_IM_IN);
         String currentDiscussion = discussionEntry.getParseID();
-        if (discussionsImIn.isEmpty()) {
-            MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, currentDiscussion);
-        }
-        else {
-            MainActivity.user.put(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionsImIn + "," + currentDiscussion);
-        }
-        MainActivity.discussionsImIn.add(currentDiscussion);
-
+        MainActivity.user.addDiscussionImIn(currentDiscussion);
         MainActivity.user.saveEventually();
+
+        MainActivity.discussionsImIn.add(currentDiscussion);
     }
 }

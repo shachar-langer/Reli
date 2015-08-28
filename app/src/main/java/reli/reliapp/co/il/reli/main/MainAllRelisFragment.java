@@ -99,7 +99,7 @@ public class MainAllRelisFragment extends Fragment {
 
                         if (li != null) {
                             if (li.size() == 0) {
-                                Toast.makeText(ctx, R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ctx, R.string.msg_no_relis_found, Toast.LENGTH_SHORT).show();
                             }
 
                             chatsList = new ArrayList<Discussion>(li);

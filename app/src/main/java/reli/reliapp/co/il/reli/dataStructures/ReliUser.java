@@ -50,7 +50,7 @@ public class ReliUser extends ParseUser {
     // Constructor
     public ReliUser(Context ctx, ReliUserType userType, String firstName, String fullName, ParseGeoPoint location) {
         this.ctx = ctx;
-        put(Const.COL_NAME_DISCUSSIONS_IM_IN, "");
+        initDiscussionImIn();
 
         String dummyUniqueString = UUID.randomUUID().toString();
         setUsername(dummyUniqueString);
@@ -233,5 +233,48 @@ public class ReliUser extends ParseUser {
         }
 
         return res;
+    }
+
+    /* ========================================================================== */
+
+    public void addDiscussionImIn(ArrayList<String> discussionImInIDs) {
+        // Add the new ones
+        addAllUnique(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionImInIDs);
+    }
+
+    /* ========================================================================== */
+
+    public void addDiscussionImIn(String discussionImInID) {
+        ArrayList<String> al = new ArrayList<>();
+        al.add(discussionImInID);
+        addDiscussionImIn(al);
+    }
+
+    /* ========================================================================== */
+
+    public ArrayList<String> getDiscussionImIn() {
+        List<String> discussionImInIDs = getList(Const.COL_NAME_DISCUSSIONS_IM_IN);
+        ArrayList<String> res;
+
+        if (discussionImInIDs != null) {
+            res = new ArrayList<String>(discussionImInIDs);
+        } else {
+            res = new ArrayList<>();
+        }
+
+        return res;
+    }
+
+    /* ========================================================================== */
+
+    public void removeFromDiscussionImIn(ArrayList<String> discussionImInIDs) {
+        removeAll(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionImInIDs);
+    }
+
+    /* ========================================================================== */
+
+    public void initDiscussionImIn() {
+        ArrayList<String> al = new ArrayList<>();
+        addDiscussionImIn(al);
     }
 }

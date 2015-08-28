@@ -81,7 +81,7 @@
 
 
 
-    <string name="msg_no_user_found">No users were found</string>
+    <string name="msg_no_relis_found">No Relis were found</string>
     <string name="title_activity_future_main">FutureMainActivity</string>
 
     <!-- Nav Drawer Menu Items -->
