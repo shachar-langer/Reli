@@ -21,6 +21,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import reli.reliapp.co.il.reli.R;
@@ -108,7 +110,6 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
 
                     @Override
                     public void done(List<Discussion> li, ParseException e) {
-                        dia.dismiss();
                         if (li != null) {
                             if (li.size() == 0) {
                                 Toast.makeText(getApplicationContext(), R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
@@ -147,6 +148,7 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
                             Utils.showDialog(getApplicationContext(), getString(R.string.err_users) + " " + e.getMessage());
                             e.printStackTrace();
                         }
+                        dia.dismiss();
                     }
                 });
 
@@ -235,12 +237,41 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
             ((TextView) v.findViewById(R.id.lbl1)).setText(chatsList.get(pos).getDiscussionName());
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery(chatsList.get(pos).getParseID());
-            query.countInBackground(new CountCallback() {
-                public void done(int count, ParseException e) {
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> li, ParseException e) {
+//                    if (e == null) {
+//                        ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(count));
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "Failed to retrieve the number of messages at a discussion", Toast.LENGTH_SHORT).show();
+//                    }
+
                     if (e == null) {
-                        ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(count));
+                        HashSet<String> messagesIDs = new HashSet<String>();
+
+                        Date mostRecentMessageTime = null, currentMessageTime = null;
+                        int counter = 0;
+                        System.out.println(li.size());
+                        for (ParseObject message : li) {
+                            currentMessageTime = message.getUpdatedAt();
+
+                            if ((mostRecentMessageTime == null) ||
+                                    (currentMessageTime.after(mostRecentMessageTime))) {
+                                mostRecentMessageTime = currentMessageTime;
+                            }
+                            counter++;
+                            messagesIDs.add((String) message.get("sender"));
+                        }
+
+                        String hour = Integer.toString(mostRecentMessageTime.getHours());
+                        String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
+                        String lastModifiedHour = hour + ":" + minutes;
+
+                        ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
+                        ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
+                        ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
                     } else {
-                        Toast.makeText(getApplicationContext(), "Failed to retrieve the number of messages at a discussion", Toast.LENGTH_SHORT).show();
+                        // TODO - something failed
                     }
                 }
             });

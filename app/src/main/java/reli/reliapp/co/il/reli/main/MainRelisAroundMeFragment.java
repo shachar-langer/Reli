@@ -219,8 +219,8 @@ public class MainRelisAroundMeFragment extends Fragment {
 
                         @Override
                         public void done(List<Discussion> li, ParseException e) {
-                            dia.dismiss();
                             ((TextView) bla.findViewById(textId)).setText(Integer.toString(li.size()));
+                            dia.dismiss();
                         }
                     });
         }

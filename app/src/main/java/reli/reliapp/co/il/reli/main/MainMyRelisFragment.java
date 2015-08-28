@@ -24,6 +24,7 @@ import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -131,7 +132,7 @@ public class MainMyRelisFragment extends Fragment {
 
                     @Override
                     public void done(List<Discussion> li, ParseException e) {
-                        dia.dismiss();
+
                         if (li != null) {
                             if (li.size() == 0) {
                                 Toast.makeText(ctx, R.string.msg_no_user_found, Toast.LENGTH_SHORT).show();
@@ -173,6 +174,7 @@ public class MainMyRelisFragment extends Fragment {
                             Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
                             e.printStackTrace();
                         }
+                        dia.dismiss();
                     }
                 });
 
@@ -256,14 +258,26 @@ public class MainMyRelisFragment extends Fragment {
                     if (e == null) {
                         HashSet<String> messagesIDs = new HashSet<String>();
 
+                        Date mostRecentMessageTime = null, currentMessageTime = null;
                         int counter = 0;
                         System.out.println(li.size());
                         for (ParseObject message : li) {
+                            currentMessageTime = message.getUpdatedAt();
+
+                            if ((mostRecentMessageTime == null) ||
+                                    (currentMessageTime.after(mostRecentMessageTime))) {
+                                mostRecentMessageTime = currentMessageTime;
+                            }
                             counter++;
                             messagesIDs.add((String) message.get("sender"));
                         }
 
+                        String hour = Integer.toString(mostRecentMessageTime.getHours());
+                        String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
+                        String lastModifiedHour = hour + ":" + minutes;
+
                         ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
+                        ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
                         ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
                     } else {
                         // TODO - something failed
