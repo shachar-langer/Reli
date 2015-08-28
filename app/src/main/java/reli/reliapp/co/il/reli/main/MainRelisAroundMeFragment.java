@@ -188,7 +188,7 @@ public class MainRelisAroundMeFragment extends Fragment {
                                 Toast.makeText(getActivity(), "Can not find your location", Toast.LENGTH_SHORT).show();
                             } else {
                                 intent.putExtra(Const.LATITUDE, location.getLatitude());
-                                intent.putExtra(Const.ALTITUDE, location.getAltitude());
+                                intent.putExtra(Const.LONGTITUDE, location.getLongitude());
                                 intent.putExtra(Const.RADIUS, clickedRadius);
                                 startActivity(intent);
                                 return true;

@@ -110,7 +110,7 @@ public class CreateDiscussionFragment extends Fragment {
         // Get the current location
         Bundle extras = getActivity().getIntent().getExtras();
         double latitude = extras.getDouble(Const.LATITUDE);
-        double altitude = extras.getDouble(Const.ALTITUDE);
+        double altitude = extras.getDouble(Const.LONGTITUDE);
         ParseGeoPoint location = new ParseGeoPoint(latitude, altitude);
 
         // Get the radius

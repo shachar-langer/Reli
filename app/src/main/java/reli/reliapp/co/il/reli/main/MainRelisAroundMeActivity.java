@@ -55,10 +55,10 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
 
                 Bundle extras = getIntent().getExtras();
                 double latitude = extras.getDouble(Const.LATITUDE);
-                double altitude = extras.getDouble(Const.ALTITUDE);
+                double altitude = extras.getDouble(Const.LONGTITUDE);
 
                 intent.putExtra(Const.LATITUDE, latitude);
-                intent.putExtra(Const.ALTITUDE, altitude);
+                intent.putExtra(Const.LONGTITUDE, altitude);
                 startActivity(intent);
             }
         });

@@ -69,7 +69,7 @@ public class MainMyRelisFragment extends Fragment {
                 }
                 else {
                     intent.putExtra(Const.LATITUDE, location.getLatitude());
-                    intent.putExtra(Const.ALTITUDE, location.getAltitude());
+                    intent.putExtra(Const.LONGTITUDE, location.getLongitude());
                     startActivity(intent);
                 }
 

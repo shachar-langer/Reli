@@ -60,7 +60,7 @@ public class Const
     public static final String COL_TAG_NAME = "tagName";
 
     // Location argument to pass between activities
-    public static final String ALTITUDE = "altitude";
+    public static final String LONGTITUDE = "longtitude";
     public static final String LATITUDE = "latitude";
 
     // Radius argument to pass between the fragment and activity of ReliNearMe
