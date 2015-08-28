@@ -20,6 +20,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.SaveCallback;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -196,8 +197,8 @@ public class CreateDiscussionFragment extends Fragment {
         boolean isEmpty = false;
         if (topic.equals("")) {
             new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.dialog_title)
-                    .setMessage(R.string.dialog_message)
+                    .setTitle(R.string.dialog_topic_title)
+                    .setMessage(R.string.dialog_topic_message)
                     .setPositiveButton(R.string.ok, null)
                     .create()
                     .show();

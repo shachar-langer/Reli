@@ -31,16 +31,16 @@ public class Utils
 	 *            the listener2
 	 * @return the alert dialog
 	 */
-	public static AlertDialog showDialog(Context ctx, String msg, String btn1,
+	public static AlertDialog showDialog(Context ctx, String title, String msg, String btn1,
 			String btn2, DialogInterface.OnClickListener listener1,
 			DialogInterface.OnClickListener listener2)
 	{
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-		// builder.setTitle(R.string.app_name);
+		builder.setTitle(title);
 		builder.setMessage(msg).setCancelable(false)
 				.setPositiveButton(btn1, listener1);
-		if (btn2 != null && listener2 != null)
+		if (btn2 != null)
 			builder.setNegativeButton(btn2, listener2);
 
 		AlertDialog alert = builder.create();
@@ -49,21 +49,21 @@ public class Utils
 
 	}
 
-	public static AlertDialog showDialog(Context ctx, int msg, int btn1,
+	public static AlertDialog showDialog(Context ctx, int title, int msg, int btn1,
 			int btn2, DialogInterface.OnClickListener listener1,
 			DialogInterface.OnClickListener listener2)
 	{
 
-		return showDialog(ctx, ctx.getString(msg), ctx.getString(btn1),
+		return showDialog(ctx, ctx.getString(title), ctx.getString(msg), ctx.getString(btn1),
 				ctx.getString(btn2), listener1, listener2);
 
 	}
 
-	public static AlertDialog showDialog(Context ctx, String msg, String btn1,
+	public static AlertDialog showDialog(Context ctx, String title, String msg, String btn1,
 			String btn2, DialogInterface.OnClickListener listener)
 	{
 
-		return showDialog(ctx, msg, btn1, btn2, listener,
+		return showDialog(ctx, title, msg, btn1, btn2, listener,
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id)
@@ -75,20 +75,20 @@ public class Utils
 
 	}
 
-	public static AlertDialog showDialog(Context ctx, int msg, int btn1,
+	public static AlertDialog showDialog(Context ctx, int title, int msg, int btn1,
 			int btn2, DialogInterface.OnClickListener listener)
 	{
 
-		return showDialog(ctx, ctx.getString(msg), ctx.getString(btn1),
+		return showDialog(ctx, ctx.getString(title), ctx.getString(msg), ctx.getString(btn1),
 				ctx.getString(btn2), listener);
 
 	}
 
-	public static AlertDialog showDialog(Context ctx, String msg,
+	public static AlertDialog showDialog(Context ctx, String title, String msg,
 			DialogInterface.OnClickListener listener)
 	{
 
-		return showDialog(ctx, msg, ctx.getString(android.R.string.ok), null,
+		return showDialog(ctx, title, msg, ctx.getString(android.R.string.ok), null,
 				listener, null);
 	}
 
@@ -96,13 +96,13 @@ public class Utils
 			DialogInterface.OnClickListener listener)
 	{
 
-		return showDialog(ctx, ctx.getString(msg),
+		return showDialog(ctx, null, ctx.getString(msg),
 				ctx.getString(android.R.string.ok), null, listener, null);
 	}
 
 	public static AlertDialog showDialog(Context ctx, String msg)
 	{
-    	return showDialog(ctx, msg, new DialogInterface.OnClickListener() {
+    	return showDialog(ctx, null, msg, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int id)
 			{

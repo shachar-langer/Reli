@@ -6,19 +6,21 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
+        android:paddingTop="@dimen/pad_5dp"
+        android:paddingLeft="@dimen/pad_5dp"
         android:layout_height="wrap_content">
 
         <!-- Creation date -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/pad_5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingTop="@dimen/pad_5dp"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/pad_15dp"
+                android:paddingTop="@dimen/pad_15dp"
                 android:textStyle="bold"
                 android:text="@string/about_discussion_title_creation"
                 android:id="@+id/about_discussion_title_creation" />
@@ -27,19 +29,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/about_discussion_value_creation" />
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <!-- Expiration -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/pad_5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingTop="@dimen/pad_5dp"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/pad_15dp"
+                android:paddingTop="@dimen/pad_15dp"
                 android:textStyle="bold"
                 android:text="@string/about_discussion_title_expiration"
                 android:id="@+id/about_discussion_title_expiration" />
@@ -48,19 +50,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/about_discussion_value_expiration" />
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <!-- Owner -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/pad_5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingTop="@dimen/pad_5dp"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/pad_15dp"
+                android:paddingTop="@dimen/pad_15dp"
                 android:textStyle="bold"
                 android:text="@string/about_discussion_title_owner"
                 android:id="@+id/about_discussion_title_owner" />
@@ -69,19 +71,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/about_discussion_value_owner" />
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <!-- Radius -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/pad_5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingTop="@dimen/pad_5dp"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/pad_15dp"
+                android:paddingTop="@dimen/pad_15dp"
                 android:textStyle="bold"
                 android:text="@string/about_discussion_title_radius"
                 android:id="@+id/about_discussion_title_radius" />
@@ -90,19 +92,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/about_discussion_value_radius" />
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
         <!-- Tags -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/pad_5dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingTop="@dimen/pad_5dp"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content">-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/pad_15dp"
+                android:paddingTop="@dimen/pad_15dp"
                 android:textStyle="bold"
                 android:text="@string/about_discussion_title_tags"
                 android:id="@+id/about_discussion_title_tags" />
@@ -111,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/about_discussion_value_tags" />
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 

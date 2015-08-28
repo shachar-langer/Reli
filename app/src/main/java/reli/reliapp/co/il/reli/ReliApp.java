@@ -2,6 +2,7 @@ package reli.reliapp.co.il.reli;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -38,5 +39,8 @@ public class ReliApp extends Application {
 
         // Initialize Parse
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
+
+        // Initialize the Facebook SDK
+        FacebookSdk.sdkInitialize(this);
     }
 }

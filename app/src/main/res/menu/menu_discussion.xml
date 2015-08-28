@@ -2,6 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="reli.reliapp.co.il.reli.createReli.DiscussionActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+
+    <item android:id="@+id/settings_follow" android:title="@string/settings_follow"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/settings_unfollow" android:title="@string/settings_unfollow"
+        android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/settings_reli_info" android:title="@string/settings_reli_info"
+        android:orderInCategory="100" app:showAsAction="never" />
+
 </menu>

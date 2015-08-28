@@ -1,42 +1,119 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue_grey_800"
+        android:layout_weight="0.85">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:paddingTop="@dimen/pad_chat_item"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/txt_20sp"
+            android:fontFamily="droidsans.ttf"
+            android:text="@string/login_welcome_string_part_1" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:paddingTop="@dimen/pad_10dp"
+            android:paddingBottom="@dimen/pad_20dp"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/txt_35sp"
+            android:textStyle="bold"
+            android:text="@string/login_welcome_string_part_2" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical|center_horizontal">
+
+            <ImageView
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:src="@drawable/user_chat1"
+                android:layout_marginBottom="@dimen/pad_20dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal">
+        android:layout_height="wrap_content"
+        android:background="@color/gray_light"
+        android:layout_weight="0.2">
 
-        <TextView
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login_welcome_string" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/reli_logo2"
-            android:layout_marginBottom="@dimen/pad_20dp" />
-
-
-        <com.facebook.login.widget.ProfilePictureView
-            android:id="@+id/profilePicture"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            facebook:com_facebook_preset_size="normal"
-            android:layout_gravity="center_vertical" />
+            android:paddingTop="@dimen/pad_10dp"
+            android:weightSum="1">
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebook_login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_facebook_128"
+                android:id="@+id/fb_button"
+                android:clickable="true"/>
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/fbLoginButton"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_anonymous_2_128"
+                android:id="@+id/anonymous_button"
+                android:layout_gravity="center_horizontal|top"
+                android:clickable="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingBottom="@dimen/pad_10dp"
+            android:gravity="bottom"
+            android:layout_gravity="bottom">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_keep_login"
+                android:textSize="@dimen/txt_14sp"
+                android:textColor="@color/black"
+                android:id="@+id/login_keep_login"
+                android:checked="true" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
-</RelativeLayout>
+
+
+</LinearLayout>

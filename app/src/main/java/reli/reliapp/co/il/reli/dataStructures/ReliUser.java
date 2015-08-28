@@ -26,7 +26,6 @@ import reli.reliapp.co.il.reli.utils.Const;
 
 public class ReliUser extends ParseUser {
 
-
     private ReliUserType userType;
     private String firstName;
     private String fullName;
@@ -51,6 +50,8 @@ public class ReliUser extends ParseUser {
     // Constructor
     public ReliUser(Context ctx, ReliUserType userType, String firstName, String fullName, ParseGeoPoint location) {
         this.ctx = ctx;
+        put(Const.COL_NAME_DISCUSSIONS_IM_IN, "");
+
         String dummyUniqueString = UUID.randomUUID().toString();
         setUsername(dummyUniqueString);
         setPassword(dummyUniqueString);
@@ -212,7 +213,6 @@ public class ReliUser extends ParseUser {
    /* ========================================================================== */
 
     public void setNotificationsTagsIDs(ArrayList<String> tagsIDs) {
-        // TODO - make sure that it works
         // Remove previous values
         remove(Const.COL_NAME_NOTIFICATIONS_TAGS);
 
@@ -223,7 +223,6 @@ public class ReliUser extends ParseUser {
     /* ========================================================================== */
 
     public ArrayList<String> getNotificationsTagsIDs() {
-        // TODO - make sure that it works
         List<String> tagIDs = getList(Const.COL_NAME_NOTIFICATIONS_TAGS);
         ArrayList<String> res;
 
@@ -235,5 +234,4 @@ public class ReliUser extends ParseUser {
 
         return res;
     }
-
 }

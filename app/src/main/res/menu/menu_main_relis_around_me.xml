@@ -4,4 +4,7 @@
     tools:context="reli.reliapp.co.il.reli.main.MainRelisAroundMeActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_settings_bla" android:title="bla"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

@@ -11,6 +11,8 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
  */
 public class Const
 {
+    public static final String UNKNOWN_USER = "(Unknown)";
+
     public static final int STEP_SIZE = 20;
 
     // Default radius for receiving
@@ -63,4 +65,9 @@ public class Const
     public static final int MAX_HOURS = 24;
     public static final int MAX_MINUTES = 59;
     public static final int MINUTES_IN_HOUR = 60;
+
+    // SharedPreferences
+    public static final String RELI_SHARED_PREF_FILE = "reliPrefFile";
+    public static final String SHARED_PREF_KEEP_SIGNED_IN = "reliKeepSignedIn";
 }
+

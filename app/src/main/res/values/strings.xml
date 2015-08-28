@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Reli</string>
 
-    <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
+    <string name="settings_follow">Follow Reli</string>
+    <string name="settings_unfollow">Unfollow Reli</string>
+    <string name="settings_reli_info">Reli info</string>
+
+
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_create_reli">CreateReliActivity</string>
 
@@ -41,7 +45,11 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
-    <string name="login_welcome_string">Welcome to Reli!</string>
+    <string name="login_welcome_string_part_1">Welcome to</string>
+    <string name="login_welcome_string_part_2">Reli</string>
+    <string name="login_anonymously">Login anonymously</string>
+    <string name="login_keep_login">Keep me logged in</string>
+
     <string name="title_activity_location">LocationActivity</string>
 
     <string name="left_tab">Relis Around Me</string>
@@ -81,7 +89,10 @@
     <string name="nav_drawer_inbox_sub">See all the Relis around you</string>
 
     <string name="nav_drawer_sign_out">Sign Out</string>
-    <string name="nav_drawer_sign_out_sub">But come back soon!</string>
+    <string name="nav_drawer_sign_out_sub">Sign out of your Reli account</string>
+
+    <string name="nav_drawer_exit">Quit Reli</string>
+    <string name="nav_drawer_exit_sub">But come back soon!</string>
 
     <string name="nav_drawer_notification_settings">Notification Settings</string>
     <string name="nav_drawer_notification_settings_sub">Get notified about everything!</string>
@@ -102,19 +113,21 @@
         <item>@string/nav_drawer_inbox</item>
         <item>@string/nav_drawer_notification_settings</item>
         <item>@string/nav_drawer_default_settings</item>
-        <item>@string/nav_drawer_tour</item>
+        <!--<item>@string/nav_drawer_tour</item>-->
         <item>@string/nav_drawer_faq</item>
         <item>@string/nav_drawer_about</item>
         <item>@string/nav_drawer_sign_out</item>
+        <item>@string/nav_drawer_exit</item>
     </string-array>
     <string-array name="nav_drawer_items_sub">
         <item>@string/nav_drawer_inbox_sub</item>
         <item>@string/nav_drawer_notification_settings_sub</item>
         <item>@string/nav_drawer_default_settings_sub</item>
-        <item>@string/nav_drawer_tour_sub</item>
+        <!--<item>@string/nav_drawer_tour_sub</item>-->
         <item>@string/nav_drawer_faq_sub</item>
         <item>@string/nav_drawer_about_sub</item>
         <item>@string/nav_drawer_sign_out_sub</item>
+        <item>@string/nav_drawer_exit_sub</item>
     </string-array>
 
 
@@ -163,12 +176,24 @@
 
     <string name="create_discussion_pick_tags">Choose the tags:</string>
 
-    <string name="dialog_title">Empty Topic</string>
-    <string name="dialog_message">We\'re sorry, but Relis cannot be created without a topic.</string>
+    <string name="dialog_topic_title">Empty Topic</string>
+    <string name="dialog_topic_message">We\'re sorry, but Relis cannot be created without a topic.</string>
 
+    <string name="dialog_sign_out_title">Are you sure?</string>
+    <string name="dialog_sign_out_message">Are you sure you want to sign out? This means that your Relis might not be accessible in the future!</string>
+    <string name="successful_sign_out">You signed out successfully</string>
+
+    <string name="dialog_exit_title">Are you sure?</string>
+    <string name="dialog_exit_message">Are you sure you want to exit?</string>
 
     <string name="ok">OK</string>
+    <string name="ok_sign_out">Sign out</string>
+    <string name="ok_exit">Exit</string>
     <string name="cancel">Cancel</string>
 
+    <string name="message_follow">You\'ve followed this Reli</string>
+    <string name="message_unfollow">You\'ve unfollowed this Reli</string>
+
+    <string name="no_tags">(none)</string>
 
 </resources>

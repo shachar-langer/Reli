@@ -9,11 +9,12 @@ package reli.reliapp.co.il.reli.main;
 // ***********************************************************************************
 
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 //import android.app.FragmentManager;
 import android.content.Intent;
@@ -29,7 +30,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -40,6 +40,8 @@ import android.location.Location;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,13 +59,15 @@ import reli.reliapp.co.il.reli.ReliApp;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.ReliTag;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
-import reli.reliapp.co.il.reli.location.LocationActivity;
+import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
+import reli.reliapp.co.il.reli.login.LoginActivity;
 import reli.reliapp.co.il.reli.sidebar.AboutFragment;
 import reli.reliapp.co.il.reli.sidebar.DefaultSettingsFragment;
 import reli.reliapp.co.il.reli.sidebar.FaqFragment;
 import reli.reliapp.co.il.reli.sidebar.GuidedTourActivity;
 import reli.reliapp.co.il.reli.sidebar.TagSelectionFragment;
 import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
+import reli.reliapp.co.il.reli.utils.Utils;
 
 /**
  * The Class UserList is the Activity class. It shows a list of all users of
@@ -220,8 +224,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         // *** Location ends
 
 //        user = ReliUser.getCurrentReliUser();
-        // TODO - delete?
-        updateUserStatus(true);
 
 
 //        ImageView iv = (ImageView) findViewById(R.id.avatar);
@@ -229,12 +231,14 @@ public class MainActivity extends CustomActivity implements LocationListener,
 //        iv.setImageBitmap(user.getPicture());
 //        iv.setImageBitmap(user.getFacebookPicture().getDrawingCache());
         TextView tv = (TextView) findViewById(R.id.userName);
-        tv.setText(user.getFullName());
+        if (user != null) {
+            tv.setText(user.getFullName());
+        }
 
         // Start
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mainContent, new HomeFragment())
-                .addToBackStack(null)
+//                .addToBackStack(null)
                 .commit();
     }
 
@@ -282,7 +286,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         if (isShachar) Toast.makeText(getApplicationContext(), "In OnDestroy", Toast.LENGTH_SHORT).show();
 
         super.onDestroy();
-        updateUserStatus(false);
     }
 
     /* ========================================================================== */
@@ -293,14 +296,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         if (isShachar) Toast.makeText(getApplicationContext(), "In OnResume", Toast.LENGTH_SHORT).show();
 
         super.onResume();
-    }
-
-    /* ========================================================================== */
-
-    // TODO - move to ReliUser
-    private void updateUserStatus(boolean online) {
-        user.put("online", online);
-        user.saveEventually();
     }
 
    /* ========================================================================== */
@@ -596,14 +591,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         return null;
     }
 
-        /* ========================================================================== */
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.future_main, menu);
-        return true;
-    }
-
 /* ========================================================================== */
 
     @Override
@@ -652,7 +639,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
         }
     }
 
-        /* ========================================================================== */
+    /* ========================================================================== */
 
     /*
     * Called when a particular item from the navigation drawer
@@ -676,10 +663,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
             Intent intent = new Intent(this, c);
             startActivity(intent);
         } else if (positionMeaning.equals(getString(R.string.nav_drawer_sign_out))) {
-            // TODO - change
-            Toast.makeText(getApplicationContext(), "You logged out", Toast.LENGTH_SHORT).show();
-            ParseUser.logOut();
-            finish();
+            handleLogout();
+        }
+        else if (positionMeaning.equals(getString(R.string.nav_drawer_exit))) {
+            handleExit();
         }
 
         // Update selected item
@@ -687,5 +674,61 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
+    }
+
+    /* ========================================================================== */
+
+    private void handleLogout() {
+        DialogInterface.OnClickListener listener1 = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                ReliUser user = MainActivity.user;
+
+                // Logout from Facebook session
+                if ((user != null) && (user.getUserType() == ReliUserType.FACEBOOK_USER)) {
+                    if (Profile.getCurrentProfile() != null) {
+                        // Sign out
+                        LoginManager.getInstance().logOut();
+                    }
+                }
+
+                ParseUser.logOut();
+                MainActivity.user = null;
+
+                Toast.makeText(getApplicationContext(), R.string.successful_sign_out, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+
+                finish();
+            }
+        };
+
+        Utils.showDialog(MainActivity.this,
+                R.string.dialog_sign_out_title,
+                R.string.dialog_sign_out_message,
+                R.string.ok_sign_out,
+                R.string.cancel,
+                listener1,
+                null);
+    }
+
+    /* ========================================================================== */
+
+    private void handleExit() {
+        DialogInterface.OnClickListener listener1 = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        };
+
+        Utils.showDialog(MainActivity.this,
+                R.string.dialog_exit_title,
+                R.string.dialog_exit_message,
+                R.string.ok_exit,
+                R.string.cancel,
+                listener1,
+                null);
     }
 }

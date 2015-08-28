@@ -3,8 +3,10 @@ package reli.reliapp.co.il.reli.splashScreen;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -27,17 +29,12 @@ import reli.reliapp.co.il.reli.utils.Const;
 
 public class SplashScreen extends Activity {
 
+    /* ========================================================================== */
+
     // Splash screen timer
-    private static int SPLASH_TIME_OUT_MILLIS = 1000;
+    private static int SPLASH_TIME_OUT_MILLIS = 3000;
 
-    private void initLoginScreen() {
-        // This method will be executed once the timer is over
-        Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
-        startActivity(intent);
-
-        // close this activity
-        finish();
-    }
+    /* ========================================================================== */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +44,22 @@ public class SplashScreen extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                // Retrieve the list of Tags
                 initTagsMaps();
 
-                ReliUser user = (ReliUser) (ParseUser.getCurrentUser());
+                // Check if we should use the saved user
+                final ReliUser user;
+                SharedPreferences prefs = getSharedPreferences(Const.RELI_SHARED_PREF_FILE, Context.MODE_PRIVATE);
+                boolean restoredShouldKeepSignedIn = prefs.getBoolean(Const.SHARED_PREF_KEEP_SIGNED_IN, false);
+                Toast.makeText(getApplicationContext(), "In Splash - restoredShouldKeepSignedIn == " + restoredShouldKeepSignedIn, Toast.LENGTH_SHORT).show();
+                if (restoredShouldKeepSignedIn) {
+                    user = (ReliUser) (ParseUser.getCurrentUser());
+                } else {
+                    user = null;
+                }
+
+                Toast.makeText(getApplicationContext(), "In Splash - user == " + user, Toast.LENGTH_SHORT).show();
+                MainActivity.user = user;
 
                 if (user == null) {
                     initLoginScreen();
@@ -58,12 +68,12 @@ public class SplashScreen extends Activity {
                     user.fetchInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject parseObject, ParseException e) {
-
-                            MainActivity.user = (ReliUser) parseObject;
-
-                            initLoginScreen();
+                            // TODO - add?
+//                            MainActivity.user = (ReliUser) parseObject;
+//                            initLoginScreen();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
                         }
-
                     });
                 }
             }
@@ -89,7 +99,17 @@ public class SplashScreen extends Activity {
                 }
             }
         });
-
-
     }
+
+    /* ========================================================================== */
+
+    private void initLoginScreen() {
+        // This method will be executed once the timer is over
+        Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
+        startActivity(intent);
+
+        // close this activity
+        finish();
+    }
+
 }

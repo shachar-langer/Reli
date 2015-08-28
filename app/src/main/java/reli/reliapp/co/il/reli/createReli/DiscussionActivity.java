@@ -1,14 +1,18 @@
 package reli.reliapp.co.il.reli.createReli;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.format.DateUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +34,8 @@ import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.Message;
 import reli.reliapp.co.il.reli.dataStructures.MessageStatus;
+import reli.reliapp.co.il.reli.main.AboutDiscussionFragment;
+import reli.reliapp.co.il.reli.main.HomeFragment;
 import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
 
@@ -40,7 +46,6 @@ import reli.reliapp.co.il.reli.utils.Const;
  */
 public class DiscussionActivity extends CustomActivity
 {
-
 	private ArrayList<Message> messagesList;
 	private ChatAdapter chatAdapter;
 	private String discussionTopic;
@@ -292,16 +297,48 @@ public class DiscussionActivity extends CustomActivity
 
 	}
 
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
+    /* ========================================================================== */
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		if (item.getItemId() == android.R.id.home)
-		{
-			finish();
-		}
-		return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.settings_follow:
+                Toast.makeText(getApplicationContext(), R.string.message_follow, Toast.LENGTH_SHORT).show();
+                // TODO - make sure with Shachar that it's ok
+                insertDiscussionToMYRelis();
+                return true;
+
+            case R.id.settings_unfollow:
+                Toast.makeText(getApplicationContext(), R.string.message_unfollow, Toast.LENGTH_SHORT).show();
+                // TODO
+                return true;
+
+            case R.id.settings_reli_info:
+                Bundle bundle = getIntent().getExtras();
+                Fragment f = new AboutDiscussionFragment();
+                f.setArguments(bundle);
+
+                // TODO - change DiscussionActivity to use fragment
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.linear_layout_activity_discussion, f)
+                        .addToBackStack(null)
+                        .commit();
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 	}
+
+    /* ========================================================================== */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_discussion, menu);
+
+        return true;
+    }
 }

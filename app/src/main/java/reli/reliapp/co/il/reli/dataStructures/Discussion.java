@@ -7,13 +7,14 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 import reli.reliapp.co.il.reli.utils.Const;
 
 @ParseClassName("Discussions")
-public class Discussion extends AbstractDiscussion {
+public class Discussion extends AbstractDiscussion implements Serializable {
 
     private ArrayList<Message> messagesList;
 
