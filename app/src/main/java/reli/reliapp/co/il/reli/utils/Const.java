@@ -50,6 +50,12 @@ public class Const
     public static final String COL_DISCUSSION_OWNER_PARSE_ID = "discussionOwnerParseID";
     public static final String COL_DISCUSSION_TAG_IDS = "tagIDsForDiscussion";
 
+    // Columns in Parse for the messages table
+    public static final String COL_MESSAGE_CONTENT = "message";
+    public static final String COL_MESSAGE_SENDER_ID = "sender";
+    public static final String COL_MESSAGE_SENDER_NAME = "senderName";
+    public static final String COL_MESSAGE_CREATED_AT = "createdAt";
+
     // Columns in Parse for Tag
     public static final String COL_TAG_NAME = "tagName";
 

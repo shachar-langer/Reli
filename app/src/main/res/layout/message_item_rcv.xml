@@ -17,13 +17,23 @@
             android:paddingLeft="@dimen/pad_chat_item"
             android:paddingTop="@dimen/pad_5dp" >
 
-            <TextView
+        <TextView
+            android:id="@+id/senderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/main_color_gray_dk"
+            android:textSize="@dimen/txt_11sp"
+            android:textStyle="bold" />
+
+        <TextView
                 android:id="@+id/lbl1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textColor="@color/main_color_gray_dk"
-                android:textSize="@dimen/txt_13sp" />
+                android:paddingBottom="@dimen/pad_5dp"
+                android:textSize="@dimen/txt_11sp" />
             <TextView
                 android:id="@+id/lbl2"
                 android:layout_width="wrap_content"

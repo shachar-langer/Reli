@@ -264,7 +264,7 @@ public class MainMyRelisFragment extends Fragment {
                                 mostRecentMessageTime = currentMessageTime;
                             }
                             counter++;
-                            messagesIDs.add((String) message.get("sender"));
+                            messagesIDs.add((String) message.get(Const.COL_MESSAGE_SENDER_ID));
                         }
 
                         String hour = Integer.toString(mostRecentMessageTime.getHours());

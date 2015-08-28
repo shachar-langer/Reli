@@ -34,6 +34,7 @@ import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.dataStructures.Message;
 import reli.reliapp.co.il.reli.dataStructures.MessageStatus;
+import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.main.AboutDiscussionFragment;
 import reli.reliapp.co.il.reli.main.HomeFragment;
 import reli.reliapp.co.il.reli.main.MainActivity;
@@ -145,15 +146,17 @@ public class DiscussionActivity extends CustomActivity
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(messageTxt.getWindowToken(), 0);
 
+		ReliUser user = MainActivity.user;
+
 		String s = messageTxt.getText().toString();
-		final Message message = new Message(s, new Date(), MainActivity.user.getParseID());
+		final Message message = new Message(s, new Date(), MainActivity.user.getParseID(), user.getFullName());
 		messagesList.add(message);
 		chatAdapter.notifyDataSetChanged();
 		messageTxt.setText(null);
 
 		ParseObject po = new ParseObject(discussionTableName);
-		po.put("sender", MainActivity.user.getParseID());
-		po.put("message", s);
+		po.put(Const.COL_MESSAGE_SENDER_ID, MainActivity.user.getParseID());
+		po.put(Const.COL_MESSAGE_CONTENT, s);
 		po.saveEventually(new SaveCallback() {
 			@Override
 			public void done(ParseException e)
@@ -186,10 +189,10 @@ public class DiscussionActivity extends CustomActivity
 			// load only newly received message..
 			if (lastMsgDate != null)
 				// Load only new messages, that weren't send by me
-				q.whereGreaterThan("createdAt", lastMsgDate);
-				q.whereNotEqualTo("sender", MainActivity.user.getParseID());
+				q.whereGreaterThan(Const.COL_MESSAGE_CREATED_AT, lastMsgDate);
+				q.whereNotEqualTo(Const.COL_MESSAGE_SENDER_ID, MainActivity.user.getParseID());
 		}
-		q.orderByDescending("createdAt");
+		q.orderByDescending(Const.COL_MESSAGE_CREATED_AT);
 		q.setLimit(100);
 		q.findInBackground(new FindCallback<ParseObject>() {
 
@@ -199,7 +202,11 @@ public class DiscussionActivity extends CustomActivity
 					for (int i = li.size() - 1; i >= 0; i--) {
 						ParseObject po = li.get(i);
 
-						Message message = new Message(po.getString("message"), po.getCreatedAt(), po.getString("sender"));
+						Message message = new Message(po.getString(
+								Const.COL_MESSAGE_CONTENT),
+								po.getCreatedAt(),
+								po.getString(Const.COL_MESSAGE_SENDER_ID),
+								po.getString(Const.COL_MESSAGE_SENDER_NAME));
 
 						// TODO - change? It means the message was always in status sent and not failed (which me sense,
 						// TODO - because If we get here, it was sent.
@@ -267,10 +274,13 @@ public class DiscussionActivity extends CustomActivity
 		{
 			Message c = getItem(pos);
 			
-			if (c.isSentByUser())
+			if (c.isSentByUser()) {
 				v = getLayoutInflater().inflate(R.layout.message_item_sent, null);
-			else
+			}
+			else {
 				v = getLayoutInflater().inflate(R.layout.message_item_rcv, null);
+				((TextView)v.findViewById(R.id.senderName)).setText(c.getSenderName());
+			}
 
 			TextView lbl = (TextView) v.findViewById(R.id.lbl1);
 			lbl.setText(DateUtils.getRelativeDateTimeString(DiscussionActivity.this, c

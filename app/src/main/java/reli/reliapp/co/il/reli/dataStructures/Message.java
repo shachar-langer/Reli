@@ -10,13 +10,15 @@ public class Message
 	private Date date;
 	private String senderID;
     private MessageStatus status;
+	private String senderName;
 
-	public Message(String msg, Date date, String senderID)
+	public Message(String msg, Date date, String senderID, String senderName)
 	{
 		this.messageContent = msg;
 		this.date = date;
 		this.senderID = senderID;
         this.status = MessageStatus.STATUS_SENDING;
+		this.senderName = senderName;
 	}
 
 	public String getMessageContent()
@@ -63,5 +65,9 @@ public class Message
 	public void setStatus(MessageStatus status)
 	{
 		this.status = status;
+	}
+
+	public String getSenderName() {
+		return this.senderName;
 	}
 }
