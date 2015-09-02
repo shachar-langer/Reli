@@ -62,6 +62,7 @@ public class ReliUser extends ParseUser {
         setLocation(location);
 
         setRelisRadius(Const.DEFAULT_RADIUS_FOR_RELIS);
+        //setRelisExpirationInMinutes(Const.DEFAULT_EXPIRATION_FOR_RELIS);
 
         // TODO - which tags should be the default ones?
         setNotificationsRadius(Const.DEFAULT_RADIUS_FOR_NOTIFICATIONS);
@@ -269,6 +270,14 @@ public class ReliUser extends ParseUser {
 
     public void removeFromDiscussionImIn(ArrayList<String> discussionImInIDs) {
         removeAll(Const.COL_NAME_DISCUSSIONS_IM_IN, discussionImInIDs);
+    }
+
+    /* ========================================================================== */
+
+    public void removeFromDiscussionImIn(String discussionImInID) {
+        ArrayList<String> al = new ArrayList<>();
+        al.add(discussionImInID);
+        removeAll(Const.COL_NAME_DISCUSSIONS_IM_IN, al);
     }
 
     /* ========================================================================== */

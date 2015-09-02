@@ -106,7 +106,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         if (user != null) {
             Toast.makeText(getActivity().getApplicationContext(), "FB - ParseUser is known", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getActivity(), MainActivity.class));
-            getActivity().finish();
+//            getActivity().finish();
         }
 
         else {
@@ -163,7 +163,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         if (user != null) {
             Toast.makeText(getActivity().getApplicationContext(), "ParseUser is known", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getActivity(), MainActivity.class));
-            getActivity().finish();
+//            getActivity().finish();
         }
 
         else {
@@ -192,7 +192,10 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                 if (e == null) {
                     Toast.makeText(getActivity().getApplicationContext(), "Added a new ReliUser to Parse", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), MainActivity.class));
-                    getActivity().finish();
+//                    getActivity().finish();
+                }
+                else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Error in addUserToParse(): " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -11,13 +11,17 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
  */
 public class Const
 {
-    public static final String UNKNOWN_USER = "(Unknown)";
+    public static final int NOTIFICATION_TIME_INTERVAL_IN_SECONDS = 10 * 60;
+    public static final int METERS_IN_KM = 1000;
 
+    public static final String UNKNOWN_USER = "(Unknown)";
+    public static final String HOME_FRAGMENT_TAG = "HomeFragment";
     public static final int STEP_SIZE = 20;
 
     // Default radius for receiving
     public static final int DEFAULT_RADIUS_FOR_NOTIFICATIONS = 50;
     public static final int DEFAULT_RADIUS_FOR_RELIS = 50;
+    public static final int DEFAULT_EXPIRATION_FOR_RELIS = 120;
 
     // Columns in Parse for DiscussionActivity (the chat itself
 	public static final String DISCUSSION_TOPIC = "buddyName";
@@ -75,5 +79,9 @@ public class Const
     // SharedPreferences
     public static final String RELI_SHARED_PREF_FILE = "reliPrefFile";
     public static final String SHARED_PREF_KEEP_SIGNED_IN = "reliKeepSignedIn";
+
+    // Installation (used for notifications)
+    public static final String INSTALLATION_USER = "user";
+
 }
 

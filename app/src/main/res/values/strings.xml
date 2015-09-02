@@ -7,8 +7,8 @@
     <string name="settings_reli_info">Reli info</string>
 
 
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_create_reli">CreateReliActivity</string>
+    <string name="title_activity_login">Login Activity</string>
+    <string name="title_activity_create_reli">Create Reli</string>
 
     <!-- Discussion -->
     <string name="discussion_title">Discussion</string>
@@ -82,7 +82,6 @@
 
 
     <string name="msg_no_relis_found">No Relis were found</string>
-    <string name="title_activity_future_main">FutureMainActivity</string>
 
     <!-- Nav Drawer Menu Items -->
     <string name="nav_drawer_inbox">Inbox</string>
@@ -130,11 +129,8 @@
         <item>@string/nav_drawer_exit_sub</item>
     </string-array>
 
-
-    <string name="title_activity_about">AboutActivity</string>
-
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_guided_tour">GuidedTourActivity</string>
+    <string name="title_activity_guided_tour">Guided Tour</string>
     <string name="title_activity_tag_selection">Notification Settings</string>
     <string name="title_activity_main_relis_around_me">MainRelisAroundMeActivity</string>
 
@@ -168,6 +164,7 @@
 
     <string name="about_discussion_title_creation">Creation date:</string>
     <string name="about_discussion_title_expiration">Expiration date:</string>
+    <string name="about_discussion_title_update">Last updated:</string>
     <string name="about_discussion_title_owner">Owner:</string>
     <string name="about_discussion_title_radius">Radius:</string>
     <string name="about_discussion_title_tags">Tags:</string>

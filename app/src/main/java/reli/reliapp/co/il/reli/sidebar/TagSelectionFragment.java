@@ -16,13 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.dataStructures.ReliTag;
@@ -39,7 +33,7 @@ public class TagSelectionFragment extends Fragment {
     private SeekBar mSeekBar;
     private ReliUser currentUser;
 
-    private ArrayList<String> tagsNames = new ArrayList<String>();
+    private ArrayList<String> tagsNames = new ArrayList<>();
     private ArrayList<ReliTag> tagsAsObjects;
     ArrayAdapter<String> mArrayAdapter;
 
@@ -73,14 +67,15 @@ public class TagSelectionFragment extends Fragment {
     /* ========================================================================== */
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onPause() {
+        super.onPause();
 
         boolean isChanged = saveNewRadius();
         isChanged |= saveNewTags();
 
         if (isChanged) {
             currentUser.saveEventually();
+            MainActivity.installation.saveInBackground();
             Toast.makeText(getActivity().getApplicationContext(), R.string.new_settings_saved, Toast.LENGTH_SHORT).show();
         }
     }
@@ -107,11 +102,30 @@ public class TagSelectionFragment extends Fragment {
 
         // Save the new notifications
         if (!currentUser.getNotificationsTagsIDs().equals(wantedTagsIDs)) {
+            updateNotifications(wantedTagsIDs); // Must be before setNotificationsTagsIDs
             currentUser.setNotificationsTagsIDs(wantedTagsIDs);
             isChanged = true;
         }
 
         return isChanged;
+    }
+
+    /* ========================================================================== */
+
+    private void updateNotifications(ArrayList<String> shouldBeAdded) {
+        ArrayList<String> allItems = currentUser.getNotificationsTagsIDs();
+        ArrayList<String> shouldBeRemoved = getUncheckedTagsIDs(allItems, shouldBeAdded);
+
+        // Add the tags that the user wants to follow from the list
+        for (String currentShouldBeAdded : shouldBeAdded) {
+            MainActivity.installation.put(currentShouldBeAdded, true);
+        }
+
+        // Remove the tags that the user doesn't want to follow from the list
+        for (String currentShouldBeAdded : shouldBeRemoved) {
+            MainActivity.installation.put(currentShouldBeAdded, false);
+//            MainActivity.installation.remove(currentShouldBeAdded);
+        }
     }
 
     /* ========================================================================== */
@@ -124,8 +138,6 @@ public class TagSelectionFragment extends Fragment {
         for (int i = 0; i < checked.size(); i++) {
             // Item position in adapter
             position = checked.keyAt(i);
-
-            // Add sport if it is checked i.e.) == TRUE!
             if (checked.valueAt(i)) {
                 //                selectedItems.add(mArrayAdapter.getItem(position));
                 selectedItems.add(tagsAsObjects.get(position).getTagParseID());
@@ -138,14 +150,28 @@ public class TagSelectionFragment extends Fragment {
 
     /* ========================================================================== */
 
+    private ArrayList<String> getUncheckedTagsIDs(ArrayList<String> allItems, ArrayList<String> selectedItems) {
+        ArrayList<String> unselectedItems = new ArrayList<>();
+
+        for (String currentTagID : allItems) {
+            if (!selectedItems.contains(currentTagID)) {
+                unselectedItems.add(currentTagID);
+            }
+        }
+
+        return unselectedItems;
+    }
+
+    /* ========================================================================== */
+
     private void addTagsToScreen(View v) {
-        tagsAsObjects = new ArrayList<ReliTag>(MainActivity.tagsIdToTag.values());
+        tagsAsObjects = new ArrayList<>(MainActivity.tagsIdToTag.values());
         for (ReliTag reliTag : tagsAsObjects) {
             tagsNames.add(reliTag.getTagName());
         }
 
         mListView = (ListView) v.findViewById(R.id.tags_list_view);
-        mArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+        mArrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),
                 android.R.layout.simple_list_item_multiple_choice, tagsNames);
 
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -193,7 +219,7 @@ public class TagSelectionFragment extends Fragment {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress = ((int)Math.round(progress / Const.STEP_SIZE)) * Const.STEP_SIZE;
+                progress = (Math.round(progress / Const.STEP_SIZE)) * Const.STEP_SIZE;
                 mSeekBar.setProgress(progress);
                 mRadius.setText(String.valueOf(progress) + " meters");
             }

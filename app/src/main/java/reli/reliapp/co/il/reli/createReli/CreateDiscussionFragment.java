@@ -18,9 +18,10 @@ import android.widget.TextView;
 
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,11 +31,11 @@ import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.ReliTag;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.main.MainActivity;
+import reli.reliapp.co.il.reli.notifications.ReliNotifications;
 import reli.reliapp.co.il.reli.utils.Const;
 
 public class CreateDiscussionFragment extends Fragment {
 
-    private View v;
     private SeekBar mSeekBar;
     private ReliUser currentUser;
     private NumberPicker npHours, npMinutes;
@@ -42,16 +43,15 @@ public class CreateDiscussionFragment extends Fragment {
 
     private ArrayList<ReliTag> allTags = new ArrayList<>(MainActivity.tagsIdToTag.values());
     private ArrayList<String> tagIDsForDiscussion = new ArrayList<>();
-
-    CharSequence[] tagNames;
-    boolean[] checkedTagNames;
+    private CharSequence[] tagNamesForDialog;
+    private boolean[] checkedTagNamesForDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_create_discussion, container, false);
+        View v = inflater.inflate(R.layout.fragment_create_discussion, container, false);
 
         currentUser = MainActivity.user;
         mSeekBar  = (SeekBar) v.findViewById(R.id.create_discussion_seek_bar_radius);
@@ -81,12 +81,16 @@ public class CreateDiscussionFragment extends Fragment {
                     @Override
                     public void done(ParseException e) {
                         // Adding the new discussion to the user discussions
-                        updateDiscussionsImIn(discussionEntry);
+                        MainActivity.updateDiscussionsImIn(discussionEntry.getParseID());
 
                         // Opening the new discussion activity
                         EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
                         String topic = topicEditText.getText().toString();
 
+                        // Send notifications
+                        handleNotifications(discussionEntry);
+
+                        // Go to the DiscussionActivity itself
                         Intent intent = new Intent(getActivity(), DiscussionActivity.class);
                         intent.putExtra(Const.DISCUSSION_TOPIC, topic);
                         intent.putExtra(Const.DISCUSSION_TABLE_NAME, discussionEntry.getParseID());
@@ -212,18 +216,21 @@ public class CreateDiscussionFragment extends Fragment {
 
     private void setChangeTagsBehavior() {
 
+        // Add tags
         addTagsToScreen();
+
+        // Define the Dialog
         changeTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Where we track the index of the selected items
                 final ArrayList mSelectedItemsIndices = new ArrayList();
-                final boolean[] originalCheckedTagNames = checkedTagNames.clone();
+                final boolean[] originalCheckedTagNames = checkedTagNamesForDialog.clone();
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.create_discussion_pick_tags);
                 builder.setMultiChoiceItems(
-                        tagNames,                   // Tags
-                        checkedTagNames,            // items to be selected by default
+                        tagNamesForDialog,                   // Tags
+                        checkedTagNamesForDialog,            // items to be selected by default
                         new DialogInterface.OnMultiChoiceClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int index, boolean isChecked) {
@@ -242,14 +249,16 @@ public class CreateDiscussionFragment extends Fragment {
                                 // User clicked OK, so save the mSelectedItems results somewhere
                                 // or return them to the component that opened the dialog
                                 for (int i = 0; i < mSelectedItemsIndices.size(); i++) {
-                                    tagIDsForDiscussion.add(allTags.get(i).getTagParseID());
+                                    if (!tagIDsForDiscussion.contains(allTags.get(i).getTagParseID())) {
+                                        tagIDsForDiscussion.add(allTags.get(i).getTagParseID());
+                                    }
                                 }
                             }
                         })
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                checkedTagNames = originalCheckedTagNames;
+                                checkedTagNamesForDialog = originalCheckedTagNames;
                             }
                         });
 
@@ -267,23 +276,49 @@ public class CreateDiscussionFragment extends Fragment {
 
         int numOfTags = allTags.size();
 
-        tagNames = new CharSequence[numOfTags];
-        checkedTagNames = new boolean[numOfTags];
+        tagNamesForDialog = new CharSequence[numOfTags];
+        checkedTagNamesForDialog = new boolean[numOfTags];
 
         for (int i = 0; i < numOfTags; i++) {
             ReliTag currentReliTag = allTags.get(i);
-            tagNames[i] = currentReliTag.getTagName();
-            checkedTagNames[i] = idsShouldBeChecked.contains(currentReliTag.getTagParseID());
+            String currentReliTagID = currentReliTag.getTagParseID();
+
+            // Set containers that should be displayed in the dialog
+            tagNamesForDialog[i] = currentReliTag.getTagName();
+            checkedTagNamesForDialog[i] = idsShouldBeChecked.contains(currentReliTagID);
+
+            // Set the container that is sent to the constructor of the new Discussion object
+            if (idsShouldBeChecked.contains(currentReliTagID)) {
+                tagIDsForDiscussion.add(currentReliTagID);
+            }
         }
     }
 
     /* ========================================================================== */
 
-    private void updateDiscussionsImIn(Discussion discussionEntry) {
-        String currentDiscussion = discussionEntry.getParseID();
-        MainActivity.user.addDiscussionImIn(currentDiscussion);
-        MainActivity.user.saveEventually();
+    private void handleNotifications(Discussion discussionObject) {
+        // Make sure that we have instance of the Discussion object
+        if (discussionObject == null) {
+            return;
+        }
 
-        MainActivity.discussionsImIn.add(currentDiscussion);
+        /**************
+         * A new discussion was added -
+         * we want to send notification according to location and tags
+         * ***********/
+
+        // Get queries of devices that should get the notification
+        ArrayList<ParseQuery<ParseInstallation>> queries = new ArrayList<>();
+        queries.add(ReliNotifications.getQueryAccordingToLocation(discussionObject));
+        queries.add(ReliNotifications.getQueryAccordingToTags(discussionObject));
+
+        // Get the list of devices that should be excluded
+        ParseQuery<ParseInstallation> excludedQuery = ReliNotifications.getExcludedUsers(discussionObject);
+
+        // Combine the queries
+        ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(queries, excludedQuery);
+
+        // Send push notification
+        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " has just created a new Reli that might interest you. Check it out!");
     }
 }

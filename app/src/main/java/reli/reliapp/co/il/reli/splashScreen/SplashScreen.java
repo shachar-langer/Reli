@@ -6,17 +6,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import reli.reliapp.co.il.reli.R;
@@ -49,8 +55,23 @@ public class SplashScreen extends Activity {
 
                 // Check if we should use the saved user
                 final ReliUser user;
+                final ParseInstallation installation;
                 SharedPreferences prefs = getSharedPreferences(Const.RELI_SHARED_PREF_FILE, Context.MODE_PRIVATE);
                 boolean restoredShouldKeepSignedIn = prefs.getBoolean(Const.SHARED_PREF_KEEP_SIGNED_IN, false);
+
+                // TODO - remove
+//                restoredShouldKeepSignedIn = false; // For debug
+
+                // Set Installation object
+                ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        // Toast.makeText(getApplicationContext(), "In done of installation", Toast.LENGTH_SHORT).show();
+                        MainActivity.installation = ParseInstallation.getCurrentInstallation();
+                        MainActivity.installation.put(Const.INSTALLATION_USER, ParseUser.getCurrentUser());
+                    }
+                });
+
                 Toast.makeText(getApplicationContext(), "In Splash - restoredShouldKeepSignedIn == " + restoredShouldKeepSignedIn, Toast.LENGTH_SHORT).show();
                 if (restoredShouldKeepSignedIn) {
                     user = (ReliUser) (ParseUser.getCurrentUser());
@@ -61,6 +82,7 @@ public class SplashScreen extends Activity {
                 Toast.makeText(getApplicationContext(), "In Splash - user == " + user, Toast.LENGTH_SHORT).show();
                 MainActivity.user = user;
 
+
                 if (user == null) {
                     initLoginScreen();
                 }
@@ -68,6 +90,9 @@ public class SplashScreen extends Activity {
                     user.fetchInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject parseObject, ParseException e) {
+                            // TODO - use it
+//                            MainActivity.installation = ParseInstallation.getCurrentInstallation();
+
                             // TODO - add?
 //                            MainActivity.user = (ReliUser) parseObject;
 //                            initLoginScreen();
@@ -91,11 +116,17 @@ public class SplashScreen extends Activity {
             @Override
             public void done(List<ReliTag> reliTags, ParseException e) {
 
-                String currentID, currentTagName;
-                for (ReliTag tag : reliTags) {
-                    currentID = tag.getObjectId();
-                    currentTagName = tag.getString(Const.COL_TAG_NAME);
-                    MainActivity.tagsIdToTag.put(currentID, new ReliTag(currentTagName, currentID));
+                if (e == null) {
+                    String currentID, currentTagName;
+                    for (ReliTag tag : reliTags) {
+                        currentID = tag.getObjectId();
+                        currentTagName = tag.getString(Const.COL_TAG_NAME);
+                        MainActivity.tagsIdToTag.put(currentID, new ReliTag(currentTagName, currentID));
+                    }
+                }
+                else {
+                    // TODO - delete the else
+                    Toast.makeText(getApplicationContext(), "Error in initTagsMaps(): "+ e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -112,4 +143,16 @@ public class SplashScreen extends Activity {
         finish();
     }
 
+    /* ========================================================================== */
+
+    // To be used in rare cases - http://stackoverflow.com/questions/27628392/parseinstallation-getcurrentinstallation-saveinbackground-not-working
+    public static void clearParseInstallation(Context context) {
+        try {
+            Method method = ParseInstallation.class.getDeclaredMethod("clearCurrentInstallationFromDisk", Context.class);
+            method.setAccessible(true);
+            method.invoke(null, context);
+        } catch (Exception e) {
+            Log.e("Lior", e.getMessage());
+        }
+    }
 }

@@ -100,8 +100,8 @@ public class DefaultSettingsFragment extends Fragment {
     /* ========================================================================== */
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onPause() {
+        super.onPause();
 
         boolean isChanged = saveNewRadius();
         isChanged |= saveNewExpiration();

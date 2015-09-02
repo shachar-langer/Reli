@@ -1,17 +1,19 @@
 package reli.reliapp.co.il.reli.createReli;
 
-import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.format.DateUtils;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,19 +27,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.custom.CustomActivity;
+import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.Message;
 import reli.reliapp.co.il.reli.dataStructures.MessageStatus;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
-import reli.reliapp.co.il.reli.main.AboutDiscussionFragment;
-import reli.reliapp.co.il.reli.main.HomeFragment;
 import reli.reliapp.co.il.reli.main.MainActivity;
+import reli.reliapp.co.il.reli.notifications.ReliNotifications;
 import reli.reliapp.co.il.reli.utils.Const;
 
 /**
@@ -52,8 +56,10 @@ public class DiscussionActivity extends CustomActivity
 	private String discussionTopic;
 	private String discussionTableName;
 	private Date lastMsgDate;
+    private Menu menu;
+    private Discussion discussionObject;
 
-	/** Flag to hold if the activity is running or not. */
+    /** Flag to hold if the activity is running or not. */
 	private boolean isRunning;
 
 	/** The handler. */
@@ -71,7 +77,9 @@ public class DiscussionActivity extends CustomActivity
 		discussionTableName = getIntent().getStringExtra(Const.DISCUSSION_TABLE_NAME);
 		getActionBar().setTitle(discussionTopic);
 
-		messagesList = new ArrayList<Message>();
+        saveDiscussionObject();
+
+        messagesList = new ArrayList<>();
 
 		ListView list = (ListView) findViewById(R.id.list);
 		chatAdapter = new ChatAdapter();
@@ -117,27 +125,17 @@ public class DiscussionActivity extends CustomActivity
 		if (v.getId() == R.id.btnSend)
 		{
 			sendMessage();
+            // Update discussions I'm in
+            MainActivity.updateDiscussionsImIn(discussionTableName);
+            // Send notifications
+            handleNotifications();
 		}
-	}
-
-	/* ========================================================================== */
-
-	private void insertDiscussionToMYRelis() {
-		String currentDiscussion = discussionTableName;
-        MainActivity.user.addDiscussionImIn(currentDiscussion);
-		MainActivity.user.saveEventually();
 	}
 
     /* ========================================================================== */
 
 	private void sendMessage()
 	{
-
-		if (!MainActivity.discussionsImIn.contains(discussionTableName)) {
-			MainActivity.discussionsImIn.add(discussionTableName);
-			insertDiscussionToMYRelis();
-		}
-
         EditText messageTxt = (EditText) findViewById(R.id.txt);
 		if (messageTxt.length() == 0) {
             return;
@@ -149,7 +147,7 @@ public class DiscussionActivity extends CustomActivity
 		ReliUser user = MainActivity.user;
 
 		String s = messageTxt.getText().toString();
-		final Message message = new Message(s, new Date(), MainActivity.user.getParseID(), user.getFullName());
+		final Message message = new Message(s, new Date(), user.getParseID(), user.getFullName());
 		messagesList.add(message);
 		chatAdapter.notifyDataSetChanged();
 		messageTxt.setText(null);
@@ -170,6 +168,32 @@ public class DiscussionActivity extends CustomActivity
 	}
 
 	/* ========================================================================== */
+
+    private void handleNotifications() {
+        // Make sure that we have instance of the Discussion object
+        if (discussionObject == null) {
+            return;
+        }
+
+        /**************
+         * A new message was added to an existing discussion -
+         * we want to send notification according to discussionsImIn
+         * ***********/
+
+        // Get queries of devices that should get the notification
+        ParseQuery<ParseInstallation> includedQuery = ReliNotifications.getQueryAccordingToDiscussion(discussionObject);
+
+        // Get the list of devices that should be excluded
+        ParseQuery<ParseInstallation> excludedQuery = ReliNotifications.getExcludedUsers(discussionObject);
+
+        // Combine the queries
+        ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(includedQuery, excludedQuery);
+
+        // Send push notification
+        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " posted in " + discussionObject.getDiscussionName() + ". Check it out!");
+    }
+
+    /* ========================================================================== */
 
     /**
 	 * Load the conversation list from Parse server and save the date of last
@@ -307,26 +331,18 @@ public class DiscussionActivity extends CustomActivity
         switch (item.getItemId()) {
             case R.id.settings_follow:
                 Toast.makeText(getApplicationContext(), R.string.message_follow, Toast.LENGTH_SHORT).show();
-                // TODO - make sure with Shachar that it's ok
-                insertDiscussionToMYRelis();
+                MainActivity.updateDiscussionsImIn(discussionTableName);
+                updateMenuTitles();
                 return true;
 
             case R.id.settings_unfollow:
                 Toast.makeText(getApplicationContext(), R.string.message_unfollow, Toast.LENGTH_SHORT).show();
-                // TODO
+                MainActivity.removeDiscussionFromMyRelis(discussionTableName);
+                updateMenuTitles();
                 return true;
 
             case R.id.settings_reli_info:
-                Bundle bundle = getIntent().getExtras();
-                Fragment f = new AboutDiscussionFragment();
-                f.setArguments(bundle);
-
-                // TODO - change DiscussionActivity to use fragment
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.linear_layout_activity_discussion, f)
-                        .addToBackStack(null)
-                        .commit();
-
+                displayDiscussionInfo();
                 return true;
 
             default:
@@ -340,7 +356,133 @@ public class DiscussionActivity extends CustomActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_discussion, menu);
+        this.menu = menu;
+        updateMenuTitles();
 
         return true;
     }
+
+    /* ========================================================================== */
+
+    /**
+     * Make sure that either "follow" or "unfollow" will be displayed in the menu
+     */
+    private void updateMenuTitles() {
+        boolean isFollow = MainActivity.discussionsImIn.contains(discussionTableName);
+        menu.findItem(R.id.settings_follow).setVisible(!isFollow);
+        menu.findItem(R.id.settings_unfollow).setVisible(isFollow);
+    }
+
+    /* ========================================================================== */
+
+    private void saveDiscussionObject() {
+        if (discussionTableName != null) {
+            ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
+            discussionQuery.getInBackground(discussionTableName, new GetCallback<Discussion>() {
+                public void done(Discussion returnedDiscussion, ParseException e) {
+                    if (e == null) {
+                        discussionObject = returnedDiscussion;
+                    }
+                }
+            });
+        }
+    }
+
+    /* ========================================================================== */
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    /* ========================================================================== */
+
+    private void displayDiscussionInfo() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(DiscussionActivity.this);
+        LayoutInflater inflater = DiscussionActivity.this.getLayoutInflater();
+        final View v = inflater.inflate(R.layout.about_discussion, null);
+
+        final ProgressDialog dia = ProgressDialog.show(DiscussionActivity.this, null, getString(R.string.alert_loading));
+        dia.setCanceledOnTouchOutside(false);
+        ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
+        discussionQuery.getInBackground(discussionTableName, new GetCallback<Discussion>() {
+            public void done(Discussion currentDiscussion, ParseException e) {
+                if (e == null) {
+                    fetchDiscussionInformation(v, currentDiscussion);
+                }
+
+                dia.dismiss();
+            }
+        });
+
+        builder.setView(v)
+                .setTitle(discussionTopic + " (" + messagesList.size() + " messages)")
+                .setPositiveButton(R.string.ok, null)
+                .create()
+                .show();
+
+    }
+
+    /* ========================================================================== */
+
+    private void fetchDiscussionInformation(View v, Discussion currentDiscussion) {
+        // Get the creation date of the current discussion
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
+
+        // Get the expiration and creation date of the current discussion
+        TextView creationDate = (TextView) v.findViewById(R.id.about_discussion_value_creation);
+        TextView expirationDate = (TextView) v.findViewById(R.id.about_discussion_value_expiration);
+        TextView lastUpdateDate = (TextView) v.findViewById(R.id.about_discussion_value_update);
+        creationDate.setText(sdf.format(currentDiscussion.getCreationDate()));
+        expirationDate.setText(sdf.format(currentDiscussion.getExpirationDate()));
+        lastUpdateDate.setText(sdf.format(lastMsgDate));
+
+        // Get the owner of the current discussion
+        final TextView owner = (TextView) v.findViewById(R.id.about_discussion_value_owner);
+        String ownerID = currentDiscussion.getOwnerParseID();
+        if (ownerID != null) {
+            ParseQuery<ReliUser> userQuery = ReliUser.getReliQuery();
+            userQuery.getInBackground(ownerID, new GetCallback<ReliUser>() {
+                public void done(ReliUser reliUser, ParseException e) {
+                    if (e == null) {
+                        owner.setText(reliUser.getFullName());
+                    } else {
+                        owner.setText(Const.UNKNOWN_USER);
+                    }
+                }
+            });
+        } else {
+            owner.setText(Const.UNKNOWN_USER);
+        }
+
+        // Get the radius of the current discussion
+        TextView radius = (TextView) v.findViewById(R.id.about_discussion_value_radius);
+        radius.setText(Integer.toString(currentDiscussion.getRadius()) + " meters");
+
+        // TODO - check why it displays wrong tags
+        // Get the tags of the current discussion
+        TextView tags = (TextView) v.findViewById(R.id.about_discussion_value_tags);
+        ArrayList<String> tagsIDs = currentDiscussion.getTagIDsForDiscussion();
+        String tagsListAsString = "";
+        String currentTagName;
+        for (String tagID : tagsIDs) {
+            if (MainActivity.tagsIdToTag.containsKey(tagID)) {
+                currentTagName = MainActivity.tagsIdToTag.get(tagID).getTagName();
+                if (currentTagName != null) {
+                    tagsListAsString += currentTagName + ", ";
+                }
+            }
+        }
+
+        // Write the tags on screen
+        if (tagsListAsString.equals("")) {
+            tagsListAsString = getString(R.string.no_tags);
+        }
+        else {
+            tagsListAsString = tagsListAsString.substring(0, tagsListAsString.length() - 2);
+        }
+        tags.setText(tagsListAsString);
+    }
+
 }

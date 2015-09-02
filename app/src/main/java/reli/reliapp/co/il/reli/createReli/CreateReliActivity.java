@@ -164,4 +164,11 @@ public class CreateReliActivity extends CustomActivity implements ActionBar.TabL
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
+
+    /* ========================================================================== */
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

@@ -30,6 +30,7 @@ public class Discussion extends AbstractDiscussion implements Serializable {
 
     public void setDiscussionName(String discussionName){
         put(Const.COL_DISCUSSION_NAME, discussionName);
+        this.discussionName = discussionName;
     }
 
     public String getDiscussionName() {

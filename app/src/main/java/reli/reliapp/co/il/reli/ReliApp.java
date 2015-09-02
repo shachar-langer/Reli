@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -39,6 +40,9 @@ public class ReliApp extends Application {
 
         // Initialize Parse
         Parse.initialize(this, PARSE_APP_ID, PARSE_CLIENT_KEY);
+
+        // Save the current Installation to Parsel
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         // Initialize the Facebook SDK
         FacebookSdk.sdkInitialize(this);

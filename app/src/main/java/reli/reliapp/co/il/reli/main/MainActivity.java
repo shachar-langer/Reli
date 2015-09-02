@@ -52,6 +52,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import reli.reliapp.co.il.reli.R;
@@ -66,6 +67,7 @@ import reli.reliapp.co.il.reli.sidebar.DefaultSettingsFragment;
 import reli.reliapp.co.il.reli.sidebar.FaqFragment;
 import reli.reliapp.co.il.reli.sidebar.GuidedTourActivity;
 import reli.reliapp.co.il.reli.sidebar.TagSelectionFragment;
+import reli.reliapp.co.il.reli.utils.Const;
 import reli.reliapp.co.il.reli.utils.ErrorDialogFragment;
 import reli.reliapp.co.il.reli.utils.Utils;
 
@@ -76,7 +78,6 @@ import reli.reliapp.co.il.reli.utils.Utils;
 public class MainActivity extends CustomActivity implements LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-
 
     // TODO - delete
     boolean isShachar = false;
@@ -136,7 +137,8 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     private ArrayList<ParseUser> chatsList;
     public static ReliUser user;
-
+    public static Fragment homeFragment;
+    public static ParseInstallation installation;
 
     // UI Stuff
     ListView mDrawerList;
@@ -236,9 +238,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
         }
 
         // Start
+        homeFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mainContent, new HomeFragment())
-//                .addToBackStack(null)
+                .replace(R.id.mainContent, homeFragment)
+                .addToBackStack(Const.HOME_FRAGMENT_TAG)
                 .commit();
     }
 
@@ -528,11 +531,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
 
 
-
-
-
-
-
     /* UI CODE */
 
     /* ========================================================================== */
@@ -566,16 +564,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
 
     private Fragment getSelectedFragment(String positionMeaning) {
-//        TODO - change
-//        Return to home screen
-        if (positionMeaning.equals(getString(R.string.nav_drawer_inbox)))
-            return new HomeFragment();
-
         // Return the Notification Settings fragment
         if (positionMeaning.equals(getString(R.string.nav_drawer_notification_settings)))
             return new TagSelectionFragment();
 
-        // TODO - change
         // Return the Default Settings class
         if (positionMeaning.equals(getString(R.string.nav_drawer_default_settings)))
             return new DefaultSettingsFragment();
@@ -595,11 +587,13 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     @Override
     public void onBackPressed() {
-//        if (getFragmentManager().getBackStackEntryCount() > 0) {
-//            getFragmentManager().popBackStack();
-//        } else {
-            super.onBackPressed();
-//        }
+        String currentFragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+
+        if (currentFragmentTag != null && currentFragmentTag.equals(Const.HOME_FRAGMENT_TAG)) {
+            handleExit();
+        } else {
+            getHomeFragment();
+        }
     }
 
     /* ========================================================================== */
@@ -668,6 +662,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
         else if (positionMeaning.equals(getString(R.string.nav_drawer_exit))) {
             handleExit();
         }
+        else if (positionMeaning.equals(getString(R.string.nav_drawer_inbox))) {
+            // Return to home screen
+            getHomeFragment();
+        }
 
         // Update selected item
         mDrawerList.setItemChecked(position, true);
@@ -694,6 +692,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
                 ParseUser.logOut();
                 MainActivity.user = null;
+                MainActivity.installation = null;
 
                 Toast.makeText(getApplicationContext(), R.string.successful_sign_out, Toast.LENGTH_SHORT).show();
 
@@ -730,5 +729,57 @@ public class MainActivity extends CustomActivity implements LocationListener,
                 R.string.cancel,
                 listener1,
                 null);
+    }
+
+    /* ========================================================================== */
+
+    private void getHomeFragment() {
+        Fragment myFragment = getSupportFragmentManager().findFragmentByTag(Const.HOME_FRAGMENT_TAG);
+        if (myFragment == null) {
+            homeFragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mainContent, homeFragment)
+                    .addToBackStack(Const.HOME_FRAGMENT_TAG)
+                    .commit();
+        } else {
+            getSupportFragmentManager().popBackStackImmediate(Const.HOME_FRAGMENT_TAG, 0);
+        }
+
+    }
+
+    /* ========================================================================== */
+
+    public static void updateDiscussionsImIn(String discussionID) {
+        // Update the static variable
+        discussionsImIn.add(discussionID);
+
+        // Update parse
+        user.addDiscussionImIn(discussionID);
+
+        // Update Installation (in order to get notifications)
+        installation.put(discussionID, true);
+
+        // Save
+        user.saveEventually();
+        installation.saveInBackground();
+    }
+
+    /* ========================================================================== */
+
+    public static void removeDiscussionFromMyRelis(String discussionID) {
+        // Update the static variable
+        if (discussionsImIn.contains(discussionID)) {
+            discussionsImIn.remove(discussionID);
+        }
+
+        // Update parse
+        user.removeFromDiscussionImIn(discussionID);
+
+        // Update Installation (in order to stop notifications)
+        installation.put(discussionID, false);
+
+        // Save
+        user.saveEventually();
+        installation.saveInBackground();
     }
 }

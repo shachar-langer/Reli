@@ -130,10 +130,13 @@ public class MainAllRelisFragment extends Fragment {
                                     intent.putExtra(Const.DISCUSSION_TOPIC, chatsList.get(pos).getDiscussionName());
                                     intent.putExtra(Const.DISCUSSION_TABLE_NAME, chatsList.get(pos).getParseID());
                                     startActivity(intent);
+//                                    getActivity().finish();
                                 }
                             });
                         } else {
-                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
+//                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
+                            // TODO - remove the following line
+                            Toast.makeText(getActivity().getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                         dia.dismiss();
@@ -260,13 +263,19 @@ public class MainAllRelisFragment extends Fragment {
                             messagesIDs.add((String) message.get(Const.COL_MESSAGE_SENDER_ID));
                         }
 
-                        String hour = Integer.toString(mostRecentMessageTime.getHours());
-                        String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
-                        String lastModifiedHour = hour + ":" + minutes;
+                        // TODO - Shachar - it happened that mostRecentMessageTime == null (despite the for loop above). We should handle it.
+                        try {
+                            String hour = Integer.toString(mostRecentMessageTime.getHours());
+                            String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
+                            String lastModifiedHour = hour + ":" + minutes;
 
-                        ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
-                        ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
-                        ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
+                            ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
+                            ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
+                            ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
+                        }
+                        catch (Exception ex) {
+
+                        }
                     } else {
                         // TODO - something failed
                     }

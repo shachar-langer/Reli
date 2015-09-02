@@ -191,6 +191,7 @@ public class MainRelisAroundMeFragment extends Fragment {
                                 intent.putExtra(Const.LONGTITUDE, location.getLongitude());
                                 intent.putExtra(Const.RADIUS, clickedRadius);
                                 startActivity(intent);
+//                                getActivity().finish();
                                 return true;
                             }
                         } else {
@@ -216,11 +217,12 @@ public class MainRelisAroundMeFragment extends Fragment {
             ReliUser currentUser = MainActivity.user;
             Discussion.getDiscussionQuery().whereWithinKilometers(Const.COL_DISCUSSION_LOCATION, currentUser.getLocation(), radius * 100)
                     .findInBackground(new FindCallback<Discussion>() {
-
                         @Override
                         public void done(List<Discussion> li, ParseException e) {
-                            ((TextView) bla.findViewById(textId)).setText(Integer.toString(li.size()));
-                            dia.dismiss();
+                           // if (e != null) {
+                                ((TextView) bla.findViewById(textId)).setText(Integer.toString(li.size()));
+                                dia.dismiss();
+                            //}
                         }
                     });
         }

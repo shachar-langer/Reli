@@ -18,13 +18,13 @@ import reli.reliapp.co.il.reli.utils.Const;
 @ParseClassName("Discussions")
 public abstract class AbstractDiscussion extends ParseObject {
 
-    private String discussionName;
-    private ParseGeoPoint location;
-    private int radius;
-    private Bitmap discussionLogo;
-    private Date creationDate;
-    private Date expirationDate;
-    private String ownerParseID;
+    protected String discussionName;
+    protected ParseGeoPoint location;
+    protected int radius;
+    protected Bitmap discussionLogo;
+    protected Date creationDate;
+    protected Date expirationDate;
+    protected String ownerParseID;
 
     /* ========================================================================== */
 

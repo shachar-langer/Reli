@@ -71,6 +71,7 @@ public class MainMyRelisFragment extends Fragment {
                     intent.putExtra(Const.LATITUDE, location.getLatitude());
                     intent.putExtra(Const.LONGTITUDE, location.getLongitude());
                     startActivity(intent);
+//                    getActivity().finish();
                 }
 
 
@@ -117,6 +118,7 @@ public class MainMyRelisFragment extends Fragment {
         ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
         discussionQuery.whereContainedIn("objectId", discussionsUserIsIn);
 
+        // Initialize the static variable
         for (String discussion : discussionsUserIsIn) {
             MainActivity.discussionsImIn.add(discussion);
         }
@@ -267,13 +269,19 @@ public class MainMyRelisFragment extends Fragment {
                             messagesIDs.add((String) message.get(Const.COL_MESSAGE_SENDER_ID));
                         }
 
-                        String hour = Integer.toString(mostRecentMessageTime.getHours());
-                        String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
-                        String lastModifiedHour = hour + ":" + minutes;
+                        // TODO - Shachar - it happened that mostRecentMessageTime == null (despite the for loop above). We should handle it.
+                        try {
+                            String hour = Integer.toString(mostRecentMessageTime.getHours());
+                            String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
+                            String lastModifiedHour = hour + ":" + minutes;
 
-                        ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
-                        ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
-                        ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
+                            ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
+                            ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
+                            ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
+                        }
+                        catch (Exception ex) {
+
+                        }
                     } else {
                         // TODO - something failed
                     }
