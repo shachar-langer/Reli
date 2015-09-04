@@ -68,7 +68,7 @@ public class ReliUser extends ParseUser {
         setLocation(location);
 
         setRelisRadius(Const.DEFAULT_RADIUS_FOR_RELIS);
-        //setRelisExpirationInMinutes(Const.DEFAULT_EXPIRATION_FOR_RELIS);
+        setRelisExpirationInMinutes(Const.DEFAULT_EXPIRATION_FOR_RELIS);
 
         // TODO - which tags should be the default ones?
         setNotificationsRadius(Const.DEFAULT_RADIUS_FOR_NOTIFICATIONS);

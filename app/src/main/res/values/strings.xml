@@ -8,7 +8,7 @@
 
 
     <string name="title_activity_login">Login Activity</string>
-    <string name="title_activity_create_reli">Create Reli</string>
+    <string name="title_activity_create_reli">Create a new Reli</string>
 
     <!-- Discussion -->
     <string name="discussion_title">Discussion</string>

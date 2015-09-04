@@ -95,6 +95,8 @@ public class CreateDiscussionFragment extends Fragment {
                         intent.putExtra(Const.DISCUSSION_TOPIC, topic);
                         intent.putExtra(Const.DISCUSSION_TABLE_NAME, discussionEntry.getParseID());
                         startActivity(intent);
+
+                        getActivity().finish();
                     }
                 });
             }

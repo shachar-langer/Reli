@@ -21,7 +21,7 @@ public class Const
     // Default radius for receiving
     public static final int DEFAULT_RADIUS_FOR_NOTIFICATIONS = 50;
     public static final int DEFAULT_RADIUS_FOR_RELIS = 50;
-    public static final int DEFAULT_EXPIRATION_FOR_RELIS = 120;
+    public static final int DEFAULT_EXPIRATION_FOR_RELIS = 150;
 
     // Columns in Parse for DiscussionActivity (the chat itself
 	public static final String DISCUSSION_TOPIC = "buddyName";

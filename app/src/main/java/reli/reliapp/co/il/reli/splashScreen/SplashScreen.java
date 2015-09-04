@@ -40,6 +40,9 @@ public class SplashScreen extends Activity {
     // Splash screen timer
     private static int SPLASH_TIME_OUT_MILLIS = 3000;
 
+    // TODO remove
+    private boolean isShachar = false;
+
     /* ========================================================================== */
 
     @Override
@@ -72,14 +75,16 @@ public class SplashScreen extends Activity {
                     }
                 });
 
-                Toast.makeText(getApplicationContext(), "In Splash - restoredShouldKeepSignedIn == " + restoredShouldKeepSignedIn, Toast.LENGTH_SHORT).show();
+                if (isShachar) Toast.makeText(getApplicationContext(), "In Splash - restoredShouldKeepSignedIn == " + restoredShouldKeepSignedIn, Toast.LENGTH_SHORT).show();
+
                 if (restoredShouldKeepSignedIn) {
                     user = (ReliUser) (ParseUser.getCurrentUser());
                 } else {
                     user = null;
                 }
 
-                Toast.makeText(getApplicationContext(), "In Splash - user == " + user, Toast.LENGTH_SHORT).show();
+                if (isShachar) Toast.makeText(getApplicationContext(), "In Splash - user == " + user, Toast.LENGTH_SHORT).show();
+
                 MainActivity.user = user;
 
 
