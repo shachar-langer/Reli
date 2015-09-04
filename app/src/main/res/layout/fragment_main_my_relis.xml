@@ -18,17 +18,18 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <include layout="@layout/circle_page_indicator_item"
+        android:id="@+id/circles_title_hidden_my_relis"
+        android:visibility="invisible" />
 
     <ListView
-    android:id="@+id/list_my_relis"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:divider="@color/main_color_green"
-    android:dividerHeight="1dp"
-    tools:listitem="@layout/discussion_item"
-    android:layout_alignParentTop="true"
-    android:layout_above="@id/add_discussion_btn_my_relis" >
-
-    </ListView>
+        android:id="@+id/list_my_relis"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="@color/main_color_green"
+        android:dividerHeight="1dp"
+        tools:listitem="@layout/discussion_item"
+        android:layout_above="@id/add_discussion_btn_my_relis"
+        android:layout_below="@id/circles_title_hidden_my_relis" />
 
 </RelativeLayout>

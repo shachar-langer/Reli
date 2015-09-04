@@ -2,52 +2,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/home_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".TabbedFragment" >
+        tools:context=".TabbedFragment" />
 
-        <!--
-        This title strip will display the currently visible page title, as well as the page
-        titles for adjacent pages.
-        -->
-        <android.support.v4.view.PagerTitleStrip
-            android:id="@+id/pager_title_strip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp" />
-    </android.support.v4.view.ViewPager>
+        <include layout="@layout/circle_page_indicator_item"
+            android:id="@+id/circles_title" />
 
-    <!--<RadioGroup-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal|top"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:paddingBottom="4dp"-->
-        <!--android:clickable="false"-->
-        <!--android:paddingTop="4dp"-->
-        <!--android:id="@+id/radiogroup">-->
-
-        <!--<RadioButton-->
-            <!--android:layout_width="wrap_content"-->
+        <!--<com.viewpagerindicator.CirclePageIndicator-->
+            <!--android:id="@+id/circles_title"-->
+            <!--android:paddingBottom="4dp"-->
+            <!--android:paddingTop="4dp"-->
+            <!--android:layout_gravity="top"-->
+            <!--android:background="@color/gray_light"-->
             <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/radioButton" />-->
-
-        <!--<RadioButton-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:checked="true"-->
-            <!--android:id="@+id/radioButton2" />-->
-
-        <!--<RadioButton-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/radioButton3" />-->
-    <!--</RadioGroup>-->
+            <!--android:layout_width="match_parent" />-->
 
 </FrameLayout>

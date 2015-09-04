@@ -1,14 +1,5 @@
 package reli.reliapp.co.il.reli.main;
 
-// ***********************************************************************************
-// ***********************************************************************************
-// ***********************************************************************************
-// Nervous TODO - Threads
-// ***********************************************************************************
-// ***********************************************************************************
-// ***********************************************************************************
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,7 +7,6 @@ import java.util.HashSet;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
-//import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -181,7 +171,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
             }
         });
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, //nav menu toggle icon
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_action_navigation_menu, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
                 R.string.app_name) { // nav drawer close - description for accessibility) {
             @Override
@@ -647,7 +637,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
         Fragment f = getSelectedFragment(positionMeaning);
 
         if (f != null) {
-            setTitle(mNavItems.get(position).mTitle);
+            getActionBar().setTitle(mNavItems.get(position).mTitle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.mainContent, f)

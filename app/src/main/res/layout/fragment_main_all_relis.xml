@@ -4,6 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
+    android:layout_below="@+id/home_layout"
+    android:layout_alignBottom="@+id/home_layout"
     android:orientation="vertical" >
 
     <Button
@@ -18,6 +20,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <include layout="@layout/circle_page_indicator_item"
+        android:id="@+id/circles_title_hidden_all"
+        android:visibility="invisible" />
 
     <ListView
         android:id="@+id/list_all_relis"
@@ -26,9 +31,7 @@
         android:divider="@color/main_color_green"
         android:dividerHeight="1dp"
         tools:listitem="@layout/discussion_item"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/add_discussion_btn_all_relis" >
-
-    </ListView>
+        android:layout_above="@id/add_discussion_btn_all_relis"
+        android:layout_below="@id/circles_title_hidden_all" />
 
 </RelativeLayout>

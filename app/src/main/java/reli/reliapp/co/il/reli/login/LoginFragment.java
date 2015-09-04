@@ -3,12 +3,19 @@ package reli.reliapp.co.il.reli.login;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -17,9 +24,20 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.login.widget.ProfilePictureView;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 
 import reli.reliapp.co.il.reli.main.MainActivity;
@@ -35,6 +53,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     private ProfileTracker profileTracker;
     private LoginButton fbLoginButton;
     private CheckBox cb;
+    private View view;
 
     /* ========================================================================== */
 
@@ -63,7 +82,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        view = inflater.inflate(R.layout.fragment_login, container, false);
 
         fbLoginButton = (LoginButton) view.findViewById(R.id.fbLoginButton);
         fbLoginButton.setFragment(this);
@@ -221,3 +240,55 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         editor.commit();
     }
 }
+
+
+
+
+
+
+
+
+
+/*
+Bitmap bm = null;
+            try {
+                BitmapFactory.Options bitmap_options = new BitmapFactory.Options();
+                bitmap_options.inScaled = false;
+                bitmap_options.inDither = false;
+                bitmap_options.inPreferQualityOverSpeed = true;
+                bitmap_options.inSampleSize = 1;
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                String imageURL = "https://graph.facebook.com/" + profile.getId()+ "/picture?type=small";
+                URL url_value = new URL(imageURL);
+                bm = BitmapFactory.decodeStream(url_value.openConnection().getInputStream(), null, bitmap_options);
+            } catch (Exception e) {
+            }
+
+            ProfilePictureView profilePictureView = (ProfilePictureView) view.findViewById(R.id.fiv);
+            profilePictureView.setProfileId(profile.getId());
+
+////                ImageView profileImageView = ((ImageView) profilePictureView.getChildAt(0));
+////                Bitmap bitmap = ((BitmapDrawable) profileImageView.getDrawable()).getBitmap();
+//                Bitmap bitmap = profilePictureView.getDrawingCache();
+
+            ImageView  tv1= (ImageView) view.findViewById(R.id.iv);
+            tv1.setImageBitmap(bm);
+//
+//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                byte[] byteArray = stream.toByteArray();
+//            }
+
+//            try {
+////                String imageURL = "http://graph.facebook.com/105935396418298/picture";
+//                String imageURL = "http://graph.facebook.com/" + profile.getId()+ "/picture?type=small";
+//                URL url_value = new URL(imageURL);
+//                Bitmap profPict = BitmapFactory.decodeStream(url_value.openConnection().getInputStream());
+////                profPict = BitmapFactory.decodeStream((InputStream)new URL(imageURL).getContent());
+//            }
+//            catch (Exception e) {
+//                Toast.makeText(getActivity().getApplicationContext(), "Error with Picture - " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                e.printStackTrace();
+//            }
+ */

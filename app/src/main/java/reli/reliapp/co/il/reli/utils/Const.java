@@ -36,7 +36,7 @@ public class Const
     public static final String COL_NAME_USER_TYPE = "userType";
     public static final String COL_NAME_FIRST_NAME = "firstName";
     public static final String COL_NAME_FULL_NAME = "fullName";
-    public static final String COL_NAME_FACEBOOK_PICTURE = "facebookPicture";
+    public static final String COL_NAME_AVATAR = "userAvatar";
     public static final String COL_NAME_LOCATION = "location";
     public static final String COL_NAME_RELIS_RADIUS = "relisRadius";
     public static final String COL_NAME_RELIS_EXPIRATION = "relisExpirationInMinutes";

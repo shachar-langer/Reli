@@ -18,6 +18,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <include layout="@layout/circle_page_indicator_item"
+        android:id="@+id/circles_title_hidden_around"
+        android:visibility="invisible" />
 
     <ListView
         android:id="@+id/list_around_relis"
@@ -26,9 +29,7 @@
         android:divider="@color/main_color_green"
         android:dividerHeight="1dp"
         tools:listitem="@layout/discussion_item"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/add_discussion_btn_around_relis" >
-
-    </ListView>
+        android:layout_above="@id/add_discussion_btn_around_relis"
+        android:layout_below="@id/circles_title_hidden_around" />
 
 </RelativeLayout>

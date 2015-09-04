@@ -1,18 +1,24 @@
 package reli.reliapp.co.il.reli.dataStructures;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.login.widget.ProfilePictureView;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,31 +136,29 @@ public class ReliUser extends ParseUser {
 
     /* ========================================================================== */
 
-    public ProfilePictureView getFacebookPicture() {
-        return facebookPicture;
+    public ParseFile getAvatar() {
+
+//        if (getUserType() == ReliUserType.ANONYMOUS_USER) {
+//
+//        }
+        ParseFile avatarFile = (ParseFile) get(Const.COL_NAME_AVATAR);
+        return avatarFile;
+
+//        avatarFile.getDataInBackground(new GetDataCallback() {
+//            public void done(byte[] data, ParseException e) {
+//                if (e == null) {
+//                    // data has the bytes for the resume
+//                } else {
+//                    // something went wrong
+//                }
+//            }
+//        });
     }
 
     /* ========================================================================== */
 
-    public void setFacebookPicture(ProfilePictureView facebookPicture) {
-        // TODO
-        this.facebookPicture = facebookPicture;
-    }
-
-    /* ========================================================================== */
-
-    public Bitmap getPicture() {
-        // TODO
-        if (picture == null) {
-            return BitmapFactory.decodeResource(ctx.getResources(), R.drawable.useravatar);
-        }
-        return picture;
-    }
-
-    /* ========================================================================== */
-
-    public void setPicture(Bitmap picture) {
-        this.picture = picture;
+    public void setAvatar(byte[] avatar) {
+        put(Const.COL_NAME_AVATAR, avatar);
     }
 
     /* ========================================================================== */

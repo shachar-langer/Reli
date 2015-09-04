@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import reli.reliapp.co.il.reli.R;
 
@@ -44,36 +44,37 @@ public class HomeFragment extends Fragment {
         mViewPager = (ViewPager) v.findViewById(R.id.home_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(MIDDLE_FRAGMENT);
+        getActivity().getActionBar().setTitle(getString(R.string.middle_tab));
 
-        // TODO - do we want it?
-        // TODO - do we want http://viewpagerindicator.com?
-//        final RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.radiogroup);
-//        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                switch (position){
-//                    case 0:
-//                        radioGroup.check(R.id.radioButton);
-//                        break;
-//                    case 1:
-//                        radioGroup.check(R.id.radioButton2);
-//                        break;
-//                    case 2:
-//                        radioGroup.check(R.id.radioButton3);
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
+        //Bind the title indicator to the adapter
+        CirclePageIndicator titleIndicator = (CirclePageIndicator) v.findViewById(R.id.circles_title);
+        titleIndicator.setViewPager(mViewPager);
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                String title = "";
+                switch (position){
+                    case 0:
+                        title = getString(R.string.left_tab);
+                        break;
+                    case 1:
+                        title = getString(R.string.middle_tab);
+                        break;
+                    case 2:
+                        title = getString(R.string.right_tab);
+                        break;
+                }
+
+                getActivity().getActionBar().setTitle(title);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
 
         return v;
     }
@@ -107,23 +108,6 @@ public class HomeFragment extends Fragment {
         @Override
         public int getCount() {
             return 3;
-        }
-
-        /* ========================================================================== */
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.left_tab).toUpperCase(l);
-                case 1:
-                    return getString(R.string.middle_tab).toUpperCase(l);
-                case 2:
-                    return getString(R.string.right_tab).toUpperCase(l);
-            }
-
-            return null;
         }
     }
 }
