@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -136,9 +137,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     ArrayList<NavItem> mNavItems;
-    public static HashSet<String> discussionsImIn = new HashSet<String>();
 
+    public static HashSet<String> discussionsImIn = new HashSet<String>();
     public static HashMap<String, ReliTag> tagsIdToTag = new HashMap<>();
+    public static HashMap<String, byte[]> usersAvatars = new HashMap<>();
 
     /* ========================================================================== */
 
@@ -178,6 +180,11 @@ public class MainActivity extends CustomActivity implements LocationListener,
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
 
+                ImageView iv = (ImageView) drawerView.findViewById(R.id.avatar);
+                Utils.setAvatar(iv, user.getObjectId());
+
+                // TODO - I was here
+                Log.w("Yuval", "in onDrawerOpened");
                 invalidateOptionsMenu();
             }
 
@@ -215,16 +222,13 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         // *** Location ends
 
-//        user = ReliUser.getCurrentReliUser();
-
-
-//        ImageView iv = (ImageView) findViewById(R.id.avatar);
-//        iv.setImageResource(R.drawable.user_chat2);
-//        iv.setImageBitmap(user.getPicture());
-//        iv.setImageBitmap(user.getFacebookPicture().getDrawingCache());
-        TextView tv = (TextView) findViewById(R.id.userName);
+        // Set the user name and image in the drawer
         if (user != null) {
+            TextView tv = (TextView) findViewById(R.id.userName);
             tv.setText(user.getFullName());
+
+            ImageView iv = (ImageView) findViewById(R.id.avatar);
+            Utils.setAvatar(iv, user.getObjectId());
         }
 
         // Start

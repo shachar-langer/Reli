@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -285,6 +286,14 @@ public class MainAllRelisFragment extends Fragment {
 
             TextView userLabel = (TextView) v.findViewById(R.id.dummy);
             userLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow, 0);
+
+            // Change the logo of the discussion
+            ImageView iv = (ImageView) v.findViewById(R.id.imgLogo);
+            if ((position % 2) == 0) {
+                iv.setImageResource(R.drawable.discussion_logo_0);
+            } else {
+                iv.setImageResource(R.drawable.discussion_logo_1);
+            }
 
             return v;
         }

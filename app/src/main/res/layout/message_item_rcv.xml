@@ -3,58 +3,72 @@
     android:id="@+id/llaa"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" 
-    >
+    android:orientation="vertical" >
 
     <LinearLayout
-            android:id="@+id/v1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/chat_bubble_gray"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/pad_5dp"
-            android:paddingLeft="@dimen/pad_chat_item"
-            android:paddingTop="@dimen/pad_5dp" >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/pad_5dp"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/senderName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/main_color_gray_dk"
-            android:textSize="@dimen/txt_11sp"
-            android:textStyle="bold" />
+        <ImageView
+            android:src="@drawable/ic_anonymous_2_128"
+            android:id="@+id/senderAvatar"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center" />
 
-        <TextView
-                android:id="@+id/lbl1"
+
+        <LinearLayout
+                android:id="@+id/v1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/chat_bubble_gray"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/pad_5dp"
+                android:paddingLeft="@dimen/pad_chat_item"
+                android:paddingTop="@dimen/pad_5dp" >
+
+            <TextView
+                android:id="@+id/senderName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textColor="@color/main_color_gray_dk"
-                android:paddingBottom="@dimen/pad_5dp"
-                android:textSize="@dimen/txt_11sp" />
+                android:textSize="@dimen/txt_11sp"
+                android:textStyle="bold" />
+
             <TextView
-                android:id="@+id/lbl2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="text"
-                android:textColor="@color/main_color_gray_dk"
-                android:textSize="@dimen/txt_14sp" 
-                android:maxLines="4"/>
+                    android:id="@+id/lbl1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textColor="@color/main_color_gray_dk"
+                    android:paddingBottom="@dimen/pad_5dp"
+                    android:textSize="@dimen/txt_11sp" />
+                <TextView
+                    android:id="@+id/lbl2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="text"
+                    android:textColor="@color/main_color_gray_dk"
+                    android:textSize="@dimen/txt_14sp" />
 
-        </LinearLayout>
+            </LinearLayout>
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/lbl3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="text"
-            android:textColor="@color/main_color_gray"
-            android:textSize="@dimen/txt_14sp"
-            android:layout_alignRight="@+id/v1"
-            android:layout_below="@+id/v1"
-            android:layout_marginTop="@dimen/pad_5dp"
-            android:layout_marginLeft="@dimen/pad_20dp"
-            />
+    <TextView
+        android:id="@+id/lbl3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:textColor="@color/main_color_gray"
+        android:textSize="@dimen/txt_14sp"
+        android:layout_alignRight="@+id/v1"
+        android:layout_below="@+id/v1"
+        android:layout_marginTop="@dimen/pad_5dp"
+        android:layout_marginLeft="@dimen/pad_20dp"
+        />
 </LinearLayout>

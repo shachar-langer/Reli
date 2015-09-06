@@ -49,7 +49,7 @@ public class Message
 
 	public String getSenderID()
 	{
-		return senderID;
+		return this.senderID;
 	}
 
 	public void setSenderID(String senderID)

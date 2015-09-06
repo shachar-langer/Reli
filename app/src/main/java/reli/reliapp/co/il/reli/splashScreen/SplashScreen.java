@@ -65,16 +65,6 @@ public class SplashScreen extends Activity {
                 // TODO - remove
 //                restoredShouldKeepSignedIn = false; // For debug
 
-                // Set Installation object
-                ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        // Toast.makeText(getApplicationContext(), "In done of installation", Toast.LENGTH_SHORT).show();
-                        MainActivity.installation = ParseInstallation.getCurrentInstallation();
-                        MainActivity.installation.put(Const.INSTALLATION_USER, ParseUser.getCurrentUser());
-                    }
-                });
-
                 if (isShachar) Toast.makeText(getApplicationContext(), "In Splash - restoredShouldKeepSignedIn == " + restoredShouldKeepSignedIn, Toast.LENGTH_SHORT).show();
 
                 if (restoredShouldKeepSignedIn) {
@@ -95,6 +85,16 @@ public class SplashScreen extends Activity {
                     user.fetchInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject parseObject, ParseException e) {
+                            // Set Installation object
+                            ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    // Toast.makeText(getApplicationContext(), "In done of installation", Toast.LENGTH_SHORT).show();
+                                    MainActivity.installation = ParseInstallation.getCurrentInstallation();
+                                    MainActivity.installation.put(Const.INSTALLATION_USER, ParseUser.getCurrentUser());
+                                }
+                            });
+
                             // TODO - use it
 //                            MainActivity.installation = ParseInstallation.getCurrentInstallation();
 

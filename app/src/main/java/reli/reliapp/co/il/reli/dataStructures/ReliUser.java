@@ -15,6 +15,7 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 
@@ -54,7 +55,7 @@ public class ReliUser extends ParseUser {
     /* ========================================================================== */
 
     // Constructor
-    public ReliUser(Context ctx, ReliUserType userType, String firstName, String fullName, ParseGeoPoint location) {
+    public ReliUser(Context ctx, ReliUserType userType, String firstName, String fullName, ParseGeoPoint location, byte[] userAvatar) {
         this.ctx = ctx;
         initDiscussionImIn();
 
@@ -73,6 +74,10 @@ public class ReliUser extends ParseUser {
         // TODO - which tags should be the default ones?
         setNotificationsRadius(Const.DEFAULT_RADIUS_FOR_NOTIFICATIONS);
 //        setNotificationsTags();
+
+        if (userAvatar != null) {
+            setAvatar(userAvatar);
+        }
     }
 
     /* ========================================================================== */
@@ -137,28 +142,20 @@ public class ReliUser extends ParseUser {
     /* ========================================================================== */
 
     public ParseFile getAvatar() {
-
-//        if (getUserType() == ReliUserType.ANONYMOUS_USER) {
-//
-//        }
         ParseFile avatarFile = (ParseFile) get(Const.COL_NAME_AVATAR);
         return avatarFile;
-
-//        avatarFile.getDataInBackground(new GetDataCallback() {
-//            public void done(byte[] data, ParseException e) {
-//                if (e == null) {
-//                    // data has the bytes for the resume
-//                } else {
-//                    // something went wrong
-//                }
-//            }
-//        });
     }
 
     /* ========================================================================== */
 
     public void setAvatar(byte[] avatar) {
-        put(Const.COL_NAME_AVATAR, avatar);
+        final ParseFile file = new ParseFile("avatar.png", avatar);
+        file.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                put(Const.COL_NAME_AVATAR, file);
+            }
+        });
     }
 
     /* ========================================================================== */

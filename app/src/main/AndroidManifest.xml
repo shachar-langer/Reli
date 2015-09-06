@@ -19,7 +19,7 @@
     <application
         android:name=".ReliApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/discussion_logo_0"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
@@ -117,7 +117,7 @@
             </intent-filter>
         </receiver>
         <!-- TODO - change -->
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/user_chat1"/>
+        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/discussion_logo_0"/>
     </application>
 
 </manifest>

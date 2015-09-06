@@ -9,12 +9,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.io.ByteArrayOutputStream;
+
+import reli.reliapp.co.il.reli.dataStructures.ReliUser;
+import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
+import reli.reliapp.co.il.reli.main.MainActivity;
 
 /**
  * The Class Utils is a common class that hold many kind of different useful
@@ -58,6 +67,8 @@ public class Utils
 
 	}
 
+    /* ========================================================================== */
+
 	public static AlertDialog showDialog(Context ctx, int title, int msg, int btn1,
 			int btn2, DialogInterface.OnClickListener listener1,
 			DialogInterface.OnClickListener listener2)
@@ -67,6 +78,8 @@ public class Utils
 				ctx.getString(btn2), listener1, listener2);
 
 	}
+
+    /* ========================================================================== */
 
 	public static AlertDialog showDialog(Context ctx, String title, String msg, String btn1,
 			String btn2, DialogInterface.OnClickListener listener)
@@ -84,6 +97,8 @@ public class Utils
 
 	}
 
+    /* ========================================================================== */
+
 	public static AlertDialog showDialog(Context ctx, int title, int msg, int btn1,
 			int btn2, DialogInterface.OnClickListener listener)
 	{
@@ -93,6 +108,8 @@ public class Utils
 
 	}
 
+    /* ========================================================================== */
+
 	public static AlertDialog showDialog(Context ctx, String title, String msg,
 			DialogInterface.OnClickListener listener)
 	{
@@ -101,6 +118,8 @@ public class Utils
 				listener, null);
 	}
 
+    /* ========================================================================== */
+
 	public static AlertDialog showDialog(Context ctx, int msg,
 			DialogInterface.OnClickListener listener)
 	{
@@ -108,6 +127,8 @@ public class Utils
 		return showDialog(ctx, null, ctx.getString(msg),
 				ctx.getString(android.R.string.ok), null, listener, null);
 	}
+
+    /* ========================================================================== */
 
 	public static AlertDialog showDialog(Context ctx, String msg)
 	{
@@ -122,6 +143,7 @@ public class Utils
 
 	}
 
+    /* ========================================================================== */
 
 	public static AlertDialog showDialog(Context ctx, int msg)
 	{
@@ -130,6 +152,7 @@ public class Utils
 
 	}
 
+    /* ========================================================================== */
 
 	public static void showDialog(Context ctx, int title, int msg,
 			DialogInterface.OnClickListener listener)
@@ -143,6 +166,7 @@ public class Utils
 		alert.show();
 	}
 
+    /* ========================================================================== */
 
 	public static final void hideKeyboard(Activity ctx)
 	{
@@ -152,6 +176,8 @@ public class Utils
 			imm.hideSoftInputFromWindow(ctx.getCurrentFocus().getWindowToken(), 0);
 		}
 	}
+
+    /* ========================================================================== */
 
 	public static final void hideKeyboard(Activity ctx, View v)
 	{
@@ -165,44 +191,52 @@ public class Utils
 		}
 	}
 
+    /* ========================================================================== */
 
-
-
-    public static void loadImageToParse(Resources res, int resourceID, Context ctx) {
-        byte[] byteArray = convertBitmapToByteArray(res, resourceID);
-
-        // Create the ParseFile
-        ParseFile file = new ParseFile("androidbegin.png", byteArray);
-        // Upload the image into Parse Cloud
-        file.saveInBackground();
-
-        // Create a New Class called "ImageUpload" in Parse
-        ParseObject imgupload = new ParseObject("ImageUpload");
-
-        // Create a column named "ImageName" and set the string
-        imgupload.put("ImageName", "AndroidBegin Logo");
-
-        // Create a column named "ImageFile" and insert the image
-        imgupload.put("ImageFile", file);
-
-        // Create the class and the columns
-        imgupload.saveInBackground();
-
-        // Show a simple toast message
-        Toast.makeText(ctx, "Image Uploaded", Toast.LENGTH_SHORT).show();
-    }
-
-    public static byte[] convertBitmapToByteArray(Resources res, int resourceID) {
-        // Locate the image in res > drawable-hdpi
-        Bitmap bitmap = BitmapFactory.decodeResource(res, resourceID);
-
-        // Convert it to byte
+    public static byte[] convertBitmapToByteArray(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
         // Compress image to lower quality scale 1 - 100
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
         // Convert to Byte Array
         return stream.toByteArray();
+    }
+
+    /* ========================================================================== */
+
+    public static void setAvatar(final ImageView iv, final String senderID) {
+        // Check if the image is already cached
+        if (MainActivity.usersAvatars.containsKey(senderID)) {
+            byte[] currentAvatar = MainActivity.usersAvatars.get(senderID);
+            iv.setImageBitmap(BitmapFactory.decodeByteArray(currentAvatar, 0, currentAvatar.length));
+            return;
+        }
+
+        ParseQuery<ReliUser> userQuery = ReliUser.getReliQuery();
+        userQuery.getInBackground(senderID, new GetCallback<ReliUser>() {
+            public void done(ReliUser reliUser, ParseException e) {
+                if (e == null) {
+                    // If this is anonymous user - return (the default resource is the one of Anonymous)
+                    if (reliUser.getUserType() == ReliUserType.ANONYMOUS_USER) {
+                        return;
+                    }
+
+                    // Handle the case of a Facebook user
+                    ParseFile avatarFile = reliUser.getAvatar();
+                    if (avatarFile != null) {
+                        avatarFile.getDataInBackground(new GetDataCallback() {
+                            public void done(byte[] data, ParseException e) {
+                                if (e == null) {
+                                    // Add to the cache
+                                    MainActivity.usersAvatars.put(senderID, data);
+
+                                    // Load the image
+                                    iv.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 }

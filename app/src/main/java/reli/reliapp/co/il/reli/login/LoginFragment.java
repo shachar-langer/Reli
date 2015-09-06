@@ -3,9 +3,11 @@ package reli.reliapp.co.il.reli.login;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -15,29 +17,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
-import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
-import com.facebook.login.widget.ProfilePictureView;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.io.ObjectStreamException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Arrays;
 
 import reli.reliapp.co.il.reli.main.MainActivity;
@@ -45,6 +39,7 @@ import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
 import reli.reliapp.co.il.reli.utils.Const;
+import reli.reliapp.co.il.reli.utils.Utils;
 
 
 public class LoginFragment extends android.support.v4.app.Fragment {
@@ -139,13 +134,18 @@ public class LoginFragment extends android.support.v4.app.Fragment {
             }
 
             // Create a new ReliUser
-            final ReliUser reliUser = new ReliUser(getActivity().getApplicationContext(),
+            ReliUser reliUser = new ReliUser(getActivity().getApplicationContext(),
                     ReliUserType.FACEBOOK_USER,
                     profile.getFirstName(),
                     profile.getName(),
-                    new ParseGeoPoint());
+                    new ParseGeoPoint(),
+                    null);
 
+//            reliUser.saveInBackground(); // TODO - needed?
             addUserToParse(reliUser);
+
+            // Save user's profile picture
+            handleFacebookAvatar(reliUser, profile);
         }
     }
 
@@ -189,11 +189,12 @@ public class LoginFragment extends android.support.v4.app.Fragment {
             Toast.makeText(getActivity().getApplicationContext(), "ParseUser is not known", Toast.LENGTH_SHORT).show();
 
             // Create a new ReliUser
-            final ReliUser reliUser = new ReliUser(getActivity().getApplicationContext(),
+            ReliUser reliUser = new ReliUser(getActivity().getApplicationContext(),
                     ReliUserType.ANONYMOUS_USER,
                     Const.ANONYMOUS_NAME,
                     Const.ANONYMOUS_NAME,
-                    new ParseGeoPoint());
+                    new ParseGeoPoint(),
+                    null);
 
             addUserToParse(reliUser);
         }
@@ -209,6 +210,17 @@ public class LoginFragment extends android.support.v4.app.Fragment {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    // Set Installation object
+                    ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            // Toast.makeText(getApplicationContext(), "In done of installation", Toast.LENGTH_SHORT).show();
+                            MainActivity.installation = ParseInstallation.getCurrentInstallation();
+                            MainActivity.installation.put(Const.INSTALLATION_USER, ParseUser.getCurrentUser());
+                        }
+                    });
+
+
                     Toast.makeText(getActivity().getApplicationContext(), "Added a new ReliUser to Parse", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), MainActivity.class));
 //                    getActivity().finish();
@@ -239,56 +251,62 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         Toast.makeText(getActivity().getApplicationContext(), "SharedPreferences - changed to " + cb.isChecked(), Toast.LENGTH_SHORT).show();
         editor.commit();
     }
-}
 
+    /* ========================================================================== */
 
+    private void handleFacebookAvatar(ReliUser reliUser, Profile profile) {
+        try {
+            String imageURL = "https://graph.facebook.com/" + profile.getId()+ "/picture?type=small";
+            URL url_value = new URL(imageURL);
 
+            // Find the Avatar in background
+            new HandleFacebookAvatar().execute(url_value, reliUser);
 
+        } catch (Exception e) {
 
+        }
+    }
 
+    /* ========================================================================== */
 
+    private class HandleFacebookAvatar extends AsyncTask<Object, Void, byte[]> {
+        ReliUser reliUser;
 
+        @Override
+        protected byte[] doInBackground(Object... params) {
+            Log.w("LIOR", "in doInBackground!");
+            URL url_value = (URL) params[0];
+            reliUser = (ReliUser) params[1];
+            Bitmap bitmap;
 
-/*
-Bitmap bm = null;
             try {
+                Log.w("LIOR", "in doInBackground - began try");
                 BitmapFactory.Options bitmap_options = new BitmapFactory.Options();
-                bitmap_options.inScaled = false;
-                bitmap_options.inDither = false;
-                bitmap_options.inPreferQualityOverSpeed = true;
-                bitmap_options.inSampleSize = 1;
+                // bitmap_options.inScaled = false;
+                // bitmap_options.inDither = false;
+                // bitmap_options.inPreferQualityOverSpeed = true;
+                // bitmap_options.inSampleSize = 1;
+
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-                String imageURL = "https://graph.facebook.com/" + profile.getId()+ "/picture?type=small";
-                URL url_value = new URL(imageURL);
-                bm = BitmapFactory.decodeStream(url_value.openConnection().getInputStream(), null, bitmap_options);
+
+                bitmap = BitmapFactory.decodeStream(url_value.openConnection().getInputStream(), null, bitmap_options);
+                Log.w("LIOR", "in doInBackground - finished try");
             } catch (Exception e) {
+                Log.w("LIOR", "in doInBackground - catch");
+                Resources res = getResources();
+                Drawable drawable = res.getDrawable(R.drawable.user_chat1);
+                bitmap = ((BitmapDrawable)drawable).getBitmap();
             }
 
-            ProfilePictureView profilePictureView = (ProfilePictureView) view.findViewById(R.id.fiv);
-            profilePictureView.setProfileId(profile.getId());
+            return Utils.convertBitmapToByteArray(bitmap);
+        }
 
-////                ImageView profileImageView = ((ImageView) profilePictureView.getChildAt(0));
-////                Bitmap bitmap = ((BitmapDrawable) profileImageView.getDrawable()).getBitmap();
-//                Bitmap bitmap = profilePictureView.getDrawingCache();
-
-            ImageView  tv1= (ImageView) view.findViewById(R.id.iv);
-            tv1.setImageBitmap(bm);
-//
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                byte[] byteArray = stream.toByteArray();
-//            }
-
-//            try {
-////                String imageURL = "http://graph.facebook.com/105935396418298/picture";
-//                String imageURL = "http://graph.facebook.com/" + profile.getId()+ "/picture?type=small";
-//                URL url_value = new URL(imageURL);
-//                Bitmap profPict = BitmapFactory.decodeStream(url_value.openConnection().getInputStream());
-////                profPict = BitmapFactory.decodeStream((InputStream)new URL(imageURL).getContent());
-//            }
-//            catch (Exception e) {
-//                Toast.makeText(getActivity().getApplicationContext(), "Error with Picture - " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                e.printStackTrace();
-//            }
- */
+        @Override
+        protected void onPostExecute(byte[] bytes) {
+            super.onPostExecute(bytes);
+            reliUser.setAvatar(bytes);
+            Log.w("LIOR", "Finished with avatar!");
+        }
+    }
+}

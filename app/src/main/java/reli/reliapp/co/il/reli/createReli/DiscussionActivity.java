@@ -9,6 +9,7 @@ import java.util.Locale;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -22,13 +23,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -40,9 +44,11 @@ import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.Message;
 import reli.reliapp.co.il.reli.dataStructures.MessageStatus;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
+import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
 import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.notifications.ReliNotifications;
 import reli.reliapp.co.il.reli.utils.Const;
+import reli.reliapp.co.il.reli.utils.Utils;
 
 /**
  * The Class Chat is the Activity class that holds main activity_discussion screen. It shows
@@ -237,7 +243,6 @@ public class DiscussionActivity extends CustomActivity
 						// TODO - because If we get here, it was sent.
 						message.setStatus(MessageStatus.STATUS_SENT);
 
-
 						messagesList.add(message);
 
 						if (lastMsgDate == null || lastMsgDate.before(message.getDate())) {
@@ -312,11 +317,17 @@ public class DiscussionActivity extends CustomActivity
 					.getDate().getTime(), DateUtils.SECOND_IN_MILLIS,
 					DateUtils.DAY_IN_MILLIS, 0));
 
+            // Fill in the message
 			lbl = (TextView) v.findViewById(R.id.lbl2);
 			lbl.setText(c.getMessageContent());
 
+            // Fill in the status of the message
 			lbl = (TextView) v.findViewById(R.id.lbl3);
             lbl.setText(c.isSentByUser() ? c.getStatus().statusDescription() : "");
+
+            // Fill in the image
+            ImageView iv = (ImageView) v.findViewById(R.id.senderAvatar);
+            Utils.setAvatar(iv, c.getSenderID());
 
 			return v;
 		}
@@ -330,20 +341,13 @@ public class DiscussionActivity extends CustomActivity
 	{
         switch (item.getItemId()) {
             case R.id.settings_follow:
-                Toast.makeText(getApplicationContext(), R.string.message_follow, Toast.LENGTH_SHORT).show();
-                MainActivity.updateDiscussionsImIn(discussionTableName);
-                updateMenuTitles();
-                return true;
+                return followReli();
 
             case R.id.settings_unfollow:
-                Toast.makeText(getApplicationContext(), R.string.message_unfollow, Toast.LENGTH_SHORT).show();
-                MainActivity.removeDiscussionFromMyRelis(discussionTableName);
-                updateMenuTitles();
-                return true;
+                return unfollowReli();
 
             case R.id.settings_reli_info:
-                displayDiscussionInfo();
-                return true;
+                return displayDiscussionInfo();
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -397,7 +401,7 @@ public class DiscussionActivity extends CustomActivity
 
     /* ========================================================================== */
 
-    private void displayDiscussionInfo() {
+    private boolean displayDiscussionInfo() {
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(DiscussionActivity.this);
         LayoutInflater inflater = DiscussionActivity.this.getLayoutInflater();
@@ -422,6 +426,7 @@ public class DiscussionActivity extends CustomActivity
                 .create()
                 .show();
 
+        return true;
     }
 
     /* ========================================================================== */
@@ -431,7 +436,7 @@ public class DiscussionActivity extends CustomActivity
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault());
 
         // Get the expiration and creation date of the current discussion
-        TextView creationDate = (TextView) v.findViewById(R.id.about_discussion_value_creation);
+        TextView creationDate   = (TextView) v.findViewById(R.id.about_discussion_value_creation);
         TextView expirationDate = (TextView) v.findViewById(R.id.about_discussion_value_expiration);
         TextView lastUpdateDate = (TextView) v.findViewById(R.id.about_discussion_value_update);
         creationDate.setText(sdf.format(currentDiscussion.getCreationDate()));
@@ -460,7 +465,6 @@ public class DiscussionActivity extends CustomActivity
         TextView radius = (TextView) v.findViewById(R.id.about_discussion_value_radius);
         radius.setText(Integer.toString(currentDiscussion.getRadius()) + " meters");
 
-        // TODO - check why it displays wrong tags
         // Get the tags of the current discussion
         TextView tags = (TextView) v.findViewById(R.id.about_discussion_value_tags);
         ArrayList<String> tagsIDs = currentDiscussion.getTagIDsForDiscussion();
@@ -484,5 +488,28 @@ public class DiscussionActivity extends CustomActivity
         }
         tags.setText(tagsListAsString);
     }
+
+    /* ========================================================================== */
+
+    private boolean followReli() {
+        Toast.makeText(getApplicationContext(), R.string.message_follow, Toast.LENGTH_SHORT).show();
+        MainActivity.updateDiscussionsImIn(discussionTableName);
+        updateMenuTitles();
+
+        return true;
+    }
+
+    /* ========================================================================== */
+
+    private boolean unfollowReli() {
+        Toast.makeText(getApplicationContext(), R.string.message_unfollow, Toast.LENGTH_SHORT).show();
+        MainActivity.removeDiscussionFromMyRelis(discussionTableName);
+        updateMenuTitles();
+
+        return true;
+    }
+
+    /* ========================================================================== */
+
 
 }
