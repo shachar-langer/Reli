@@ -62,9 +62,6 @@ public class SplashScreen extends Activity {
                 SharedPreferences prefs = getSharedPreferences(Const.RELI_SHARED_PREF_FILE, Context.MODE_PRIVATE);
                 boolean restoredShouldKeepSignedIn = prefs.getBoolean(Const.SHARED_PREF_KEEP_SIGNED_IN, false);
 
-                // TODO - remove
-//                restoredShouldKeepSignedIn = false; // For debug
-
                 if (isShachar) Toast.makeText(getApplicationContext(), "In Splash - restoredShouldKeepSignedIn == " + restoredShouldKeepSignedIn, Toast.LENGTH_SHORT).show();
 
                 if (restoredShouldKeepSignedIn) {

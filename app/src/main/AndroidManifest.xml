@@ -116,7 +116,7 @@
                 <category android:name="reli.reliapp.co.il.reli" />
             </intent-filter>
         </receiver>
-        <!-- TODO - change -->
+
         <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/discussion_logo_0"/>
     </application>
 

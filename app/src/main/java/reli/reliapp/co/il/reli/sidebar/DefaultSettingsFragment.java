@@ -51,7 +51,6 @@ public class DefaultSettingsFragment extends Fragment {
 
         // Set the initial progress
         try {
-            // TODO - check why in the first time it doesn't show the correct values
             progress = currentUser.getRelisRadius();
         } catch (Exception e) {
             progress = Const.DEFAULT_RADIUS_FOR_RELIS;
@@ -80,8 +79,6 @@ public class DefaultSettingsFragment extends Fragment {
     /* ========================================================================== */
 
     private void setTimePickers() {
-        // TODO - check why in the first time it doesn't show the correct values
-
         int currentExpirationInMinutes = currentUser.getRelisExpirationInMinutes();
         int hours = currentExpirationInMinutes / Const.MINUTES_IN_HOUR;
         int minutes = currentExpirationInMinutes - hours * Const.MINUTES_IN_HOUR;

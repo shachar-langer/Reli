@@ -14,21 +14,6 @@
         android:background="@color/material_blue_grey_800"
         android:layout_weight="0.85">
 
-        <!-- TODO - delete -->
-        <!--<ImageView-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="100dp"-->
-            <!--android:id="@+id/iv"/>-->
-
-        <!--<com.facebook.login.widget.ProfilePictureView-->
-            <!--android:id="@+id/fiv"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:gravity="center_horizontal"-->
-            <!--android:layout_marginBottom="10dp"-->
-            <!--facebook:com_facebook_preset_size="normal"-->
-            <!--android:layout_gravity="center_vertical" />-->
-
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -59,7 +44,7 @@
             <ImageView
                 android:layout_width="128dp"
                 android:layout_height="128dp"
-                android:src="@drawable/user_chat1"
+                android:src="@drawable/reli_for_login"
                 android:layout_marginBottom="@dimen/pad_20dp" />
         </LinearLayout>
 
@@ -128,11 +113,5 @@
                 android:checked="true" />
 
         </LinearLayout>
-
-
     </LinearLayout>
-
-
-
-
 </LinearLayout>

@@ -209,7 +209,6 @@ public class TagSelectionFragment extends Fragment {
 
         // Set the initial progress
         try {
-            // TODO - check why in the first time it doesn't show the correct values
             progress = currentUser.getNotificationsRadius();
         } catch (Exception e) {
             progress = Const.DEFAULT_RADIUS_FOR_NOTIFICATIONS;

@@ -151,7 +151,6 @@ public abstract class AbstractDiscussion extends ParseObject {
     /* ========================================================================== */
 
     public ArrayList<String> getTagIDsForDiscussion() {
-        // TODO - make sure that it works
         List<String> tagIDs = getList(Const.COL_DISCUSSION_TAG_IDS);
         ArrayList<String> res;
 

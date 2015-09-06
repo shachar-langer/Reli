@@ -183,8 +183,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
                 ImageView iv = (ImageView) drawerView.findViewById(R.id.avatar);
                 Utils.setAvatar(iv, user.getObjectId());
 
-                // TODO - I was here
-                Log.w("Yuval", "in onDrawerOpened");
                 invalidateOptionsMenu();
             }
 
