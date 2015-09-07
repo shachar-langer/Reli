@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "Reli": {
+      "applicationId": "jmxBnVR9fWE39FZxG5tCuVCVwpMp7j62DjdjTFj2"
+    },
+    "_default": {
+      "link": "Reli"
+    }
+  }
+}
