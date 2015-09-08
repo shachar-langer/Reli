@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -113,7 +114,8 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     public static HashSet<String> discussionsImIn = new HashSet<String>();
     public static HashMap<String, ReliTag> tagsIdToTag = new HashMap<>();
-    public static HashMap<String, byte[]> usersAvatars = new HashMap<>();
+//    public static HashMap<String, byte[]> usersAvatars = new HashMap<>();
+    public static HashMap<String, Bitmap> usersAvatars = new HashMap<>();
 
     /* ========================================================================== */
 

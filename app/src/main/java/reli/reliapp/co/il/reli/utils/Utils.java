@@ -7,6 +7,12 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -205,14 +211,17 @@ public class Utils
     /* ========================================================================== */
 
     public static void setAvatar(final ImageView iv, final String senderID) {
-        // Check if the image is already cached
 
+        // Check if the image is already cached
         Log.w("Shachar", "Utils.setAvatar - 1. senderID == " + senderID);
 
         if (MainActivity.usersAvatars.containsKey(senderID)) {
-            byte[] currentAvatar = MainActivity.usersAvatars.get(senderID);
+//            byte[] currentAvatar = MainActivity.usersAvatars.get(senderID);
+//            Log.w("Shachar", "Utils.setAvatar - 2");
+//            iv.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeByteArray(currentAvatar, 0, currentAvatar.length), 25));
+
             Log.w("Shachar", "Utils.setAvatar - 2");
-            iv.setImageBitmap(BitmapFactory.decodeByteArray(currentAvatar, 0, currentAvatar.length));
+            iv.setImageBitmap(MainActivity.usersAvatars.get(senderID));
             return;
         }
 
@@ -233,11 +242,17 @@ public class Utils
                             public void done(byte[] data, ParseException e) {
                                 if (e == null) {
                                     Log.w("Shachar", "Utils.setAvatar - 4. senderID == " + senderID);
+//                                    // Add to the cache
+//                                    MainActivity.usersAvatars.put(senderID, data);
+//
+//                                    // Load the image
+//                                    iv.setImageBitmap(getRoundedCornerBitmap(BitmapFactory.decodeByteArray(data, 0, data.length), 25));
                                     // Add to the cache
-                                    MainActivity.usersAvatars.put(senderID, data);
+                                    Bitmap bitmap = getRoundedCornerBitmap(BitmapFactory.decodeByteArray(data, 0, data.length), 25);
+                                    MainActivity.usersAvatars.put(senderID, bitmap);
 
                                     // Load the image
-                                    iv.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
+                                    iv.setImageBitmap(bitmap);
                                 }
                             }
                         });
@@ -249,5 +264,29 @@ public class Utils
                 }
             }
         });
+    }
+
+    /* ========================================================================== */
+
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
+                .getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
     }
 }
