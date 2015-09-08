@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -205,8 +206,12 @@ public class Utils
 
     public static void setAvatar(final ImageView iv, final String senderID) {
         // Check if the image is already cached
+
+        Log.w("Shachar", "Utils.setAvatar - 1. senderID == " + senderID);
+
         if (MainActivity.usersAvatars.containsKey(senderID)) {
             byte[] currentAvatar = MainActivity.usersAvatars.get(senderID);
+            Log.w("Shachar", "Utils.setAvatar - 2");
             iv.setImageBitmap(BitmapFactory.decodeByteArray(currentAvatar, 0, currentAvatar.length));
             return;
         }
@@ -217,6 +222,7 @@ public class Utils
                 if (e == null) {
                     // If this is anonymous user - return (the default resource is the one of Anonymous)
                     if (reliUser.getUserType() == ReliUserType.ANONYMOUS_USER) {
+                        Log.w("Shachar", "Utils.setAvatar - 3");
                         return;
                     }
 
@@ -226,6 +232,7 @@ public class Utils
                         avatarFile.getDataInBackground(new GetDataCallback() {
                             public void done(byte[] data, ParseException e) {
                                 if (e == null) {
+                                    Log.w("Shachar", "Utils.setAvatar - 4. senderID == " + senderID);
                                     // Add to the cache
                                     MainActivity.usersAvatars.put(senderID, data);
 
@@ -234,7 +241,11 @@ public class Utils
                                 }
                             }
                         });
+                    } else {
+                        // TODO - remvoe else
+                        Log.w("Shachar", "Utils.setAvatar - 5 - bassa. senderID == " + senderID);
                     }
+
                 }
             }
         });

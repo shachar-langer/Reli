@@ -53,15 +53,6 @@ public class Discussion extends AbstractDiscussion implements Serializable {
         return getInt(Const.COL_DISCUSSION_RADIUS);
     }
 
-    public void setDiscussionLogo(Bitmap discussionLogo) {
-        // TODO
-    }
-
-    public Bitmap getDiscussionLogo() {
-        // TODO
-        return null;
-    }
-
     // No setter for the creation date
     public Date getCreationDate() {
         return getDate(Const.COL_DISCUSSION_CREATION_DATE);
@@ -103,4 +94,3 @@ public class Discussion extends AbstractDiscussion implements Serializable {
         return ParseQuery.getQuery(Discussion.class);
     }
 }
-

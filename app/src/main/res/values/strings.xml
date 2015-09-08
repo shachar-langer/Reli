@@ -196,5 +196,7 @@
     <string name="message_unfollow">You\'ve unfollowed this Reli</string>
 
     <string name="no_tags">(none)</string>
+    <string name="no_relis_all">There are no Relis yet.\nDon\'t be shy, add a new one!</string>
+    <string name="no_relis_my">You currently have no Relis.\nSwipe to the right and check out some Relis!</string>
 
 </resources>

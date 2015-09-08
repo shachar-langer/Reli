@@ -74,8 +74,6 @@ public class MainMyRelisFragment extends Fragment {
                     startActivity(intent);
 //                    getActivity().finish();
                 }
-
-
             }
         });
 
@@ -99,20 +97,23 @@ public class MainMyRelisFragment extends Fragment {
         final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
 
         ArrayList<String> discussionsUserIsIn = user.getDiscussionImIn();
-//        String discussionsUserIsIn = (String) user.getString(Const.COL_NAME_DISCUSSIONS_IM_IN);
+        final TextView tvNoUsers = (TextView) v.findViewById(R.id.no_my_relis);
+        tvNoUsers.setVisibility(View.GONE);
 
-        // If there are no discussions I'm in, the frgament should be empty
+        // If there are no discussions I'm in, the fragment should be empty
         if (discussionsUserIsIn == null) {
             user.initDiscussionImIn();
             user.saveEventually();
             dia.dismiss();
-            Toast.makeText(getActivity().getApplicationContext(), "None", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity().getApplicationContext(), "None", Toast.LENGTH_SHORT).show();
+            tvNoUsers.setVisibility(View.VISIBLE);
             return;
         }
 
         if (discussionsUserIsIn.size() == 0) {
             dia.dismiss();
-            Toast.makeText(getActivity().getApplicationContext(), "Empty", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity().getApplicationContext(), "Empty", Toast.LENGTH_SHORT).show();
+            tvNoUsers.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -133,7 +134,8 @@ public class MainMyRelisFragment extends Fragment {
 
                         if (li != null) {
                             if (li.size() == 0) {
-                                Toast.makeText(ctx, R.string.msg_no_relis_found, Toast.LENGTH_SHORT).show();
+                                tvNoUsers.setVisibility(View.VISIBLE);
+//                                Toast.makeText(ctx, R.string.msg_no_relis_found, Toast.LENGTH_SHORT).show();
                             }
 
                             chatsList = new ArrayList<Discussion>(li);
@@ -229,8 +231,7 @@ public class MainMyRelisFragment extends Fragment {
                 v = getActivity().getLayoutInflater().inflate(R.layout.discussion_item, null);
             }
 
-            // TODO - change this. Bad practice.
-            final View bla = v;
+            final View finalView = v;
 
             ((TextView) v.findViewById(R.id.lbl1)).setText(chatsList.get(pos).getDiscussionName());
 
@@ -238,7 +239,7 @@ public class MainMyRelisFragment extends Fragment {
 //            query.countInBackground(new CountCallback() {
 //                                        public void done(int count, ParseException e) {
 //                                            if (e == null) {
-//                                                ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(count));
+//                                                ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(count));
 //                                            } else {
 //                                                Toast.makeText(getActivity().getApplicationContext(), "Failed to retrieve the number of messages at a discussion", Toast.LENGTH_SHORT).show();
 //                                            }
@@ -276,17 +277,14 @@ public class MainMyRelisFragment extends Fragment {
                             String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
                             String lastModifiedHour = hour + ":" + minutes;
 
-                            ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
-                            ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
-                            ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
+                            ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
+                            ((TextView) finalView.findViewById(R.id.lbl3)).setText(lastModifiedHour);
+                            ((TextView) finalView.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
                         }
                         catch (Exception ex) {
 
                         }
-                    } else {
-                        // TODO - something failed
                     }
-
                 }
             });
 

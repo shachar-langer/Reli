@@ -22,9 +22,7 @@ public abstract class AbstractDiscussion extends ParseObject {
     protected ParseGeoPoint location;
     protected int radius;
     protected Bitmap discussionLogo;
-    protected Date creationDate;
     protected Date expirationDate;
-    protected String ownerParseID;
 
     /* ========================================================================== */
 
@@ -97,8 +95,8 @@ public abstract class AbstractDiscussion extends ParseObject {
 
     /* ========================================================================== */
 
+    // Future Release
     public Bitmap getDiscussionLogo() {
-        // TODO
         return this.discussionLogo;
     }
 
@@ -164,4 +162,3 @@ public abstract class AbstractDiscussion extends ParseObject {
     }
 
 }
-

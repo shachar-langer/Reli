@@ -52,6 +52,8 @@ public class SplashScreen extends Activity {
                 SharedPreferences prefs = getSharedPreferences(Const.RELI_SHARED_PREF_FILE, Context.MODE_PRIVATE);
                 boolean restoredShouldKeepSignedIn = prefs.getBoolean(Const.SHARED_PREF_KEEP_SIGNED_IN, false);
 
+//                restoredShouldKeepSignedIn = false;
+
                 if (restoredShouldKeepSignedIn) {
                     user = (ReliUser) (ParseUser.getCurrentUser());
                 } else {

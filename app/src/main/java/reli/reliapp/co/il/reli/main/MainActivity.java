@@ -152,10 +152,8 @@ public class MainActivity extends CustomActivity implements LocationListener,
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-
                 ImageView iv = (ImageView) drawerView.findViewById(R.id.avatar);
                 Utils.setAvatar(iv, user.getObjectId());
-
                 invalidateOptionsMenu();
             }
 
@@ -425,7 +423,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     /* ========================================================================== */
 
-    // TODO - move to Utils
     /*
      * Show a dialog returned by Google Play services for the connection error code
      */

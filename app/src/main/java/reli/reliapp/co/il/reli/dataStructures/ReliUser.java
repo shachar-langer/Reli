@@ -1,15 +1,10 @@
 package reli.reliapp.co.il.reli.dataStructures;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.login.widget.ProfilePictureView;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -17,18 +12,10 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.json.JSONArray;
-
-import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import reli.reliapp.co.il.reli.R;
-import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
 
 public class ReliUser extends ParseUser {
@@ -151,10 +138,13 @@ public class ReliUser extends ParseUser {
 
     public void setAvatar(byte[] avatar) {
         final ParseFile file = new ParseFile("avatar.png", avatar);
+        Log.w("Yuval", "setAvatar(). size == " + avatar.length);
         file.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                Log.w("Yuval", "setAvatar() - in done");
                 put(Const.COL_NAME_AVATAR, file);
+                saveEventually();
             }
         });
     }

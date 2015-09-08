@@ -58,7 +58,7 @@ public class MainRelisAroundMeFragment extends Fragment {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_main_relis_around_me, container, false);
 
-        RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.blabla);
+        RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.layout_around);
         SimpleDrawingView sdv = new SimpleDrawingView(getActivity());
 
         relativeLayout.addView(sdv);
@@ -77,19 +77,17 @@ public class MainRelisAroundMeFragment extends Fragment {
         // defines paint and canvas
         private Paint drawPaint;
 
-        private Context ctx;
+        private final int innerCircle_X = 550;
+        private final int innerCircle_Y = 650;
+        private final int innerCircle_Radius = 200;
 
-        private int innerCircle_X = 550;
-        private int innerCircle_Y = 650;
-        private int innerCircle_Radius = 200;
+        private final int middleCircle_X = 550;
+        private final int middleCircle_Y = 650;
+        private final int middleCircle_Radius = 350;
 
-        private int middleCircle_X = 550;
-        private int middleCircle_Y = 650;
-        private int middleCircle_Radius = 350;
-
-        private int outerCircle_X = 550;
-        private int outerCircle_Y = 650;
-        private int outerCircle_Radius = 500;
+        private final int outerCircle_X = 550;
+        private final int outerCircle_Y = 650;
+        private final int outerCircle_Radius = 500;
 
         /* ========================================================================== */
 
@@ -98,7 +96,6 @@ public class MainRelisAroundMeFragment extends Fragment {
             setFocusable(true);
             setFocusableInTouchMode(true);
             setupPaint();
-            ctx = context;
         }
 
         /* ========================================================================== */
@@ -122,7 +119,7 @@ public class MainRelisAroundMeFragment extends Fragment {
             canvas.drawCircle(middleCircle_X, middleCircle_Y, middleCircle_Radius, drawPaint);
             canvas.drawCircle(innerCircle_X, innerCircle_Y, innerCircle_Radius, drawPaint);
 
-            ((RelativeLayout) v.findViewById(R.id.blabla)).setOnTouchListener(new OnTouchListener() {
+            ((RelativeLayout) v.findViewById(R.id.layout_around)).setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -134,50 +131,38 @@ public class MainRelisAroundMeFragment extends Fragment {
 
                         Intent intent = new Intent(getActivity(), MainRelisAroundMeActivity.class);
 
+                        // Click in the inner circle
                         if ((xPressed > (innerCircle_X - innerCircle_Radius)) &&
                                 (xPressed < (innerCircle_X + innerCircle_Radius)) &&
                                 (yPressed > (innerCircle_Y - innerCircle_Radius)) &&
                                 (yPressed < (innerCircle_Y + innerCircle_Radius))) {
-                            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! inner");
 
                             clickedOnACircle = true;
                             clickedRadius = INNER_RADIUS;
-
-//                            intent.putExtra(Const.RADIUS, innerRadius);
-//                            startActivity(intent);
-//                            return true;
                         }
 
+                        // Click in the middle circle
                         if ((xPressed > (middleCircle_X - middleCircle_Radius)) &&
                                 (xPressed < (middleCircle_X + middleCircle_Radius)) &&
                                 (yPressed > (middleCircle_Y - middleCircle_Radius)) &&
                                 (yPressed < (middleCircle_Y + middleCircle_Radius))) {
-                            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ middle");
 
                             clickedOnACircle = true;
                             clickedRadius = MIDDLE_RADIUS;
-
-//                            intent.putExtra(Const.RADIUS, middleRadius);
-//                            startActivity(intent);
-//                            return true;
                         }
 
+                        // Click in the outer circle
                         if ((xPressed > (outerCircle_X - outerCircle_Radius)) &&
                                 (xPressed < (outerCircle_X + outerCircle_Radius)) &&
                                 (yPressed > (outerCircle_Y - outerCircle_Radius)) &&
                                 (yPressed < (outerCircle_Y + outerCircle_Radius))) {
-                            System.out.println("############################ outer");
 
                             clickedOnACircle = true;
                             clickedRadius = OUTER_RADIUS;
-
-//                            intent.putExtra(Const.RADIUS, outerRadius);
-//                            startActivity(intent);
-//                            return true;
                         }
 
+                        // Check if there was a click
                         if (clickedOnACircle) {
-
                             Location location = ((MainActivity) getActivity()).getLocation();
                             if (location == null) {
                                 Toast.makeText(getActivity(), "Can not find your location", Toast.LENGTH_SHORT).show();
@@ -193,16 +178,11 @@ public class MainRelisAroundMeFragment extends Fragment {
 //                                        .addToBackStack("AROUND")
 //                                        .commit();
 
-                                // TODO - delete the numbers
-
 //                                startActivity(intent);
 //                                getActivity().finish();
                                 return true;
                             }
-                        } else {
-                            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ None");
                         }
-
                     }
 
                     return false;
@@ -216,8 +196,7 @@ public class MainRelisAroundMeFragment extends Fragment {
     private void updateNumberOfDiscussionsInRadius(final int textId, int radius) {
         final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
 
-        // TODO - change the name of the variable. Need to change in other fragments as well
-        final View bla = v;
+        final View finalView = v;
 
         // TODO - change the last argument we gave to whereWithinKilometers
         ReliUser currentUser = MainActivity.user;
@@ -226,7 +205,7 @@ public class MainRelisAroundMeFragment extends Fragment {
                     @Override
                     public void done(List<Discussion> li, ParseException e) {
                         // if (e != null) {
-                        ((TextView) bla.findViewById(textId)).setText(Integer.toString(li.size()));
+                        ((TextView) finalView.findViewById(textId)).setText(Integer.toString(li.size()));
                         dia.dismiss();
                         //}
                     }

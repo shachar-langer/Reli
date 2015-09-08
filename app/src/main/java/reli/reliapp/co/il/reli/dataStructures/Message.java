@@ -33,7 +33,6 @@ public class Message
 
 	public boolean isSentByUser()
 	{
-        // TODO change according to the implementation of ReliUser
 		return (MainActivity.user.getParseID().equals(this.senderID));
 	}
 

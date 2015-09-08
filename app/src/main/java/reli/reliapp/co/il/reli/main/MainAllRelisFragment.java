@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-//import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ import reli.reliapp.co.il.reli.createReli.DiscussionActivity;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.utils.Const;
-import reli.reliapp.co.il.reli.utils.Utils;
 
 public class MainAllRelisFragment extends Fragment {
 
@@ -91,6 +89,9 @@ public class MainAllRelisFragment extends Fragment {
         ReliUser user = MainActivity.user;
 
         final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
+        final TextView tvNoUsers = (TextView) v.findViewById(R.id.no_all_relis);
+        tvNoUsers.setVisibility(View.GONE);
+
         // TODO - change 10 to the users radius choice
         Discussion.getDiscussionQuery().whereWithinKilometers(Const.COL_DISCUSSION_LOCATION, user.getLocation(), 1000000)
                 .findInBackground(new FindCallback<Discussion>() {
@@ -100,7 +101,11 @@ public class MainAllRelisFragment extends Fragment {
 
                         if (li != null) {
                             if (li.size() == 0) {
-                                Toast.makeText(ctx, R.string.msg_no_relis_found, Toast.LENGTH_SHORT).show();
+                                tvNoUsers.setVisibility(View.VISIBLE);
+//                                Toast.makeText(ctx, R.string.msg_no_relis_found, Toast.LENGTH_SHORT).show();
+                                // TODO - ask Shachar
+                                dia.dismiss();
+                                return;
                             }
 
                             chatsList = new ArrayList<Discussion>(li);
@@ -134,12 +139,8 @@ public class MainAllRelisFragment extends Fragment {
 //                                    getActivity().finish();
                                 }
                             });
-                        } else {
-//                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
-                            // TODO - remove the following line
-                            Toast.makeText(getActivity().getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            e.printStackTrace();
                         }
+
                         dia.dismiss();
                     }
                 });
@@ -223,8 +224,7 @@ public class MainAllRelisFragment extends Fragment {
                 v = getActivity().getLayoutInflater().inflate(R.layout.discussion_item, null);
             }
 
-            // TODO - change this. Bad practice.
-            final View bla = v;
+            final View finalView = v;
 
             ((TextView) v.findViewById(R.id.lbl1)).setText(chatsList.get(pos).getDiscussionName());
 
@@ -232,7 +232,7 @@ public class MainAllRelisFragment extends Fragment {
 //            query.countInBackground(new CountCallback() {
 //                                        public void done(int count, ParseException e) {
 //                                            if (e == null) {
-//                                                ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(count));
+//                                                ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(count));
 //                                            } else {
 //                                                Toast.makeText(getActivity().getApplicationContext(), "Failed to retrieve the number of messages at a discussion", Toast.LENGTH_SHORT).show();
 //                                            }
@@ -270,15 +270,13 @@ public class MainAllRelisFragment extends Fragment {
                             String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
                             String lastModifiedHour = hour + ":" + minutes;
 
-                            ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
-                            ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
-                            ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
+                            ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
+                            ((TextView) finalView.findViewById(R.id.lbl3)).setText(lastModifiedHour);
+                            ((TextView) finalView.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
                         }
                         catch (Exception ex) {
 
                         }
-                    } else {
-                        // TODO - something failed
                     }
 
                 }

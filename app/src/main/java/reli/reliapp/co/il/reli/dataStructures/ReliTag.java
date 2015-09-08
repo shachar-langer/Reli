@@ -17,13 +17,11 @@ public class ReliTag extends ParseObject {
 
     public ReliTag(String tagName) {
         setTagName(tagName);
-//        saveEventually();
     }
 
     public ReliTag(String tagName, String parseID) {
         setTagName(tagName);
         setTagParseID(parseID);
-//        saveEventually();
     }
 
     public String getTagName() {

@@ -230,8 +230,7 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
                 v = getLayoutInflater().inflate(R.layout.discussion_item, null);
             }
 
-            // TODO - change this. Bad practice.
-            final View bla = v;
+            final View finalView = v;
 
             ((TextView) v.findViewById(R.id.lbl1)).setText(chatsList.get(pos).getDiscussionName());
 
@@ -240,7 +239,7 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
                 @Override
                 public void done(List<ParseObject> li, ParseException e) {
 //                    if (e == null) {
-//                        ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(count));
+//                        ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(count));
 //                    } else {
 //                        Toast.makeText(getApplicationContext(), "Failed to retrieve the number of messages at a discussion", Toast.LENGTH_SHORT).show();
 //                    }
@@ -268,15 +267,13 @@ public class MainRelisAroundMeActivity extends CustomActivity { //ActionBarActiv
                             String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
                             String lastModifiedHour = hour + ":" + minutes;
 
-                            ((TextView) bla.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
-                            ((TextView) bla.findViewById(R.id.lbl3)).setText(lastModifiedHour);
-                            ((TextView) bla.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
+                            ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
+                            ((TextView) finalView.findViewById(R.id.lbl3)).setText(lastModifiedHour);
+                            ((TextView) finalView.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
                         }
                         catch (Exception ex) {
 
                         }
-                    } else {
-                        // TODO - something failed
                     }
                 }
             });

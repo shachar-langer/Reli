@@ -3,7 +3,6 @@ package reli.reliapp.co.il.reli.notifications;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +52,10 @@ public class ReliNotifications {
     }
 
     /* ========================================================================== */
+
     public static ParseQuery<ParseInstallation> getQueryAccordingToDiscussion(Discussion discussionObject) {
         ParseQuery pushQuery = ParseInstallation.getQuery();
-//        pushQuery.whereEqualTo(discussionObject.getParseID(), true);
-        pushQuery.whereEqualTo("w6GtTZ9ZK3", true);
-
-
+        pushQuery.whereEqualTo(discussionObject.getParseID(), true);
 
         return pushQuery;
     }
@@ -105,26 +102,5 @@ public class ReliNotifications {
         push.setExpirationTimeInterval(Const.NOTIFICATION_TIME_INTERVAL_IN_SECONDS);
         push.setMessage(title);
         push.sendInBackground();
-    }
-
-    /* ========================================================================== */
-
-    // TODO - delete
-    public static void testNotifications() {
-        // Store app language and version
-        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-        installation.put("injuryReports",true);
-        installation.saveInBackground();
-
-        // Create our Installation query
-        ParseQuery pushQuery2 = ParseInstallation.getQuery();
-        pushQuery2.whereEqualTo("injuryReports", true);
-
-        // Send push notification to query
-        ParsePush push2 = new ParsePush();
-        push2.setQuery(pushQuery2); // Set our Installation query
-        push2.setMessage("Willie Hayes injured by own pop fly.");
-        push2.sendInBackground();
-
     }
 }

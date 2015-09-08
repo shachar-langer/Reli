@@ -21,7 +21,7 @@
                     android:id="@+id/avatar_about"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/user_chat1"
+                    android:src="@drawable/avatar_ariel"
                     android:layout_marginTop="15dp" />
 
                 <LinearLayout
@@ -59,7 +59,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/user_chat1"
+                android:src="@drawable/avatar_shachar"
                 android:layout_marginTop="15dp" />
 
             <LinearLayout
@@ -96,7 +96,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/user_chat1"
+                android:src="@drawable/avatar_lior"
                 android:layout_marginTop="15dp" />
 
             <LinearLayout
