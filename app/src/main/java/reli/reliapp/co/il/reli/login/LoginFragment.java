@@ -81,7 +81,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         fbLoginButton = (LoginButton) view.findViewById(R.id.fbLoginButton);
         fbLoginButton.setFragment(this);
-        fbLoginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
+        fbLoginButton.setReadPermissions(Arrays.asList("public_profile"));
 
         cb = (CheckBox) view.findViewById(R.id.login_keep_login);
 
@@ -188,15 +188,24 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         else {
             Toast.makeText(getActivity().getApplicationContext(), "ParseUser is not known", Toast.LENGTH_SHORT).show();
 
-            // Create a new ReliUser
-            ReliUser reliUser = new ReliUser(getActivity().getApplicationContext(),
-                    ReliUserType.ANONYMOUS_USER,
-                    Const.ANONYMOUS_NAME,
-                    Const.ANONYMOUS_NAME,
-                    new ParseGeoPoint(),
-                    null);
+            ReliUser reliUser = null;
+            try {
+                // Create a new ReliUser
+                reliUser = new ReliUser(getActivity().getApplicationContext(),
+                        ReliUserType.ANONYMOUS_USER,
+                        Const.ANONYMOUS_NAME,
+                        Const.ANONYMOUS_NAME,
+                        new ParseGeoPoint(),
+                        null);
+            } catch (Exception e) {
+                Toast.makeText(getActivity().getApplicationContext(), "creating ReliUser created error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
 
+            try {
             addUserToParse(reliUser);
+            } catch (Exception e) {
+                Toast.makeText(getActivity().getApplicationContext(), "addUserToParse created error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.viewpagerindicator;
+package reli.reliapp.co.il.reli.viewPageIndicator;
 
 import android.support.v4.view.ViewPager;
 

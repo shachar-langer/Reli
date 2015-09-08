@@ -1,4 +1,4 @@
-<com.viewpagerindicator.CirclePageIndicator
+<reli.reliapp.co.il.reli.viewPageIndicator.CirclePageIndicator
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:paddingBottom="4dp"
     android:paddingTop="4dp"

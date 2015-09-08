@@ -12,13 +12,4 @@
         <include layout="@layout/circle_page_indicator_item"
             android:id="@+id/circles_title" />
 
-        <!--<com.viewpagerindicator.CirclePageIndicator-->
-            <!--android:id="@+id/circles_title"-->
-            <!--android:paddingBottom="4dp"-->
-            <!--android:paddingTop="4dp"-->
-            <!--android:layout_gravity="top"-->
-            <!--android:background="@color/gray_light"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="match_parent" />-->
-
 </FrameLayout>

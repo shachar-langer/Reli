@@ -70,46 +70,19 @@ public class MainActivity extends CustomActivity implements LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    // TODO - delete
-    boolean isShachar = false;
-
     /*
     * Define a request code to send to Google Play services This code is returned in
     * Activity.onActivityResult
     */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-     /*
-     * Constants for location update parameters
-     */
-
-    // Milliseconds per second
+    // Constants for location update parameters
     private static final int MILLISECONDS_PER_SECOND = 1000;
-
-    // The update interval
     private static final int UPDATE_INTERVAL_IN_SECONDS = 5;
-
-    // A fast interval ceiling
     private static final int FAST_CEILING_IN_SECONDS = 1;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
+    private static final long FAST_INTERVAL_CEILING_IN_MILLISECONDS = MILLISECONDS_PER_SECOND * FAST_CEILING_IN_SECONDS;
 
-    // Update interval in milliseconds
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = MILLISECONDS_PER_SECOND
-            * UPDATE_INTERVAL_IN_SECONDS;
-
-    // A fast ceiling of update intervals, used when the app is visible
-    private static final long FAST_INTERVAL_CEILING_IN_MILLISECONDS = MILLISECONDS_PER_SECOND
-            * FAST_CEILING_IN_SECONDS;
-
-    /*
-     * Constants for handling location results
-     */
-    private static final float METERS_PER_FEET = 0.3048f;
-    private static final int METERS_PER_KILOMETER = 1000;
-
-    // Maximum results returned from a Parse query
-    private static final int MAX_POST_SEARCH_RESULTS = 20;
-    // Maximum post search radius for map in kilometers
-    private static final int MAX_POST_SEARCH_DISTANCE = 100;
 
     /* ========================================================================== */
 
@@ -195,8 +168,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (isShachar) Toast.makeText(getApplicationContext(), "In OnCreate", Toast.LENGTH_SHORT).show();
-
         // *** Location starts
 
         // Create a new global location parameters object
@@ -244,9 +215,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     @Override
     public void onStop() {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In onStop", Toast.LENGTH_SHORT).show();
-
         // If the client is connected
         if (locationClient.isConnected()) {
             stopPeriodicUpdates();
@@ -265,32 +233,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     @Override
     public void onStart() {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In OnStart", Toast.LENGTH_SHORT).show();
-
         super.onStart();
 
         // Connect to the location services client
         locationClient.connect();
-    }
-
-    /* ========================================================================== */
-
-    @Override
-    protected void onDestroy() {
-        if (isShachar) Toast.makeText(getApplicationContext(), "In OnDestroy", Toast.LENGTH_SHORT).show();
-
-        super.onDestroy();
-    }
-
-    /* ========================================================================== */
-
-    @Override
-    protected void onResume() {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In OnResume", Toast.LENGTH_SHORT).show();
-
-        super.onResume();
     }
 
    /* ========================================================================== */
@@ -302,9 +248,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
      * this point, you can request the current location or start periodic updates
      */
     public void onConnected(Bundle bundle) {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In OnConnected", Toast.LENGTH_SHORT).show();
-
         if (ReliApp.APPDEBUG) {
             Log.d("Connected to loc_s", ReliApp.APPTAG);
         }
@@ -320,9 +263,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
      * Called by Location Services if the connection to the location client drops because of an error.
      */
     public void onDisconnected() {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In OnDisconnected", Toast.LENGTH_SHORT).show();
-
         if (ReliApp.APPDEBUG) {
             Log.d("Disconnected from loc_s", ReliApp.APPTAG);
         }
@@ -332,9 +272,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     @Override
     public void onConnectionSuspended(int i) {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In OnConnectionSuspended", Toast.LENGTH_SHORT).show();
-
         Log.i(ReliApp.APPTAG, "GoogleApiClient connection has been suspend");
     }
 
@@ -344,9 +281,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
      * Called by Location Services if the attempt to Location Services fails.
      */
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In OnConnectionFailed", Toast.LENGTH_SHORT).show();
-
         // Google Play services can resolve some errors it detects. If the error has a resolution, try
         // sending an Intent to start a Google Play services activity that can resolve error.
         if (connectionResult.hasResolution()) {
@@ -426,9 +360,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
      * In response to a request to start updates, send a request to Location Services
      */
     private void startPeriodicUpdates() {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In startPeriodUpdates", Toast.LENGTH_SHORT).show();
-
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 locationClient, locationRequest, this);
     }
@@ -440,9 +371,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
      * In response to a request to stop updates, send a request to Location Services
      */
     private void stopPeriodicUpdates() {
-
-        if (isShachar) Toast.makeText(getApplicationContext(), "In stopPeriodUpdates", Toast.LENGTH_SHORT).show();
-
         locationClient.disconnect();
     }
 

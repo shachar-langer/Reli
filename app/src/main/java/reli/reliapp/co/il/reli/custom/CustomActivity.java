@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.utils.TouchEffect;
@@ -47,7 +48,11 @@ public class CustomActivity extends FragmentActivity implements OnClickListener
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setIcon(getResources().getColor(android.R.color.transparent));
+        try {
+            actionBar.setIcon(getResources().getColor(R.color.transparent));
+        } catch (Exception e) {
+
+        }
 		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_bg));
 //		actionBar.setDisplayHomeAsUpEnabled(true);
 //		actionBar.setHomeButtonEnabled(true);

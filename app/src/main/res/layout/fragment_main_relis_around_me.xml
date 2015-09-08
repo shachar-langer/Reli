@@ -9,6 +9,10 @@
         android:layout_height="match_parent"
         android:id="@+id/blabla" >
 
+        <include layout="@layout/circle_page_indicator_item"
+            android:id="@+id/circles_title_hidden_around_relis"
+            android:visibility="invisible" />
+
         <!--<com.codepath.example.simpledrawapp.SimpleDrawingView-->
             <!--android:id="@+id/simpleDrawingView1"-->
             <!--android:layout_width="wrap_content"-->

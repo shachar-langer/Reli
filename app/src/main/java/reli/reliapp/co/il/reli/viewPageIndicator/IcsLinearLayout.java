@@ -1,4 +1,4 @@
-package com.viewpagerindicator;
+package reli.reliapp.co.il.reli.viewPageIndicator;
 
 import android.content.Context;
 import android.content.res.TypedArray;

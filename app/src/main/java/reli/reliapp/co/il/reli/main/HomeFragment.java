@@ -1,25 +1,27 @@
 package reli.reliapp.co.il.reli.main;
 
-import java.util.Locale;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.viewpagerindicator.CirclePageIndicator;
+import android.widget.Toast;
+
+import reli.reliapp.co.il.reli.sidebar.FaqFragment;
+import reli.reliapp.co.il.reli.viewPageIndicator.CirclePageIndicator;
 
 import reli.reliapp.co.il.reli.R;
 
 public class HomeFragment extends Fragment {
 
-    public static final int MIDDLE_FRAGMENT = 1;
+//    private static final int MIDDLE_FRAGMENT = 1;
+    private static final int MIDDLE_FRAGMENT = 0;
 
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
 
     /* ========================================================================== */
 
@@ -43,8 +45,6 @@ public class HomeFragment extends Fragment {
 
         mViewPager = (ViewPager) v.findViewById(R.id.home_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(MIDDLE_FRAGMENT);
-        getActivity().getActionBar().setTitle(getString(R.string.middle_tab));
 
         //Bind the title indicator to the adapter
         CirclePageIndicator titleIndicator = (CirclePageIndicator) v.findViewById(R.id.circles_title);
@@ -52,19 +52,29 @@ public class HomeFragment extends Fragment {
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
             public void onPageSelected(int position) {
                 String title = "";
+//                switch (position){
+//                    case 0:
+//                        title = getString(R.string.left_tab);
+//                        break;
+//                    case 1:
+//                        title = getString(R.string.middle_tab);
+//                        break;
+//                    case 2:
+//                        title = getString(R.string.right_tab);
+//                        break;
+//                }
+
                 switch (position){
                     case 0:
-                        title = getString(R.string.left_tab);
-                        break;
-                    case 1:
                         title = getString(R.string.middle_tab);
                         break;
-                    case 2:
+                    case 1:
                         title = getString(R.string.right_tab);
                         break;
                 }
@@ -75,6 +85,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
+
+        mViewPager.setCurrentItem(MIDDLE_FRAGMENT);
 
         return v;
     }
@@ -93,12 +105,19 @@ public class HomeFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new MainRelisAroundMeFragment();
-                case 1:
                     return new MainMyRelisFragment();
-                case 2:
+                case 1:
                     return new MainAllRelisFragment();
             }
+
+//            switch (position) {
+//                case 0:
+//                    return new MainRelisAroundMeFragment();
+//                case 1:
+//                    return new MainMyRelisFragment();
+//                case 2:
+//                    return new MainAllRelisFragment();
+//            }
 
             return null;
         }
@@ -107,7 +126,8 @@ public class HomeFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            // TODO - change to 3
+            return 2;
         }
     }
 }

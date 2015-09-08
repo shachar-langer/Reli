@@ -144,22 +144,26 @@
     <string name="new_settings_saved">New settings have been saved!</string>
 
 
-    <string name="faq_q1">Who is Reli?</string>
-    <string name="faq_a1">Oh, that is an excellent question! Many people wondered who is this magical Reli.</string>
+    <string name="faq_q1">When was Reli developed?</string>
+    <string name="faq_a1">Reli was developed as part of POST-PC course in the Hebrew University of Jerusalem, and its first version was released on September 2015.</string>
     <string name="faq_q2">Who is Reli?</string>
     <string name="faq_a2">Oh, that is an excellent question! Many people wondered who is this magical Reli.</string>
-    <string name="faq_q3">Who is Reli?</string>
-    <string name="faq_a3">Oh, that is an excellent question! Many people wondered who is this magical Reli.</string>
+    <string name="faq_q3">I love your app! How can I invest some money?</string>
+    <string name="faq_a3">Thanks, we love you too! \nWe would love to hear from you! Please contact us at thereliapp@gmail.com.</string>
+    <string name="faq_q4">The app crashes. How can I report it?</string>
+    <string name="faq_a4">We are sorry to hear that, and will do our best to fix the problem. Please contact us at thereliapp@gmail.com.</string>
 
     <string-array name="faq_questions">
         <item>@string/faq_q1</item>
         <item>@string/faq_q2</item>
         <item>@string/faq_q3</item>
+        <item>@string/faq_q4</item>
     </string-array>
     <string-array name="faq_answers">
         <item>@string/faq_a1</item>
         <item>@string/faq_a2</item>
         <item>@string/faq_a3</item>
+        <item>@string/faq_a4</item>
     </string-array>
 
     <string name="about_discussion_title_creation">Creation date:</string>
