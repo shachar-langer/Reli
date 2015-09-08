@@ -239,10 +239,7 @@ public class DiscussionActivity extends CustomActivity
 								po.getString(Const.COL_MESSAGE_SENDER_ID),
 								po.getString(Const.COL_MESSAGE_SENDER_NAME));
 
-						// TODO - change? It means the message was always in status sent and not failed (which me sense,
-						// TODO - because If we get here, it was sent.
 						message.setStatus(MessageStatus.STATUS_SENT);
-
 						messagesList.add(message);
 
 						if (lastMsgDate == null || lastMsgDate.before(message.getDate())) {
