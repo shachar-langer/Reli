@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-//import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,24 +23,31 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import reli.reliapp.co.il.reli.createReli.DiscussionActivity;
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.createReli.CreateReliActivity;
+import reli.reliapp.co.il.reli.createReli.DiscussionActivity;
 import reli.reliapp.co.il.reli.dataStructures.Discussion;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.utils.Const;
 import reli.reliapp.co.il.reli.utils.Utils;
+
+//import android.app.Fragment;
 
 public class MainMyRelisFragment extends Fragment {
 
     private ArrayList<Discussion> chatsList;
     private View v;
     private Context ctx;
+
+    public static int MILLIS_PER_DAY = 86400000;
 
     /* ========================================================================== */
 
@@ -66,7 +73,7 @@ public class MainMyRelisFragment extends Fragment {
 
                 Location location = ((MainActivity) getActivity()).getLocation();
                 if (location == null) {
-                    Toast.makeText(getActivity(), "Can not find your location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "No location found. Can not open a new Reli", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     intent.putExtra(Const.LATITUDE, location.getLatitude());
@@ -174,6 +181,7 @@ public class MainMyRelisFragment extends Fragment {
                             Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
                             e.printStackTrace();
                         }
+
                         dia.dismiss();
                     }
                 });
@@ -224,6 +232,14 @@ public class MainMyRelisFragment extends Fragment {
 
         /* ========================================================================== */
 
+        public boolean isSameDay(Calendar date1, Calendar date2) {
+            // If they now are equal then it is the same day.
+            return date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
+                    date1.get(Calendar.DAY_OF_YEAR) == date2.get(Calendar.DAY_OF_YEAR);
+        }
+
+        /* ========================================================================== */
+
         @Override
         public View getView(int pos, View v, ViewGroup arg2)
         {
@@ -257,11 +273,13 @@ public class MainMyRelisFragment extends Fragment {
                     if (e == null) {
                         HashSet<String> messagesIDs = new HashSet<String>();
 
-                        Date mostRecentMessageTime = null, currentMessageTime = null;
+                        Calendar mostRecentMessageTime = null, currentMessageTime = Calendar.getInstance();
                         int counter = 0;
                         System.out.println(li.size());
                         for (ParseObject message : li) {
-                            currentMessageTime = message.getUpdatedAt();
+                            Date updateTime = message.getUpdatedAt();
+
+                            currentMessageTime.setTime(updateTime);
 
                             if ((mostRecentMessageTime == null) ||
                                     (currentMessageTime.after(mostRecentMessageTime))) {
@@ -273,9 +291,17 @@ public class MainMyRelisFragment extends Fragment {
 
                         // TODO - Shachar - it happened that mostRecentMessageTime == null (despite the for loop above). We should handle it.
                         try {
-                            String hour = Integer.toString(mostRecentMessageTime.getHours());
-                            String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
-                            String lastModifiedHour = hour + ":" + minutes;
+                            Calendar currentDate = Calendar.getInstance();
+                            String lastModifiedHour = "";
+                            if (!isSameDay(currentDate, mostRecentMessageTime)) {
+                                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                lastModifiedHour = dateFormat.format(
+                                        mostRecentMessageTime.getTime());
+                            } else {
+                                DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                                lastModifiedHour = dateFormat.format(
+                                        mostRecentMessageTime.getTime());
+                            }
 
                             ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
                             ((TextView) finalView.findViewById(R.id.lbl3)).setText(lastModifiedHour);
@@ -284,6 +310,8 @@ public class MainMyRelisFragment extends Fragment {
                         catch (Exception ex) {
 
                         }
+                    } else {
+                        // TODO - something failed
                     }
                 }
             });

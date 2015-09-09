@@ -2,8 +2,10 @@ package reli.reliapp.co.il.reli.splashScreen;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -26,6 +28,7 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.login.LoginActivity;
 import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
+import reli.reliapp.co.il.reli.utils.Utils;
 
 public class SplashScreen extends Activity {
 
@@ -40,6 +43,26 @@ public class SplashScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        // Check if we have internet access. If not internet access found, exit
+         if (!isOnline()) {
+             DialogInterface.OnClickListener listener1 = new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int id) {
+                     finish();
+                 }
+             };
+
+             Utils.showDialog(SplashScreen.this,
+                     getString(R.string.dialog_no_internet_connection_title),
+                     getString(R.string.dialog_no_internet_connection_message),
+                     getString(R.string.ok_exit),
+                     null,
+                     listener1,
+                     null);
+
+             return;
+         }
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -88,6 +111,16 @@ public class SplashScreen extends Activity {
 
 
         }, SPLASH_TIME_OUT_MILLIS);
+    }
+
+    /* ========================================================================== */
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null &&
+                cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     /* ========================================================================== */

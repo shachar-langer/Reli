@@ -16,11 +16,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +41,8 @@ public class MainAllRelisFragment extends Fragment {
     private ArrayList<Discussion> chatsList;
     private View v;
     private Context ctx;
+
+    public static int MILLIS_PER_DAY = 86400000;
 
     /* ========================================================================== */
 
@@ -217,6 +224,14 @@ public class MainAllRelisFragment extends Fragment {
 
         /* ========================================================================== */
 
+        public boolean isSameDay(Calendar date1, Calendar date2) {
+            // If they now are equal then it is the same day.
+            return date1.get(Calendar.YEAR) == date2.get(Calendar.YEAR) &&
+                    date1.get(Calendar.DAY_OF_YEAR) == date2.get(Calendar.DAY_OF_YEAR);
+        }
+
+        /* ========================================================================== */
+
         @Override
         public View getView(int pos, View v, ViewGroup arg2)
         {
@@ -248,37 +263,53 @@ public class MainAllRelisFragment extends Fragment {
                 @Override
                 public void done(List<ParseObject> li, ParseException e) {
                     if (e == null) {
-                        HashSet<String> messagesIDs = new HashSet<String>();
+                        ParseObject.fetchAllInBackground(li, new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> li, ParseException e) {
+                                HashSet<String> messagesIDs = new HashSet<String>();
 
-                        Date mostRecentMessageTime = null, currentMessageTime = null;
-                        int counter = 0;
-                        System.out.println(li.size());
-                        for (ParseObject message : li) {
-                            currentMessageTime = message.getUpdatedAt();
+                                Calendar mostRecentMessageTime = null, currentMessageTime = Calendar.getInstance();
+                                int counter = 0;
+                                for (ParseObject message : li) {
+                                    Date updateTime = message.getUpdatedAt();
 
-                            if ((mostRecentMessageTime == null) ||
-                                    (currentMessageTime.after(mostRecentMessageTime))) {
-                                mostRecentMessageTime = currentMessageTime;
+                                    currentMessageTime.setTime(updateTime);
+
+                                    if ((mostRecentMessageTime == null) ||
+                                            (currentMessageTime.after(mostRecentMessageTime))) {
+                                        mostRecentMessageTime = currentMessageTime;
+                                    }
+                                    counter++;
+                                    messagesIDs.add((String) message.get(Const.COL_MESSAGE_SENDER_ID));
+                                }
+
+                                // TODO - Shachar - it happened that mostRecentMessageTime == null (despite the for loop above). We should handle it.
+                                try {
+                                    Calendar currentDate = Calendar.getInstance();
+                                    String lastModifiedHour = "";
+                                    if (!isSameDay(currentDate, mostRecentMessageTime)) {
+                                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                        lastModifiedHour = dateFormat.format(
+                                                mostRecentMessageTime.getTime());
+                                    } else {
+                                        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                                        lastModifiedHour = dateFormat.format(
+                                                mostRecentMessageTime.getTime());
+                                    }
+
+                                    ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
+                                    ((TextView) finalView.findViewById(R.id.lbl3)).setText(lastModifiedHour);
+                                    ((TextView) finalView.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
+                                } catch (Exception ex) {
+
+                                }
+
+
                             }
-                            counter++;
-                            messagesIDs.add((String) message.get(Const.COL_MESSAGE_SENDER_ID));
+                        });
+                    } else {
+                            // TODO - something failed
                         }
-
-                        // TODO - Shachar - it happened that mostRecentMessageTime == null (despite the for loop above). We should handle it.
-                        try {
-                            String hour = Integer.toString(mostRecentMessageTime.getHours());
-                            String minutes = Integer.toString(mostRecentMessageTime.getMinutes());
-                            String lastModifiedHour = hour + ":" + minutes;
-
-                            ((TextView) finalView.findViewById(R.id.lbl2)).setText(Integer.toString(counter));
-                            ((TextView) finalView.findViewById(R.id.lbl3)).setText(lastModifiedHour);
-                            ((TextView) finalView.findViewById(R.id.lbl4)).setText(Integer.toString(messagesIDs.size()));
-                        }
-                        catch (Exception ex) {
-
-                        }
-                    }
-
                 }
             });
 

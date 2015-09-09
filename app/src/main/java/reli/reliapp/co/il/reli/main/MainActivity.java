@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -252,6 +255,25 @@ public class MainActivity extends CustomActivity implements LocationListener,
             Log.d("Connected to loc_s", ReliApp.APPTAG);
         }
         currentLocation = getLocation();
+
+        checkUsersLocationServices(currentLocation);
+        if (currentLocation != null) {
+
+            if (!isLocationServicesEnables()) {
+                Utils.showDialog(MainActivity.this,
+                        R.string.dialog_using_last_location_title,
+                        R.string.dialog_using_last_location_message,
+                        R.string.ok_exit,
+                        R.string.cancel,
+                        null,
+                        null);
+            }
+
+        } else {
+            handleExit(R.string.dialog_no_location_found_title,
+                    R.string.dialog_no_location_found_message, false);
+        }
+
         startPeriodicUpdates();
 
         updateParseLocation();
@@ -259,6 +281,30 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     /* ========================================================================== */
 
+    /*
+     *  Validate that user's location services are on. If they are off, but we
+     *  can retrieve its last known location, print a warning. If they are off,
+     *  and we can't retrive its last location, exit.
+     */
+    private void checkUsersLocationServices(Location location) {
+
+        if (location!=null) {
+            if (!isLocationServicesEnables()) {
+                Utils.showDialog(MainActivity.this,
+                        getString(R.string.dialog_using_last_location_title),
+                        getString(R.string.dialog_using_last_location_message),
+                        getString(R.string.ok_exit),
+                        null,
+                        null,
+                        null);
+            }
+        }
+        else {
+            handleExit(R.string.dialog_no_location_found_title,
+                    R.string.dialog_no_location_found_message, false);
+        }
+
+}
     /*
      * Called by Location Services if the connection to the location client drops because of an error.
      */
@@ -414,6 +460,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      * Get the current location
      */
     public Location getLocation() {
+
         // If Google Play Services is available
         if (servicesConnected()) {
             // Get the current location
@@ -425,6 +472,32 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     /* ========================================================================== */
 
+    public boolean isLocationServicesEnables() {
+        Context ctx = getApplicationContext();
+        LocationManager lm = (LocationManager)ctx.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        // In case at least one of the location services is not working, return an error.
+        if(!gps_enabled && !network_enabled) {
+            // notify user
+            return false;
+        }
+
+        return true;
+    }
+
+    /* ========================================================================== */
+
+    // TODO - move to Utils
     /*
      * Show a dialog returned by Google Play services for the connection error code
      */
@@ -634,6 +707,12 @@ public class MainActivity extends CustomActivity implements LocationListener,
     /* ========================================================================== */
 
     private void handleExit() {
+        handleExit(R.string.dialog_exit_title, R.string.dialog_exit_message, true);
+    }
+
+    /* ========================================================================== */
+
+    private void handleExit(int dialogTitle, int dialogMessage, boolean shouldShowCancelBtn) {
         DialogInterface.OnClickListener listener1 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
@@ -642,10 +721,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
         };
 
         Utils.showDialog(MainActivity.this,
-                R.string.dialog_exit_title,
-                R.string.dialog_exit_message,
-                R.string.ok_exit,
-                R.string.cancel,
+                getString(dialogTitle),
+                getString(dialogMessage),
+                getString(R.string.ok_exit),
+                (shouldShowCancelBtn) ? getString(R.string.cancel): null,
                 listener1,
                 null);
     }

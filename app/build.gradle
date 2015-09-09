@@ -25,6 +25,9 @@ repositories {
 
 
 dependencies {
+    // To be able to use Coordinate Layout
+    compile 'com.android.support:design:22.2.0'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
     // Facebook

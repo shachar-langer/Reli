@@ -187,6 +187,15 @@
     <string name="dialog_exit_title">Are you sure?</string>
     <string name="dialog_exit_message">Are you sure you want to exit?</string>
 
+    <string name="dialog_no_internet_connection_title">No Internet access</string>
+    <string name="dialog_no_internet_connection_message">Reli can\'t work without internet access</string>
+
+    <string name="dialog_no_location_found_title">Location couldn\'t be found</string>
+    <string name="dialog_no_location_found_message">Please turn on your location services. Exiting Reli.</string>
+
+    <string name="dialog_using_last_location_title">Location services are disabled</string>
+    <string name="dialog_using_last_location_message">For better accuracy, please turn on your location services.\nDon\'t be shy</string>
+
     <string name="ok">OK</string>
     <string name="ok_sign_out">Sign out</string>
     <string name="ok_exit">Exit</string>
@@ -196,6 +205,7 @@
     <string name="message_unfollow">You\'ve unfollowed this Reli</string>
 
     <string name="no_tags">(none)</string>
+    <string name="title_activity_test">testActivity</string>
     <string name="no_relis_all">There are no Relis yet.\nDon\'t be shy, add a new one!</string>
     <string name="no_relis_my">You currently have no Relis.\nSwipe to the right and check out some Relis!</string>
 
