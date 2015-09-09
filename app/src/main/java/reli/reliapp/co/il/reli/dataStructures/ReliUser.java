@@ -138,11 +138,10 @@ public class ReliUser extends ParseUser {
 
     public void setAvatar(byte[] avatar) {
         final ParseFile file = new ParseFile("avatar.png", avatar);
-        Log.w("Yuval", "setAvatar(). size == " + avatar.length);
+
         file.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                Log.w("Yuval", "setAvatar() - in done");
                 put(Const.COL_NAME_AVATAR, file);
                 saveEventually();
             }

@@ -284,13 +284,11 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         @Override
         protected byte[] doInBackground(Object... params) {
-            Log.w("LIOR", "in doInBackground!");
             URL url_value = (URL) params[0];
             reliUser = (ReliUser) params[1];
             Bitmap bitmap;
 
             try {
-                Log.w("LIOR", "in doInBackground - began try");
                 BitmapFactory.Options bitmap_options = new BitmapFactory.Options();
                 // bitmap_options.inScaled = false;
                 // bitmap_options.inDither = false;
@@ -301,9 +299,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                 StrictMode.setThreadPolicy(policy);
 
                 bitmap = BitmapFactory.decodeStream(url_value.openConnection().getInputStream(), null, bitmap_options);
-                Log.w("LIOR", "in doInBackground - finished try");
             } catch (Exception e) {
-                Log.w("LIOR", "in doInBackground - catch");
                 Resources res = getResources();
                 Drawable drawable = res.getDrawable(R.drawable.user_chat1);
                 bitmap = ((BitmapDrawable)drawable).getBitmap();
@@ -316,7 +312,6 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         protected void onPostExecute(byte[] bytes) {
             super.onPostExecute(bytes);
             reliUser.setAvatar(bytes);
-            Log.w("LIOR", "Finished with avatar!");
         }
     }
 }

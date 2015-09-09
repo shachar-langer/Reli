@@ -196,7 +196,7 @@ public class DiscussionActivity extends CustomActivity
         ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(includedQuery, excludedQuery);
 
         // Send push notification
-        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " posted in " + discussionObject.getDiscussionName() + ". Check it out!");
+        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + getString(R.string.notification_new_message_part_1) + discussionObject.getDiscussionName() + getString(R.string.notification_new_message_part_2));
     }
 
     /* ========================================================================== */
@@ -409,7 +409,7 @@ public class DiscussionActivity extends CustomActivity
         ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
         discussionQuery.getInBackground(discussionTableName, new GetCallback<Discussion>() {
             public void done(Discussion currentDiscussion, ParseException e) {
-                if (e == null) {
+                if ((e == null) && (currentDiscussion != null)) {
                     fetchDiscussionInformation(v, currentDiscussion);
                 }
 
@@ -438,7 +438,9 @@ public class DiscussionActivity extends CustomActivity
         TextView lastUpdateDate = (TextView) v.findViewById(R.id.about_discussion_value_update);
         creationDate.setText(sdf.format(currentDiscussion.getCreationDate()));
         expirationDate.setText(sdf.format(currentDiscussion.getExpirationDate()));
-        lastUpdateDate.setText(sdf.format(lastMsgDate));
+		if (lastMsgDate != null) {
+			lastUpdateDate.setText(sdf.format(lastMsgDate));
+		}
 
         // Get the owner of the current discussion
         final TextView owner = (TextView) v.findViewById(R.id.about_discussion_value_owner);

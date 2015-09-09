@@ -87,8 +87,8 @@ public class CreateDiscussionFragment extends Fragment {
                         EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
                         String topic = topicEditText.getText().toString();
 
-                        // Send notifications
-                        handleNotifications(discussionEntry);
+                        // Send notifications - Cancelled
+                        // handleNotifications(discussionEntry);
 
                         // Go to the DiscussionActivity itself
                         Intent intent = new Intent(getActivity(), DiscussionActivity.class);
@@ -321,6 +321,6 @@ public class CreateDiscussionFragment extends Fragment {
         ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(queries, excludedQuery);
 
         // Send push notification
-        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " has just created a new Reli that might interest you. Check it out!");
+        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + getString(R.string.notification_new_discussion));
     }
 }

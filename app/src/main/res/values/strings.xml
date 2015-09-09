@@ -188,13 +188,13 @@
     <string name="dialog_exit_message">Are you sure you want to exit?</string>
 
     <string name="dialog_no_internet_connection_title">No Internet access</string>
-    <string name="dialog_no_internet_connection_message">Reli can\'t work without internet access</string>
+    <string name="dialog_no_internet_connection_message">We\'re sorry, but Reli will be closed until you turn on internet access</string>
 
     <string name="dialog_no_location_found_title">Location couldn\'t be found</string>
-    <string name="dialog_no_location_found_message">Please turn on your location services. Exiting Reli.</string>
+    <string name="dialog_no_location_found_message">We\'re sorry, but Reli will be closed until you turn on your location services.</string>
 
     <string name="dialog_using_last_location_title">Location services are disabled</string>
-    <string name="dialog_using_last_location_message">For better accuracy, please turn on your location services.\nDon\'t be shy</string>
+    <string name="dialog_using_last_location_message">For better accuracy, please turn on your location services.\nDon\'t be shy!</string>
 
     <string name="ok">OK</string>
     <string name="ok_sign_out">Sign out</string>
@@ -209,4 +209,7 @@
     <string name="no_relis_all">There are no Relis yet.\nDon\'t be shy, add a new one!</string>
     <string name="no_relis_my">You currently have no Relis.\nSwipe to the right and check out some Relis!</string>
 
+    <string name="notification_new_discussion"> has just created a new Reli that might interest you. Check it out!</string>
+    <string name="notification_new_message_part_1"> posted in </string>
+    <string name="notification_new_message_part_2">. Check it out!</string>
 </resources>
