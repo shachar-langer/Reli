@@ -122,8 +122,7 @@ public class CreateDiscussionFragment extends Fragment {
         // Get the radius
         int radius = mSeekBar.getProgress();
 
-        // Get the logo
-        // TODO
+        // Get the logo - Future Version
         Bitmap discussionLogo = null;
 
         // Calculate the creation date

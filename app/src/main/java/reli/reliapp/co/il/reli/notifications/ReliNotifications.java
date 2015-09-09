@@ -19,11 +19,10 @@ public class ReliNotifications {
     // Find users near a given location
     public static ParseQuery<ParseInstallation> getQueryAccordingToLocation(Discussion discussionObject) {
 
-        // TODO - check with Shachar
         ParseQuery userQuery = ReliUser.getReliQuery();
         userQuery.whereWithinKilometers(Const.COL_NAME_LOCATION,
                 discussionObject.getLocation(),
-                ((double)discussionObject.getRadius()) / Const.METERS_IN_KM);
+                (discussionObject.getRadius()) / Const.METERS_IN_KM);
 
         // Find devices associated users in the given location
         ParseQuery pushQuery = ParseInstallation.getQuery();
@@ -68,7 +67,7 @@ public class ReliNotifications {
         ParseQuery pushQuery = ParseInstallation.getQuery();
         pushQuery.whereMatches(Const.INSTALLATION_USER, MainActivity.user.getParseID());
 
-        // TODO - add more complicated conditions
+        // In Future Versions - add more complicated conditions (filter according to user settings)
 
         return pushQuery;
     }

@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public int getCount() {
-            // TODO - change to 3
+            // In the Future - change to 3 (when adding the RelisAroundMe fragment)
             return 2;
         }
     }

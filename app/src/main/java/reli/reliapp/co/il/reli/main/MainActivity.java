@@ -103,7 +103,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     /* ========================================================================== */
 
-    private ArrayList<ParseUser> chatsList;
     public static ReliUser user;
     public static Fragment homeFragment;
     public static ParseInstallation installation;
@@ -117,7 +116,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     public static HashSet<String> discussionsImIn = new HashSet<String>();
     public static HashMap<String, ReliTag> tagsIdToTag = new HashMap<>();
-//    public static HashMap<String, byte[]> usersAvatars = new HashMap<>();
     public static HashMap<String, Bitmap> usersAvatars = new HashMap<>();
 
     /* ========================================================================== */
@@ -377,17 +375,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         lastLocation = location;
 
         updateParseLocation();
-
-//        LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-//        if (!hasSetUpInitialLocation) {
-//            // Zoom to the current location.
-//            updateZoom(myLatLng);
-//            hasSetUpInitialLocation = true;
-//        }
-//        // Update map radius indicator
-//        updateCircle(myLatLng);
-//        doMapQuery();
-//        doListQuery();
     }
 
     /* ========================================================================== */
@@ -497,7 +484,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     /* ========================================================================== */
 
-    // TODO - move to Utils
     /*
      * Show a dialog returned by Google Play services for the connection error code
      */
@@ -520,8 +506,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
             errorFragment.show(getSupportFragmentManager(), ReliApp.APPTAG);
         }
     }
-
-
 
     /* UI CODE */
 

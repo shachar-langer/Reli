@@ -12,7 +12,7 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUserType;
 public class Const
 {
     public static final int NOTIFICATION_TIME_INTERVAL_IN_SECONDS = 10 * 60;
-    public static final int METERS_IN_KM = 1000;
+    public static final double METERS_IN_KM = 1000.0;
 
     public static final String UNKNOWN_USER = "(Unknown)";
     public static final String HOME_FRAGMENT_TAG = "HomeFragment";

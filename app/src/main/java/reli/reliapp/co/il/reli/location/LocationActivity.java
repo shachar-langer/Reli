@@ -243,8 +243,7 @@ public class LocationActivity extends Activity implements ConnectionCallbacks,
                 mGoogleApiClient, mLocationRequest, new com.google.android.gms.location.LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
-                        // TODO - update the user instance
-                        Toast.makeText(getApplicationContext(), "onLocationChanged - Location has been changed!", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 

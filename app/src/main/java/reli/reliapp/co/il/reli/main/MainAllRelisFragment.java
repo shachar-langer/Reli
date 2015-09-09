@@ -35,7 +35,9 @@ public class MainAllRelisFragment extends BaseRelisFragment {
         final TextView tvNoUsers = (TextView) v.findViewById(R.id.no_relis);
         tvNoUsers.setVisibility(View.GONE);
 
-        Discussion.getDiscussionQuery().whereWithinKilometers(Const.COL_DISCUSSION_LOCATION, user.getLocation(), user.getNotificationsRadius())
+        Discussion.getDiscussionQuery().whereWithinKilometers(Const.COL_DISCUSSION_LOCATION,
+                user.getLocation(),
+                (user.getNotificationsRadius() / Const.METERS_IN_KM))
                 .findInBackground(new FindCallback<Discussion>() {
 
                     @Override

@@ -192,7 +192,6 @@ public class ReliUser extends ParseUser {
     /* ========================================================================== */
 
     public void setNotificationsRadius(int notificationsRadius) {
-        // TODO - don't we want to add saveEventually() to each setter?
         put(Const.COL_NAME_NOTIFICATIONS_RADIUS, notificationsRadius);
     }
 

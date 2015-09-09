@@ -67,8 +67,6 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                // TODO - remove toasts from this file
-//                Toast.makeText(getActivity().getApplicationContext(), "onCurrentProfileChanged", Toast.LENGTH_SHORT).show();
                 handleFacebookLogin();
             }
         };
@@ -114,18 +112,14 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     /* ========================================================================== */
 
     private void handleFacebookLogin() {
-//        Toast.makeText(getActivity().getApplicationContext(), "in handleFacebookLogin()", Toast.LENGTH_SHORT).show();
         ReliUser user = MainActivity.user;
 
         // Handle the case when the user is known
         if (user != null) {
-//            Toast.makeText(getActivity().getApplicationContext(), "FB - ParseUser is known", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getActivity(), MainActivity.class));
-//            getActivity().finish();
         }
 
         else {
-//            Toast.makeText(getActivity().getApplicationContext(), "FB - ParseUser is not known", Toast.LENGTH_SHORT).show();
             Profile profile = Profile.getCurrentProfile();
 
             // Check if we just logged off
@@ -142,7 +136,6 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                     new ParseGeoPoint(),
                     null);
 
-//            reliUser.saveInBackground(); // TODO - needed?
             addUserToParse(reliUser);
 
             // Save user's profile picture
@@ -181,14 +174,10 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         // Handle the case when the user is known
         if (user != null) {
-//            Toast.makeText(getActivity().getApplicationContext(), "ParseUser is known", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getActivity(), MainActivity.class));
-//            getActivity().finish();
         }
 
         else {
-//            Toast.makeText(getActivity().getApplicationContext(), "ParseUser is not known", Toast.LENGTH_SHORT).show();
-
             ReliUser reliUser = null;
             try {
                 // Create a new ReliUser
@@ -199,13 +188,13 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                         new ParseGeoPoint(),
                         null);
             } catch (Exception e) {
-//                Toast.makeText(getActivity().getApplicationContext(), "creating ReliUser created error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
 
             try {
             addUserToParse(reliUser);
             } catch (Exception e) {
-//                Toast.makeText(getActivity().getApplicationContext(), "addUserToParse created error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -224,20 +213,13 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                     ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            // Toast.makeText(getApplicationContext(), "In done of installation", Toast.LENGTH_SHORT).show();
                             MainActivity.installation = ParseInstallation.getCurrentInstallation();
                             MainActivity.installation.put(Const.INSTALLATION_USER, ParseUser.getCurrentUser());
                         }
                     });
 
-
-//                    Toast.makeText(getActivity().getApplicationContext(), "Added a new ReliUser to Parse", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), MainActivity.class));
-//                    getActivity().finish();
                 }
-//                else {
-////                    Toast.makeText(getActivity().getApplicationContext(), "Error in addUserToParse(): " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
             }
         });
     }
@@ -258,7 +240,6 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     private void saveKeepLogin() {
         SharedPreferences.Editor editor = getActivity().getSharedPreferences(Const.RELI_SHARED_PREF_FILE, Context.MODE_PRIVATE).edit();
         editor.putBoolean(Const.SHARED_PREF_KEEP_SIGNED_IN, cb.isChecked());
-//        Toast.makeText(getActivity().getApplicationContext(), "SharedPreferences - changed to " + cb.isChecked(), Toast.LENGTH_SHORT).show();
         editor.commit();
     }
 
