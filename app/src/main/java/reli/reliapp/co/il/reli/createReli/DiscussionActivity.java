@@ -81,7 +81,7 @@ public class DiscussionActivity extends CustomActivity
 
 		discussionTopic = getIntent().getStringExtra(Const.DISCUSSION_TOPIC);
 		discussionTableName = getIntent().getStringExtra(Const.DISCUSSION_TABLE_NAME);
-		getActionBar().setTitle(discussionTopic);
+        getSupportActionBar().setTitle(discussionTopic);
 
         saveDiscussionObject();
 

@@ -1,11 +1,8 @@
 package reli.reliapp.co.il.reli.custom;
 
-import android.app.ActionBar;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
-
 import reli.reliapp.co.il.reli.R;
 import reli.reliapp.co.il.reli.utils.TouchEffect;
 
@@ -14,7 +11,7 @@ import reli.reliapp.co.il.reli.utils.TouchEffect;
  * inherit the common behaviors like implementing a common interface that can be
  * used in all child activities.
  */
-public class CustomActivity extends FragmentActivity implements OnClickListener
+public class CustomActivity extends AppCompatActivity implements OnClickListener
 {
 
 	/**
@@ -41,12 +38,11 @@ public class CustomActivity extends FragmentActivity implements OnClickListener
 	 */
 	protected void setupActionBar()
 	{
-		final ActionBar actionBar = getActionBar();
+		final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		if (actionBar == null) {
             return;
         }
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowHomeEnabled(false);
         try {
             actionBar.setIcon(getResources().getColor(R.color.transparent));

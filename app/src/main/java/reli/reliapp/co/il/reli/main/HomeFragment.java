@@ -8,9 +8,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import reli.reliapp.co.il.reli.sidebar.FaqFragment;
+import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.viewPageIndicator.CirclePageIndicator;
 
 import reli.reliapp.co.il.reli.R;
@@ -79,7 +78,7 @@ public class HomeFragment extends Fragment {
                         break;
                 }
 
-                getActivity().getActionBar().setTitle(title);
+                ((CustomActivity) getActivity()).getSupportActionBar().setTitle(title);
             }
 
             @Override

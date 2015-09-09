@@ -128,8 +128,8 @@ public class MainActivity extends CustomActivity implements LocationListener,
         setContentView(R.layout.activity_main_with_drawer);
 
         // Enabling action bar app icon and behaving it as toggle button
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         // Load the names of the possible Fragments in the drawer
         mNavItems = getNavDrawerItems();
@@ -639,7 +639,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
         Fragment f = getSelectedFragment(positionMeaning);
 
         if (f != null) {
-            getActionBar().setTitle(mNavItems.get(position).mTitle);
+            getSupportActionBar().setTitle(mNavItems.get(position).mTitle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.mainContent, f)
