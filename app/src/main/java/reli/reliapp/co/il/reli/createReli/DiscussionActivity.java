@@ -186,17 +186,16 @@ public class DiscussionActivity extends CustomActivity
          * we want to send notification according to discussionsImIn
          * ***********/
 
+		ParseQuery pushQuery = ParseInstallation.getQuery();
+
         // Get queries of devices that should get the notification
-        ParseQuery<ParseInstallation> includedQuery = ReliNotifications.getQueryAccordingToDiscussion(discussionObject);
+        pushQuery = ReliNotifications.getQueryAccordingToDiscussion(pushQuery, discussionTableName);
 
         // Get the list of devices that should be excluded
-        ParseQuery<ParseInstallation> excludedQuery = ReliNotifications.getExcludedUsers(discussionObject);
-
-        // Combine the queries
-        ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(includedQuery, excludedQuery);
+        pushQuery = ReliNotifications.getQueryExcludedCurrentUser(pushQuery);
 
         // Send push notification
-        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " " + getString(R.string.notification_new_message_part_1) + " " + discussionObject.getDiscussionName() + " " + getString(R.string.notification_new_message_part_2));
+		ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " " + getString(R.string.notification_new_message_part_1) + " " + discussionObject.getDiscussionName() + " " + getString(R.string.notification_new_message_part_2));
     }
 
     /* ========================================================================== */

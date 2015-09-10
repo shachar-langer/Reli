@@ -1,6 +1,9 @@
 package reli.reliapp.co.il.reli.notifications;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 
@@ -52,54 +55,28 @@ public class ReliNotifications {
 
     /* ========================================================================== */
 
-    public static ParseQuery<ParseInstallation> getQueryAccordingToDiscussion(Discussion discussionObject) {
-        ParseQuery pushQuery = ParseInstallation.getQuery();
-        pushQuery.whereEqualTo(discussionObject.getParseID(), true);
+    public static ParseQuery<ParseInstallation> getQueryAccordingToDiscussion(ParseQuery pushQuery, String discussionName) {
+        pushQuery.whereEqualTo(discussionName, true);
 
         return pushQuery;
     }
 
     /* ========================================================================== */
 
-    public static ParseQuery<ParseInstallation> getExcludedUsers(Discussion discussionObject) {
+    public static ParseQuery<ParseInstallation> getQueryExcludedCurrentUser(ParseQuery pushQuery) {
 
         // Remove the current user
-        ParseQuery pushQuery = ParseInstallation.getQuery();
-        pushQuery.whereMatches(Const.INSTALLATION_USER, MainActivity.user.getParseID());
+        String currentUserInstallationID = ParseInstallation.getCurrentInstallation().getInstallationId();
+        pushQuery.whereNotEqualTo(Const.INSTALLATION_ID, currentUserInstallationID);
 
         // In Future Versions - add more complicated conditions (filter according to user settings)
 
         return pushQuery;
     }
 
-
     /* ========================================================================== */
 
-    public static ParseQuery<ParseInstallation> combineQueries(ArrayList<ParseQuery<ParseInstallation>> queries, ParseQuery<ParseInstallation> queryToExclude) {
-        ParseQuery pushQuery = ParseInstallation.getQuery();
-        pushQuery.or(queries);
-
-        // TODO - use queryToExclude
-
-        return pushQuery;
-    }
-
-    /* ========================================================================== */
-
-    public static ParseQuery<ParseInstallation> combineQueries(ParseQuery<ParseInstallation> query, ParseQuery<ParseInstallation> queryToExclude) {
-        ArrayList<ParseQuery<ParseInstallation>> queries = new ArrayList<>();
-        queries.add(query);
-
-        return combineQueries(queries, queryToExclude);
-    }
-
-    /* ========================================================================== */
-
-    public static void sendNotifications(ParseQuery pushQuery, String title) {
-        ParsePush push = new ParsePush();
-        push.setQuery(pushQuery); // Set our Installation query
-        push.setExpirationTimeInterval(Const.NOTIFICATION_TIME_INTERVAL_IN_SECONDS);
-        push.setMessage(title);
-        push.sendInBackground();
+    public static void sendNotifications(final ParseQuery pushQuery, String title) {
+        ParsePush.sendMessageInBackground(title, pushQuery);
     }
 }

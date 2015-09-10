@@ -314,12 +314,12 @@ public class CreateDiscussionFragment extends Fragment {
         queries.add(ReliNotifications.getQueryAccordingToTags(discussionObject));
 
         // Get the list of devices that should be excluded
-        ParseQuery<ParseInstallation> excludedQuery = ReliNotifications.getExcludedUsers(discussionObject);
+//        ParseQuery<ParseInstallation> excludedQuery = ReliNotifications.getExcludedUsers(discussionObject);
 
         // Combine the queries
-        ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(queries, excludedQuery);
+//        ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(queries, excludedQuery);
 
         // Send push notification
-        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " " + getString(R.string.notification_new_discussion));
+//        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " " + getString(R.string.notification_new_discussion));
     }
 }

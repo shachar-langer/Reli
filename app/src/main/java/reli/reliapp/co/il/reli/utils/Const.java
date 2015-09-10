@@ -82,6 +82,7 @@ public class Const
 
     // Installation (used for notifications)
     public static final String INSTALLATION_USER = "user";
+    public static final String INSTALLATION_ID = "installationId";
 
 }
 
