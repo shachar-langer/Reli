@@ -320,6 +320,6 @@ public class CreateDiscussionFragment extends Fragment {
         ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(queries, excludedQuery);
 
         // Send push notification
-        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + getString(R.string.notification_new_discussion));
+        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " " + getString(R.string.notification_new_discussion));
     }
 }

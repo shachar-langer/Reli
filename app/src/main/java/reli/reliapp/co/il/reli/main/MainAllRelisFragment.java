@@ -19,6 +19,7 @@ import reli.reliapp.co.il.reli.utils.Utils;
 
 public class MainAllRelisFragment extends BaseRelisFragment {
 
+    private TextView tvNoUsers;
     /* ========================================================================== */
 
     public MainAllRelisFragment() {
@@ -32,7 +33,7 @@ public class MainAllRelisFragment extends BaseRelisFragment {
         ReliUser user = MainActivity.user;
 
         final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
-        final TextView tvNoUsers = (TextView) v.findViewById(R.id.no_relis);
+        tvNoUsers = (TextView) v.findViewById(R.id.no_relis);
         tvNoUsers.setVisibility(View.GONE);
 
         Discussion.getDiscussionQuery().whereWithinKilometers(Const.COL_DISCUSSION_LOCATION,
@@ -45,12 +46,12 @@ public class MainAllRelisFragment extends BaseRelisFragment {
 
                         if (li != null) {
                             if (li.size() == 0) {
-                                tvNoUsers.setVisibility(View.VISIBLE);
+                                displayNoRelisMessage();
                                 dia.dismiss();
                                 return;
                             }
 
-                            chatsList = new ArrayList<Discussion>(li);
+                            chatsList = new ArrayList<>(li);
                             ListView list = (ListView) v.findViewById(R.id.list_relis);
                             list.setAdapter(new DiscussionAdapter());
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,5 +73,12 @@ public class MainAllRelisFragment extends BaseRelisFragment {
                         dia.dismiss();
                     }
                 });
+    }
+
+    /* ========================================================================== */
+
+    private void displayNoRelisMessage() {
+        tvNoUsers.setText(R.string.no_relis_all);
+        tvNoUsers.setVisibility(View.VISIBLE);
     }
 }

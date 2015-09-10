@@ -196,7 +196,7 @@ public class DiscussionActivity extends CustomActivity
         ParseQuery<ParseInstallation> pushQuery = ReliNotifications.combineQueries(includedQuery, excludedQuery);
 
         // Send push notification
-        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + getString(R.string.notification_new_message_part_1) + discussionObject.getDiscussionName() + getString(R.string.notification_new_message_part_2));
+        ReliNotifications.sendNotifications(pushQuery, MainActivity.user.getFullName() + " " + getString(R.string.notification_new_message_part_1) + " " + discussionObject.getDiscussionName() + " " + getString(R.string.notification_new_message_part_2));
     }
 
     /* ========================================================================== */

@@ -14,11 +14,11 @@ import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -125,10 +125,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_with_drawer);
 
-        // Enabling action bar app icon and behaving it as toggle button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
         // Load the names of the possible Fragments in the drawer
         mNavItems = getNavDrawerItems();
 
@@ -166,6 +162,10 @@ public class MainActivity extends CustomActivity implements LocationListener,
                 invalidateOptionsMenu();
             }
         };
+
+        // Set the "Hamburger"
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_navigation_menu);
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 

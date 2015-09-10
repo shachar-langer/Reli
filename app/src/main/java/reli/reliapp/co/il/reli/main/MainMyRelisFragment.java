@@ -21,6 +21,8 @@ import reli.reliapp.co.il.reli.utils.Utils;
 
 public class MainMyRelisFragment extends BaseRelisFragment {
 
+    private TextView tvNoUsers;
+
     /* ========================================================================== */
 
     public MainMyRelisFragment() {
@@ -35,7 +37,7 @@ public class MainMyRelisFragment extends BaseRelisFragment {
         final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
 
         ArrayList<String> discussionsUserIsIn = user.getDiscussionImIn();
-        final TextView tvNoUsers = (TextView) v.findViewById(R.id.no_relis);
+        tvNoUsers = (TextView) v.findViewById(R.id.no_relis);
         tvNoUsers.setVisibility(View.GONE);
 
         // If there are no discussions I'm in, the fragment should be empty
@@ -43,13 +45,13 @@ public class MainMyRelisFragment extends BaseRelisFragment {
             user.initDiscussionImIn();
             user.saveEventually();
             dia.dismiss();
-            tvNoUsers.setVisibility(View.VISIBLE);
+            displayNoRelisMessage();
             return;
         }
 
         if (discussionsUserIsIn.size() == 0) {
             dia.dismiss();
-            tvNoUsers.setVisibility(View.VISIBLE);
+            displayNoRelisMessage();
             return;
         }
 
@@ -68,12 +70,12 @@ public class MainMyRelisFragment extends BaseRelisFragment {
 
                         if (li != null) {
                             if (li.size() == 0) {
-                                tvNoUsers.setVisibility(View.VISIBLE);
+                                displayNoRelisMessage();
                                 dia.dismiss();
                                 return;
                             }
 
-                            chatsList = new ArrayList<Discussion>(li);
+                            chatsList = new ArrayList<>(li);
                             ListView list = (ListView) v.findViewById(R.id.list_relis);
                             list.setAdapter(new DiscussionAdapter());
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,5 +98,12 @@ public class MainMyRelisFragment extends BaseRelisFragment {
                         dia.dismiss();
                     }
                 });
+    }
+
+    /* ========================================================================== */
+
+    private void displayNoRelisMessage() {
+        tvNoUsers.setText(R.string.no_relis_my);
+        tvNoUsers.setVisibility(View.VISIBLE);
     }
 }

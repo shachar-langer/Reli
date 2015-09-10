@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment {
         });
 
         mViewPager.setCurrentItem(MIDDLE_FRAGMENT);
+        ((CustomActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.middle_tab));
 
         return v;
     }

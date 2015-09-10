@@ -14,15 +14,13 @@
     <TextView
         android:id="@+id/no_relis"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/no_relis_my"
+        android:layout_height="match_parent"
         android:textColor="@color/main_color_gray_dk"
         android:textSize="@dimen/txt_13sp"
         android:gravity="center"
         android:lineSpacingMultiplier="1.3"
         android:visibility="gone"
-        android:textStyle="bold"
-        android:layout_below="@id/circles_title_hidden_relis"/>
+        android:textStyle="bold"/>
 
     <ListView
         android:id="@+id/list_relis"
@@ -48,6 +46,7 @@
         app:layout_anchorGravity="bottom|right|end"
         android:src="@drawable/pencil_3"
         app:fabSize="normal"
+        app:borderWidth="0dp"
         app:rippleColor="#F06292"
         android:layout_alignBottom="@+id/list_relis"
         android:layout_alignParentRight="true"

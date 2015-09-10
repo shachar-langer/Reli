@@ -13,24 +13,24 @@ import reli.reliapp.co.il.reli.utils.TouchEffect;
  */
 public class CustomActivity extends AppCompatActivity implements OnClickListener
 {
-
 	/**
 	 * Apply this Constant as touch listener for views to provide alpha touch
 	 * effect. The view must have a Non-Transparent background.
 	 */
 	public static final TouchEffect TOUCH = new TouchEffect();
 
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
-	 */
-	@Override
+    /* ========================================================================== */
+
+    @Override
 	public void setContentView(int layoutResID)
 	{
 		super.setContentView(layoutResID);
 		setupActionBar();
 	}
 
-	/**
+    /* ========================================================================== */
+
+    /**
 	 * This method will setup the top title bar (Action bar) content and display
 	 * values. It will also setup the custom background theme for ActionBar. You
 	 * can override this method to change the behavior of ActionBar for
@@ -42,29 +42,28 @@ public class CustomActivity extends AppCompatActivity implements OnClickListener
 		if (actionBar == null) {
             return;
         }
+
 		actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayUseLogoEnabled(true);
+
         try {
             actionBar.setIcon(getResources().getColor(R.color.transparent));
         } catch (Exception e) {
 
         }
 		actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_bg));
-//		actionBar.setDisplayHomeAsUpEnabled(true);
-//		actionBar.setHomeButtonEnabled(true);
-//		actionBar.setDisplayUseLogoEnabled(true);
-//		actionBar.setLogo(R.drawable.icon);
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setHomeButtonEnabled(false);
 	}
 
-	/**
+
+    /* ========================================================================== */
+
+    /**
 	 * Sets the touch and click listener for a view with given id.
-	 * 
-	 * @param id
-	 *            the id
-	 * @return the view on which listeners applied
 	 */
+
 	public View setTouchNClick(int id)
 	{
 		View v = setClick(id);
@@ -75,12 +74,10 @@ public class CustomActivity extends AppCompatActivity implements OnClickListener
 		return v;
 	}
 
-	/**
+    /* ========================================================================== */
+
+    /**
 	 * Sets the click listener for a view with given id.
-	 * 
-	 * @param id
-	 *            the id
-	 * @return the view on which listener is applied
 	 */
 	public View setClick(int id)
 	{
@@ -92,9 +89,8 @@ public class CustomActivity extends AppCompatActivity implements OnClickListener
 		return v;
 	}
 
-	/* (non-Javadoc)
-	 * @see android.view.View.OnClickListener#onClick(android.view.View)
-	 */
+    /* ========================================================================== */
+
 	@Override
 	public void onClick(View v)
 	{
