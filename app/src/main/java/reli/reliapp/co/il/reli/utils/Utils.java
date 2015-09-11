@@ -279,4 +279,18 @@ public class Utils
 
         return output;
     }
+
+    /* ========================================================================== */
+
+    public static void setHideKeyboardCallback(final Activity activity, View bla) {
+        bla.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    Utils.hideKeyboard(activity, v);
+                }
+            }
+        });
+    }
+
 }

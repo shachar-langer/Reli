@@ -207,7 +207,7 @@
     <string name="no_tags">(none)</string>
     <string name="title_activity_test">testActivity</string>
     <string name="no_relis_all">There are no Relis in your location yet.\nDon\'t be shy, add a new one!</string>
-    <string name="no_relis_my">You currently have no Relis.\nSwipe to the right and check out some Relis!</string>
+    <string name="no_relis_my">You currently have no Relis.\nSwipe and check out some Relis!</string>
 
     <string name="notification_new_discussion"> has just created a new Reli that might interest you. Check it out!</string>
     <string name="notification_new_message_part_1"> posted in </string>

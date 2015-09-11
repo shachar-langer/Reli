@@ -23,6 +23,7 @@ import reli.reliapp.co.il.reli.dataStructures.ReliTag;
 import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
+import reli.reliapp.co.il.reli.utils.Utils;
 
 public class TagSelectionFragment extends Fragment {
 
@@ -185,6 +186,7 @@ public class TagSelectionFragment extends Fragment {
     private void enableTagSearch(View v) {
         // Enabling Search Filter
         EditText inputSearch = (EditText) v.findViewById(R.id.tags_search);
+        Utils.setHideKeyboardCallback(getActivity(), inputSearch);
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {

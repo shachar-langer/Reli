@@ -1,6 +1,7 @@
 package reli.reliapp.co.il.reli.createReli;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,6 +35,7 @@ import reli.reliapp.co.il.reli.dataStructures.ReliUser;
 import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.notifications.ReliNotifications;
 import reli.reliapp.co.il.reli.utils.Const;
+import reli.reliapp.co.il.reli.utils.Utils;
 
 public class CreateDiscussionFragment extends Fragment {
 
@@ -40,6 +43,7 @@ public class CreateDiscussionFragment extends Fragment {
     private ReliUser currentUser;
     private NumberPicker npHours, npMinutes;
     private LinearLayout changeTag;
+    private EditText topicEditText;
 
     private ArrayList<ReliTag> allTags = new ArrayList<>(MainActivity.tagsIdToTag.values());
     private ArrayList<String> tagIDsForDiscussion = new ArrayList<>();
@@ -53,11 +57,15 @@ public class CreateDiscussionFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_create_discussion, container, false);
 
-        currentUser = MainActivity.user;
-        mSeekBar  = (SeekBar) v.findViewById(R.id.create_discussion_seek_bar_radius);
-        npHours   = (NumberPicker) v.findViewById(R.id.create_discussion_numberPicker_hours);
-        npMinutes = (NumberPicker) v.findViewById(R.id.create_discussion_numberPicker_minutes);
-        changeTag = (LinearLayout) v.findViewById(R.id.create_discussion_change_tag);
+        currentUser   = MainActivity.user;
+
+        mSeekBar      = (SeekBar) v.findViewById(R.id.create_discussion_seek_bar_radius);
+        npHours       = (NumberPicker) v.findViewById(R.id.create_discussion_numberPicker_hours);
+        npMinutes     = (NumberPicker) v.findViewById(R.id.create_discussion_numberPicker_minutes);
+        changeTag     = (LinearLayout) v.findViewById(R.id.create_discussion_change_tag);
+        topicEditText = (EditText) v.findViewById(R.id.discussion_edt_question);
+
+        Utils.setHideKeyboardCallback(getActivity(), topicEditText);
 
         addSeekBarToScreen(v);
         setTimePickers();
@@ -84,7 +92,6 @@ public class CreateDiscussionFragment extends Fragment {
                         MainActivity.updateDiscussionsImIn(discussionEntry.getParseID());
 
                         // Opening the new discussion activity
-                        EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
                         String topic = topicEditText.getText().toString();
 
                         // Send notifications - Cancelled
@@ -110,7 +117,6 @@ public class CreateDiscussionFragment extends Fragment {
 
     private Discussion createDiscussionObject() {
         // Get the current topic
-        EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
         String topic = topicEditText.getText().toString();
 
         // Get the current location
@@ -196,7 +202,6 @@ public class CreateDiscussionFragment extends Fragment {
     /* ========================================================================== */
 
     private boolean checkAndHandleEmptyTitle() {
-        EditText topicEditText = (EditText) getActivity().findViewById(R.id.discussion_edt_question);
         String topic = topicEditText.getText().toString();
 
         boolean isEmpty = false;

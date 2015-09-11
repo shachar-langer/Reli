@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.utils.Const;
 
 public class ReliUser extends ParseUser {
@@ -59,9 +60,7 @@ public class ReliUser extends ParseUser {
         setRelisExpirationInMinutes(Const.DEFAULT_EXPIRATION_FOR_RELIS);
 
         setNotificationsRadius(Const.DEFAULT_RADIUS_FOR_NOTIFICATIONS);
-
-        // TODO - which tags should be the default ones?
-//        setNotificationsTags();
+        setNotificationsTagsIDs(new ArrayList<>(MainActivity.tagsIdToTag.keySet()));
 
         if (userAvatar != null) {
             setAvatar(userAvatar);
@@ -204,11 +203,13 @@ public class ReliUser extends ParseUser {
    /* ========================================================================== */
 
     public void setNotificationsTagsIDs(ArrayList<String> tagsIDs) {
-        // Remove previous values
-        remove(Const.COL_NAME_NOTIFICATIONS_TAGS);
+        if (tagsIDs != null) {
+            // Remove previous values
+            remove(Const.COL_NAME_NOTIFICATIONS_TAGS);
 
-        // Add the new ones
-        addAllUnique(Const.COL_NAME_NOTIFICATIONS_TAGS, tagsIDs);
+            // Add the new ones
+            addAllUnique(Const.COL_NAME_NOTIFICATIONS_TAGS, tagsIDs);
+        }
     }
 
     /* ========================================================================== */
