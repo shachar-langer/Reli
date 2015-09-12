@@ -255,22 +255,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
         currentLocation = getLocation();
 
         checkUsersLocationServices(currentLocation);
-        if (currentLocation != null) {
-
-            if (!isLocationServicesEnables()) {
-                Utils.showDialog(MainActivity.this,
-                        R.string.dialog_using_last_location_title,
-                        R.string.dialog_using_last_location_message,
-                        R.string.ok_exit,
-                        R.string.cancel,
-                        null,
-                        null);
-            }
-
-        } else {
-            handleExit(R.string.dialog_no_location_found_title,
-                    R.string.dialog_no_location_found_message, false);
-        }
 
         startPeriodicUpdates();
 
@@ -286,7 +270,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
      */
     private void checkUsersLocationServices(Location location) {
 
-        if (location!=null) {
+        if (location != null) {
             if (!isLocationServicesEnables()) {
                 Utils.showDialog(MainActivity.this,
                         getString(R.string.dialog_using_last_location_title),
@@ -700,7 +684,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
         DialogInterface.OnClickListener listener1 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                finish();
+                MainActivity.this.finish();
             }
         };
 

@@ -116,6 +116,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         // Handle the case when the user is known
         if (user != null) {
+            getActivity().finish();
             startActivity(new Intent(getActivity(), MainActivity.class));
         }
 
@@ -174,6 +175,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         // Handle the case when the user is known
         if (user != null) {
+            getActivity().finish();
             startActivity(new Intent(getActivity(), MainActivity.class));
         }
 
@@ -218,6 +220,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                         }
                     });
 
+                    getActivity().finish();
                     startActivity(new Intent(getActivity(), MainActivity.class));
                 }
             }
