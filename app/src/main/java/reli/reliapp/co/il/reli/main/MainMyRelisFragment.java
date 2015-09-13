@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -31,26 +33,27 @@ public class MainMyRelisFragment extends BaseRelisFragment {
 
     /* ========================================================================== */
 
-    protected void loadUserList() {
+    public void loadUserList() {
 
         final ReliUser user = MainActivity.user;
-        final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
+//        final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
 
         ArrayList<String> discussionsUserIsIn = user.getDiscussionImIn();
         tvNoUsers = (TextView) v.findViewById(R.id.no_relis);
-        tvNoUsers.setVisibility(View.GONE);
 
         // If there are no discussions I'm in, the fragment should be empty
         if (discussionsUserIsIn == null) {
             user.initDiscussionImIn();
             user.saveEventually();
-            dia.dismiss();
+//            dia.dismiss();
+            chatsList = new ArrayList<>();
             displayNoRelisMessage();
             return;
         }
 
         if (discussionsUserIsIn.size() == 0) {
-            dia.dismiss();
+//            dia.dismiss();
+            chatsList = new ArrayList<>();
             displayNoRelisMessage();
             return;
         }
@@ -62,7 +65,7 @@ public class MainMyRelisFragment extends BaseRelisFragment {
         for (String discussion : discussionsUserIsIn) {
             MainActivity.discussionsImIn.add(discussion);
         }
-
+        discussionQuery.orderByDescending("createdAt");
         discussionQuery.findInBackground(new FindCallback<Discussion>() {
 
                     @Override
@@ -71,13 +74,18 @@ public class MainMyRelisFragment extends BaseRelisFragment {
                         if (li != null) {
                             if (li.size() == 0) {
                                 displayNoRelisMessage();
-                                dia.dismiss();
+//                                dia.dismiss();
+                                chatsList = new ArrayList<>();
                                 return;
+                            }
+                            else {
+                                tvNoUsers.setVisibility(View.GONE);
                             }
 
                             chatsList = new ArrayList<>(li);
-                            ListView list = (ListView) v.findViewById(R.id.list_relis);
-                            list.setAdapter(new DiscussionAdapter());
+//                            ListView list = (ListView) v.findViewById(R.id.list_relis);
+//                            list.setAdapter(new DiscussionAdapter());
+                            discussionAdapter.notifyDataSetChanged();
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                                 @Override
@@ -91,13 +99,25 @@ public class MainMyRelisFragment extends BaseRelisFragment {
                                 }
                             });
                         } else {
-                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
-                            e.printStackTrace();
+//                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
+//                            e.printStackTrace();
                         }
 
-                        dia.dismiss();
+//                        dia.dismiss();
                     }
                 });
+        myHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+//                if (HomeFragment.runningMy) {
+//                    Toast.makeText(getActivity().getApplicationContext(), "In loadUserList MY", Toast.LENGTH_SHORT).show();
+//                    loadUserList();
+//                }
+                loadUserList();
+
+            }
+        }, 1000);
     }
 
     /* ========================================================================== */

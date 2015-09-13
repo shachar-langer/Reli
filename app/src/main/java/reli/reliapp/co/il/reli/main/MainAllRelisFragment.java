@@ -6,8 +6,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
+
 import java.util.ArrayList;
 import java.util.List;
 import reli.reliapp.co.il.reli.R;
@@ -20,6 +24,7 @@ import reli.reliapp.co.il.reli.utils.Utils;
 public class MainAllRelisFragment extends BaseRelisFragment {
 
     private TextView tvNoUsers;
+
     /* ========================================================================== */
 
     public MainAllRelisFragment() {
@@ -28,15 +33,17 @@ public class MainAllRelisFragment extends BaseRelisFragment {
 
     /* ========================================================================== */
 
-    protected void loadUserList() {
+    public void loadUserList() {
 
         ReliUser user = MainActivity.user;
 
-        final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
+//        final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
         tvNoUsers = (TextView) v.findViewById(R.id.no_relis);
-        tvNoUsers.setVisibility(View.GONE);
+//        tvNoUsers.setVisibility(View.GONE);
 
-        Discussion.getDiscussionQuery().whereWithinKilometers(Const.COL_DISCUSSION_LOCATION,
+        ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
+        discussionQuery.orderByDescending("createdAt");
+        discussionQuery.whereWithinKilometers(Const.COL_DISCUSSION_LOCATION,
                 user.getLocation(),
                 (user.getNotificationsRadius() / Const.METERS_IN_KM))
                 .findInBackground(new FindCallback<Discussion>() {
@@ -47,13 +54,17 @@ public class MainAllRelisFragment extends BaseRelisFragment {
                         if (li != null) {
                             if (li.size() == 0) {
                                 displayNoRelisMessage();
-                                dia.dismiss();
+                                chatsList = new ArrayList<>();
+//                                dia.dismiss();
                                 return;
+                            }
+                            else {
+                                tvNoUsers.setVisibility(View.GONE);
                             }
 
                             chatsList = new ArrayList<>(li);
-                            ListView list = (ListView) v.findViewById(R.id.list_relis);
-                            list.setAdapter(new DiscussionAdapter());
+//                            ListView list = (ListView) v.findViewById(R.id.list_relis);
+//                            list.setAdapter(new DiscussionAdapter());
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                                 @Override
@@ -65,14 +76,28 @@ public class MainAllRelisFragment extends BaseRelisFragment {
                                     startActivity(intent);
                                 }
                             });
+                            discussionAdapter.notifyDataSetChanged();
                         } else {
-                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
-                            e.printStackTrace();
+//                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
+//                            e.printStackTrace();
                         }
 
-                        dia.dismiss();
+//                        dia.dismiss();
                     }
                 });
+        allHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+//                if (HomeFragment.runningAll) {
+//                    Toast.makeText(getActivity().getApplicationContext(), "In loadUserList ALL", Toast.LENGTH_SHORT).show();
+//                    loadUserList();
+//                }
+
+                loadUserList();
+
+            }
+        }, 1000);
     }
 
     /* ========================================================================== */

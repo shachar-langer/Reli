@@ -742,6 +742,9 @@ public class MainActivity extends CustomActivity implements LocationListener,
         // Update Installation (in order to stop notifications)
         installation.put(discussionID, false);
 
+        // Remove discussion from chat list
+        HomeFragment.getMyRelisFragmentInstance().removeFromChatList(discussionID);
+
         // Save
         user.saveEventually();
         installation.saveInBackground();

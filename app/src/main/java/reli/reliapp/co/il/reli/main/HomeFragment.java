@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import reli.reliapp.co.il.reli.custom.CustomActivity;
 import reli.reliapp.co.il.reli.viewPageIndicator.CirclePageIndicator;
@@ -18,6 +19,10 @@ public class HomeFragment extends Fragment {
 
 //    private static final int MIDDLE_FRAGMENT = 1;
     private static final int MIDDLE_FRAGMENT = 0;
+
+    private static MainAllRelisFragment allRelisFragment = null;
+    private static MainMyRelisFragment myRelisFragment = null;
+    public static boolean runningAll, runningMy;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -33,6 +38,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    /* ========================================================================== */
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        runningAll = false;
+        runningMy = false;
     }
 
     /* ========================================================================== */
@@ -69,11 +84,15 @@ public class HomeFragment extends Fragment {
 //                        break;
 //                }
 
-                switch (position){
+                switch (position) {
                     case 0:
+                        runningMy = true;
+                        runningAll = false;
                         title = getString(R.string.middle_tab);
                         break;
                     case 1:
+                        runningMy = false;
+                        runningAll = true;
                         title = getString(R.string.right_tab);
                         break;
                 }
@@ -82,13 +101,38 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
         });
 
+        runningMy = true;
+        runningAll = false;
         mViewPager.setCurrentItem(MIDDLE_FRAGMENT);
         ((CustomActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.middle_tab));
 
         return v;
+    }
+
+    /* ========================================================================== */
+
+    public static MainAllRelisFragment getAllRelisFragmentInstance() {
+        if (allRelisFragment == null) {
+            allRelisFragment = new MainAllRelisFragment();
+//            allRelisFragment.loadUserList();
+        }
+
+        return allRelisFragment;
+    }
+
+    /* ========================================================================== */
+
+    public static MainMyRelisFragment getMyRelisFragmentInstance() {
+        if (myRelisFragment == null) {
+            myRelisFragment = new MainMyRelisFragment();
+//            myRelisFragment.loadUserList();
+        }
+
+        return myRelisFragment;
     }
 
     /* ========================================================================== */
@@ -105,9 +149,9 @@ public class HomeFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new MainMyRelisFragment();
+                    return getMyRelisFragmentInstance();
                 case 1:
-                    return new MainAllRelisFragment();
+                    return getAllRelisFragmentInstance();
             }
 
 //            switch (position) {

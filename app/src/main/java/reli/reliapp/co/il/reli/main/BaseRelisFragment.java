@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -33,6 +37,11 @@ public abstract class BaseRelisFragment extends Fragment {
     protected ArrayList<Discussion> chatsList;
     protected View v;
     protected Context ctx;
+    protected DiscussionAdapter discussionAdapter = null;
+    protected ListView list = null;
+    protected static Handler myHandler, allHandler;
+
+    /* ========================================================================== */
 
     public BaseRelisFragment() {
         // Required empty public constructor
@@ -45,6 +54,11 @@ public abstract class BaseRelisFragment extends Fragment {
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_main_relis, container, false);
         ctx = getActivity().getApplicationContext();
+
+        list = (ListView) v.findViewById(R.id.list_relis);
+        chatsList = new ArrayList<>();
+        discussionAdapter = new DiscussionAdapter();
+        list.setAdapter(discussionAdapter);
 
         FloatingActionButton addDiscussionBtn = (FloatingActionButton) v.findViewById(R.id.add_discussion_btn_relis);
         addDiscussionBtn.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +75,9 @@ public abstract class BaseRelisFragment extends Fragment {
             }
         });
 
+        myHandler = new Handler();
+        allHandler = new Handler();
+
         return v;
     }
 
@@ -75,7 +92,23 @@ public abstract class BaseRelisFragment extends Fragment {
 
     /* ========================================================================== */
 
-    protected abstract void loadUserList();
+    public abstract void loadUserList();
+
+    /* ========================================================================== */
+
+    public void removeFromChatList(String discussionID) {
+
+        Discussion discussionToRemove = null;
+        for (Discussion d: chatsList) {
+            if (d.getParseID().equals(discussionID)) {
+                discussionToRemove = d;
+                break;
+            }
+        }
+        if (discussionToRemove != null) chatsList.remove(discussionToRemove);
+
+        discussionAdapter.notifyDataSetChanged();
+    }
 
     /* ========================================================================== */
 
@@ -139,6 +172,11 @@ public abstract class BaseRelisFragment extends Fragment {
                         ParseObject.fetchAllInBackground(li, new FindCallback<ParseObject>() {
                             @Override
                             public void done(List<ParseObject> li, ParseException e) {
+
+                                if (li == null) {
+                                    return;
+                                }
+
                                 HashSet<String> messagesIDs = new HashSet<String>();
 
                                 Calendar mostRecentMessageTime = null, currentMessageTime = Calendar.getInstance();

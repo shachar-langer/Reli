@@ -504,6 +504,8 @@ public class DiscussionActivity extends CustomActivity
         MainActivity.removeDiscussionFromMyRelis(discussionTableName);
         updateMenuTitles();
 
+
+
         return true;
     }
 
