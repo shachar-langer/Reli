@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,7 +156,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     /* ========================================================================== */
 
     private void addFacebookButton(View view) {
-        Button fb_button = (Button) view.findViewById(R.id.fb_button);
+        FloatingActionButton fb_button = (FloatingActionButton) view.findViewById(R.id.fb_button);
         fb_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +168,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     /* ========================================================================== */
 
     private void addAnonymousButton(View view) {
-        final Button anonymousButton = (Button) view.findViewById(R.id.anonymous_button);
+        final FloatingActionButton anonymousButton = (FloatingActionButton) view.findViewById(R.id.anonymous_button);
         anonymousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

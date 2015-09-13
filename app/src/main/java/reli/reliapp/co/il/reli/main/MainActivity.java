@@ -643,15 +643,9 @@ public class MainActivity extends CustomActivity implements LocationListener,
                 ReliUser user = MainActivity.user;
 
                 // Logout from Facebook session
-                if ((user != null) && (user.getUserType() == ReliUserType.FACEBOOK_USER)) {
-                    if (Profile.getCurrentProfile() != null) {
-                        // Sign out
-                        LoginManager.getInstance().logOut();
-                    }
-                }
+                facebookLogout();
 
-                // We don't logout from Parse because we want to allow re-entering after a FB user that logged out in the past exists
-                //ParseUser.logOut();
+                ParseUser.logOut();
 
                 MainActivity.user = null;
                 MainActivity.installation = null;
@@ -683,6 +677,8 @@ public class MainActivity extends CustomActivity implements LocationListener,
     /* ========================================================================== */
 
     private void handleExit(int dialogTitle, int dialogMessage, boolean shouldShowCancelBtn) {
+        facebookLogout();
+
         DialogInterface.OnClickListener listener1 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
@@ -749,5 +745,17 @@ public class MainActivity extends CustomActivity implements LocationListener,
         // Save
         user.saveEventually();
         installation.saveInBackground();
+    }
+
+    /* ========================================================================== */
+
+    private void facebookLogout() {
+        // Logout from Facebook session
+        if ((user != null) && (user.getUserType() == ReliUserType.FACEBOOK_USER)) {
+            if (Profile.getCurrentProfile() != null) {
+                // Sign out
+                LoginManager.getInstance().logOut();
+            }
+        }
     }
 }
