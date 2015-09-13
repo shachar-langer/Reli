@@ -72,8 +72,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 app:backgroundTint="@color/com_facebook_blue"
-                android:background="@drawable/ic_facebook_128"
-                app:elevation="@dimen/fab_elevation"
+                android:background="@drawable/ic_facebook_60"
                 app:borderWidth="0dp"
                 android:clickable="true"
                 app:rippleColor="#F06292" />
