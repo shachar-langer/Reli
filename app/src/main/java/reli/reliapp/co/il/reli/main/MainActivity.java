@@ -650,7 +650,9 @@ public class MainActivity extends CustomActivity implements LocationListener,
                     }
                 }
 
-                ParseUser.logOut();
+                // We don't logout from Parse because we want to allow re-entering after a FB user that logged out in the past exists
+                //ParseUser.logOut();
+
                 MainActivity.user = null;
                 MainActivity.installation = null;
 

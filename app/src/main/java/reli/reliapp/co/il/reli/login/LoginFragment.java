@@ -11,28 +11,31 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.widget.LoginButton;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.RefreshCallback;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
-import java.io.ObjectStreamException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 
 import reli.reliapp.co.il.reli.main.MainActivity;
 import reli.reliapp.co.il.reli.R;
@@ -116,31 +119,36 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         // Handle the case when the user is known
         if (user != null) {
-            getActivity().finish();
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            continueToMain();
         }
 
         else {
-            Profile profile = Profile.getCurrentProfile();
+            final Profile profile = Profile.getCurrentProfile();
 
             // Check if we just logged off
-            if (profile.getCurrentProfile() == null) {
+            if (profile == null) {
                 MainActivity.user = null;
                 return;
             }
 
-            // Create a new ReliUser
-            ReliUser reliUser = new ReliUser(getActivity().getApplicationContext(),
-                    ReliUserType.FACEBOOK_USER,
-                    profile.getFirstName(),
-                    profile.getName(),
-                    new ParseGeoPoint(),
-                    null);
+            // Check if the Facebook user already has a ParseID
+            ParseQuery query = ParseQuery.getQuery(Const.FACEBOOK_TO_PARSE_MAPPING);
+            query.whereEqualTo(Const.FACEBOOK_TO_PARSE_MAPPING_FACEBOOK_ID, profile.getId());
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> parseIDsList, ParseException e) {
 
-            addUserToParse(reliUser);
+                    // The user has already logged in in the past
+                    if ((e == null) && (parseIDsList.size() > 0)) {
+                        String parseID = parseIDsList.get(0).getString(Const.FACEBOOK_TO_PARSE_MAPPING_PARSE_ID);
+                        handleFacebookLoginExistingUser(parseID, profile);
+                    }
 
-            // Save user's profile picture
-            handleFacebookAvatar(reliUser, profile);
+                    // This is a new user
+                    else {
+                        handleFacebookLoginNewUser(profile);
+                    }
+                }
+            });
         }
     }
 
@@ -175,8 +183,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         // Handle the case when the user is known
         if (user != null) {
-            getActivity().finish();
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            continueToMain();
         }
 
         else {
@@ -194,7 +201,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
             }
 
             try {
-            addUserToParse(reliUser);
+                addUserToParse(reliUser, false);
             } catch (Exception e) {
 
             }
@@ -203,7 +210,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
     /* ========================================================================== */
 
-    private void addUserToParse(final ReliUser reliUser) {
+    private void addUserToParse(final ReliUser reliUser, final boolean isFacebookUser) {
         MainActivity.user = reliUser;
 
         // Add the new user to Parse
@@ -215,13 +222,16 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                     ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            MainActivity.installation = ParseInstallation.getCurrentInstallation();
-                            MainActivity.installation.put(Const.INSTALLATION_USER, ParseUser.getCurrentUser());
+                            addToInstallationTable();
+
+                            // Add to Facebook-Parse mapping
+                            if (isFacebookUser) {
+                                addToFacebookParseMapping();
+                            }
                         }
                     });
 
-                    getActivity().finish();
-                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    continueToMain();
                 }
             }
         });
@@ -297,5 +307,66 @@ public class LoginFragment extends android.support.v4.app.Fragment {
             super.onPostExecute(bytes);
             reliUser.setAvatar(bytes);
         }
+    }
+
+    /* ========================================================================== */
+
+    private void continueToMain() {
+        getActivity().finish();
+        startActivity(new Intent(getActivity(), MainActivity.class));
+    }
+
+    /* ========================================================================== */
+
+    private void addToInstallationTable() {
+        MainActivity.installation = ParseInstallation.getCurrentInstallation();
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user != null) {
+            MainActivity.installation.put(Const.INSTALLATION_USER, user);
+        }
+    }
+
+    /* ========================================================================== */
+
+    private void handleFacebookLoginExistingUser(String parseID, final Profile profile) {
+        ParseQuery<ReliUser> userQuery = ReliUser.getReliQuery();
+        userQuery.getInBackground(parseID, new GetCallback<ReliUser>() {
+            public void done(ReliUser reliUser, ParseException e) {
+                if (e == null) {
+                    MainActivity.user = reliUser;
+
+                    // Save user's profile picture
+                    handleFacebookAvatar(reliUser, profile);
+
+                    continueToMain();
+                }
+            }
+        });
+    }
+
+    /* ========================================================================== */
+
+    private void handleFacebookLoginNewUser(Profile profile) {
+        // Create a new ReliUser
+        ReliUser reliUser = new ReliUser(getActivity().getApplicationContext(),
+                ReliUserType.FACEBOOK_USER,
+                profile.getFirstName(),
+                profile.getName(),
+                new ParseGeoPoint(),
+                null);
+
+        addUserToParse(reliUser, true);
+
+        // Save user's profile picture
+        handleFacebookAvatar(reliUser, profile);
+    }
+
+    /* ========================================================================== */
+
+    private void addToFacebookParseMapping() {
+        ParseObject po = new ParseObject(Const.FACEBOOK_TO_PARSE_MAPPING);
+        po.put(Const.FACEBOOK_TO_PARSE_MAPPING_FACEBOOK_ID, Profile.getCurrentProfile().getCurrentProfile().getId());
+        po.put(Const.FACEBOOK_TO_PARSE_MAPPING_PARSE_ID, ParseUser.getCurrentUser().getObjectId());
+        po.saveEventually();
     }
 }

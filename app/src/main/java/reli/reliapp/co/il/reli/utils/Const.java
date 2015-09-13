@@ -84,5 +84,9 @@ public class Const
     public static final String INSTALLATION_USER = "user";
     public static final String INSTALLATION_ID = "installationId";
 
+    // FacebookToParse table
+    public static final String FACEBOOK_TO_PARSE_MAPPING = "FacebookToParse";
+    public static final String FACEBOOK_TO_PARSE_MAPPING_FACEBOOK_ID = "FacebookID";
+    public static final String FACEBOOK_TO_PARSE_MAPPING_PARSE_ID = "ParseID";
 }
 
