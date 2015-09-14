@@ -16,6 +16,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseInstallation;
+
 import java.util.ArrayList;
 
 import reli.reliapp.co.il.reli.R;
@@ -76,7 +78,7 @@ public class TagSelectionFragment extends Fragment {
 
         if (isChanged) {
             currentUser.saveEventually();
-            MainActivity.installation.saveInBackground();
+            ParseInstallation.getCurrentInstallation().saveInBackground();
             Toast.makeText(getActivity().getApplicationContext(), R.string.new_settings_saved, Toast.LENGTH_SHORT).show();
         }
     }
@@ -119,13 +121,13 @@ public class TagSelectionFragment extends Fragment {
 
         // Add the tags that the user wants to follow from the list
         for (String currentShouldBeAdded : shouldBeAdded) {
-            MainActivity.installation.put(currentShouldBeAdded, true);
+            ParseInstallation.getCurrentInstallation().put(currentShouldBeAdded, true);
         }
 
         // Remove the tags that the user doesn't want to follow from the list
         for (String currentShouldBeAdded : shouldBeRemoved) {
-            MainActivity.installation.put(currentShouldBeAdded, false);
-//            MainActivity.installation.remove(currentShouldBeAdded);
+            ParseInstallation.getCurrentInstallation().put(currentShouldBeAdded, false);
+//            ParseInstallation.getCurrentInstallation().remove(currentShouldBeAdded);
         }
     }
 

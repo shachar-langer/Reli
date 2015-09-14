@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -70,46 +69,37 @@ public class SplashScreen extends Activity {
                 // Retrieve the list of Tags
                 initTagsMaps();
 
-                // Check if we should use the saved user
-                final ReliUser user;
+                // Retrieve SharedPreferences
                 SharedPreferences prefs = getSharedPreferences(Const.RELI_SHARED_PREF_FILE, Context.MODE_PRIVATE);
                 boolean restoredShouldKeepSignedIn = prefs.getBoolean(Const.SHARED_PREF_KEEP_SIGNED_IN, false);
+                String restoredParseUser = prefs.getString(Const.SHARED_PREF_PARSE_USER, null);
 
-//                restoredShouldKeepSignedIn = false;
-
+                // Check if we should use the saved user
                 if (restoredShouldKeepSignedIn) {
-                    user = (ReliUser) (ParseUser.getCurrentUser());
-                } else {
-                    user = null;
+                    final ReliUser user = (ReliUser) ParseUser.getCurrentUser();
+
+                    if (user != null) {
+                        // The Parse user is known
+                        handleParseUserKnown(user);
+                    }
+
+                    else if (restoredParseUser != null) {
+                        // The Parse user is known but we should retrieve it
+                        handleParseUserIdKnown(restoredParseUser);
+                    }
+
+                    else {
+                        // The parse user is not known
+                        handleParseUserNotKnown();
+                    }
                 }
 
-                MainActivity.user = user;
-
-                if (user == null) {
-                    initLoginScreen();
-                }
+                // The parse user is not known
                 else {
-                    user.fetchInBackground(new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject parseObject, ParseException e) {
-                            // Set Installation object
-                            ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    // Toast.makeText(getApplicationContext(), "In done of installation", Toast.LENGTH_SHORT).show();
-                                    MainActivity.installation = ParseInstallation.getCurrentInstallation();
-                                    MainActivity.installation.put(Const.INSTALLATION_USER, ParseUser.getCurrentUser());
-                                }
-                            });
-
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        }
-                    });
+                    handleParseUserNotKnown();
                 }
+
             }
-
-
         }, SPLASH_TIME_OUT_MILLIS);
     }
 
@@ -166,5 +156,57 @@ public class SplashScreen extends Activity {
         } catch (Exception e) {
 
         }
+    }
+
+    /* ========================================================================== */
+
+    private void handleParseUserNotKnown() {
+        MainActivity.user = null;
+        initLoginScreen();
+    }
+
+    /* ========================================================================== */
+
+    private void handleParseUserKnown(ReliUser user) {
+        MainActivity.user = user;
+        user.fetchInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                // Set Installation object
+                ParseInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        ParseInstallation.getCurrentInstallation().put(Const.INSTALLATION_USER, ParseUser.getCurrentUser());
+                    }
+                });
+
+                continueToMain();
+            }
+        });
+    }
+
+    /* ========================================================================== */
+
+    private void handleParseUserIdKnown(String restoredParseUser) {
+        ParseQuery<ReliUser> query = ReliUser.getReliQuery();
+        query.getInBackground(restoredParseUser, new GetCallback<ReliUser>() {
+            public void done(ReliUser reliUser, ParseException e) {
+                if (e == null) {
+                    MainActivity.user = reliUser;
+                    continueToMain();
+                }
+                else {
+                    handleParseUserNotKnown();
+                }
+            }
+        });
+    }
+
+    /* ========================================================================== */
+
+    private void continueToMain() {
+        Utils.saveParseUserInSharedPreferences(this, MainActivity.user.getParseID());
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 }

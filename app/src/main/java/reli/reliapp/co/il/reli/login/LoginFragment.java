@@ -15,7 +15,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.facebook.CallbackManager;
@@ -90,7 +89,6 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
         addFacebookButton(view);
         addAnonymousButton(view);
-        addCheckBox(view);
         saveKeepLogin();
 
         return view;
@@ -240,17 +238,6 @@ public class LoginFragment extends android.support.v4.app.Fragment {
 
     /* ========================================================================== */
 
-    private void addCheckBox(View view) {
-        cb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveKeepLogin();
-            }
-        });
-    }
-
-    /* ========================================================================== */
-
     private void saveKeepLogin() {
         SharedPreferences.Editor editor = getActivity().getSharedPreferences(Const.RELI_SHARED_PREF_FILE, Context.MODE_PRIVATE).edit();
         editor.putBoolean(Const.SHARED_PREF_KEEP_SIGNED_IN, cb.isChecked());
@@ -313,6 +300,11 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     /* ========================================================================== */
 
     private void continueToMain() {
+        if (cb.isChecked()) {
+            Utils.saveParseUserInSharedPreferences(getActivity(), MainActivity.user.getParseID());
+        }
+        saveKeepLogin();
+
         getActivity().finish();
         startActivity(new Intent(getActivity(), MainActivity.class));
     }
@@ -320,10 +312,10 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     /* ========================================================================== */
 
     private void addToInstallationTable() {
-        MainActivity.installation = ParseInstallation.getCurrentInstallation();
         ParseUser user = ParseUser.getCurrentUser();
         if (user != null) {
-            MainActivity.installation.put(Const.INSTALLATION_USER, user);
+            ParseInstallation.getCurrentInstallation().put(Const.INSTALLATION_USER, user);
+            ParseInstallation.getCurrentInstallation().saveInBackground();
         }
     }
 

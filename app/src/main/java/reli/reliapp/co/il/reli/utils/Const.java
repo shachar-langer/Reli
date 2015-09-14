@@ -80,6 +80,8 @@ public class Const
     // SharedPreferences
     public static final String RELI_SHARED_PREF_FILE = "reliPrefFile";
     public static final String SHARED_PREF_KEEP_SIGNED_IN = "reliKeepSignedIn";
+    public static final String SHARED_PREF_PARSE_USER = "reliParseUser";
+
 
     // Installation (used for notifications)
     public static final String INSTALLATION_USER = "user";

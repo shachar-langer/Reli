@@ -4,23 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +38,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import com.google.android.gms.location.LocationListener;
-//import android.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
@@ -105,7 +100,7 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     public static ReliUser user;
     public static Fragment homeFragment;
-    public static ParseInstallation installation;
+    //public static ParseInstallation installation;
 
     // UI Stuff
     ListView mDrawerList;
@@ -640,15 +635,12 @@ public class MainActivity extends CustomActivity implements LocationListener,
         DialogInterface.OnClickListener listener1 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                ReliUser user = MainActivity.user;
-
                 // Logout from Facebook session
                 facebookLogout();
-
+                // Logout from Parse user
                 ParseUser.logOut();
-
+                Utils.saveParseUserInSharedPreferences(MainActivity.this, null);
                 MainActivity.user = null;
-                MainActivity.installation = null;
 
                 Toast.makeText(getApplicationContext(), R.string.successful_sign_out, Toast.LENGTH_SHORT).show();
 
@@ -677,8 +669,6 @@ public class MainActivity extends CustomActivity implements LocationListener,
     /* ========================================================================== */
 
     private void handleExit(int dialogTitle, int dialogMessage, boolean shouldShowCancelBtn) {
-        facebookLogout();
-
         DialogInterface.OnClickListener listener1 = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
@@ -721,11 +711,11 @@ public class MainActivity extends CustomActivity implements LocationListener,
         user.addDiscussionImIn(discussionID);
 
         // Update Installation (in order to get notifications)
-        installation.put(discussionID, true);
+        ParseInstallation.getCurrentInstallation().put(discussionID, true);
 
         // Save
         user.saveEventually();
-        installation.saveInBackground();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 
     /* ========================================================================== */
@@ -740,14 +730,14 @@ public class MainActivity extends CustomActivity implements LocationListener,
         user.removeFromDiscussionImIn(discussionID);
 
         // Update Installation (in order to stop notifications)
-        installation.put(discussionID, false);
+        ParseInstallation.getCurrentInstallation().put(discussionID, false);
 
         // Remove discussion from chat list
         HomeFragment.getMyRelisFragmentInstance().removeFromChatList(discussionID);
 
         // Save
         user.saveEventually();
-        installation.saveInBackground();
+        ParseInstallation.getCurrentInstallation().saveInBackground();
     }
 
     /* ========================================================================== */
@@ -761,4 +751,4 @@ public class MainActivity extends CustomActivity implements LocationListener,
             }
         }
     }
-}
+ }
