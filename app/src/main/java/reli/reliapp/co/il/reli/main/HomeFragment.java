@@ -22,7 +22,6 @@ public class HomeFragment extends Fragment {
 
     private static MainAllRelisFragment allRelisFragment = null;
     private static MainMyRelisFragment myRelisFragment = null;
-    public static boolean runningAll, runningMy;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
@@ -46,8 +45,6 @@ public class HomeFragment extends Fragment {
     public void onPause()
     {
         super.onPause();
-        runningAll = false;
-        runningMy = false;
     }
 
     /* ========================================================================== */
@@ -86,13 +83,9 @@ public class HomeFragment extends Fragment {
 
                 switch (position) {
                     case 0:
-                        runningMy = true;
-                        runningAll = false;
                         title = getString(R.string.middle_tab);
                         break;
                     case 1:
-                        runningMy = false;
-                        runningAll = true;
                         title = getString(R.string.right_tab);
                         break;
                 }
@@ -105,8 +98,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        runningMy = true;
-        runningAll = false;
         mViewPager.setCurrentItem(MIDDLE_FRAGMENT);
         ((CustomActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.middle_tab));
 

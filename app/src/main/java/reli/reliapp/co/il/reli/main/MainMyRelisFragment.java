@@ -83,8 +83,6 @@ public class MainMyRelisFragment extends BaseRelisFragment {
                             }
 
                             chatsList = new ArrayList<>(li);
-//                            ListView list = (ListView) v.findViewById(R.id.list_relis);
-//                            list.setAdapter(new DiscussionAdapter());
                             discussionAdapter.notifyDataSetChanged();
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -99,25 +97,10 @@ public class MainMyRelisFragment extends BaseRelisFragment {
                                 }
                             });
                         } else {
-//                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
-//                            e.printStackTrace();
-                        }
 
-//                        dia.dismiss();
+                        }
                     }
                 });
-        myHandler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-//                if (HomeFragment.runningMy) {
-//                    Toast.makeText(getActivity().getApplicationContext(), "In loadUserList MY", Toast.LENGTH_SHORT).show();
-//                    loadUserList();
-//                }
-                loadUserList();
-
-            }
-        }, 1000);
     }
 
     /* ========================================================================== */

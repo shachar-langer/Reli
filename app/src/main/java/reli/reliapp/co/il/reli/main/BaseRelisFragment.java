@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public abstract class BaseRelisFragment extends Fragment {
     protected Context ctx;
     protected DiscussionAdapter discussionAdapter = null;
     protected ListView list = null;
-    protected static Handler myHandler, allHandler;
+    SwipeRefreshLayout swipeLayout;
 
     /* ========================================================================== */
 
@@ -60,6 +61,22 @@ public abstract class BaseRelisFragment extends Fragment {
         discussionAdapter = new DiscussionAdapter();
         list.setAdapter(discussionAdapter);
 
+        swipeLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadUserList();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
+        swipeLayout.setColorSchemeResources(android.R.color.holo_green_light);
+
+
         FloatingActionButton addDiscussionBtn = (FloatingActionButton) v.findViewById(R.id.add_discussion_btn_relis);
         addDiscussionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,9 +91,6 @@ public abstract class BaseRelisFragment extends Fragment {
                 }
             }
         });
-
-        myHandler = new Handler();
-        allHandler = new Handler();
 
         return v;
     }

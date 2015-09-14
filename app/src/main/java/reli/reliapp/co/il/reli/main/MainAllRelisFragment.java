@@ -37,9 +37,7 @@ public class MainAllRelisFragment extends BaseRelisFragment {
 
         ReliUser user = MainActivity.user;
 
-//        final ProgressDialog dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
         tvNoUsers = (TextView) v.findViewById(R.id.no_relis);
-//        tvNoUsers.setVisibility(View.GONE);
 
         ParseQuery<Discussion> discussionQuery = Discussion.getDiscussionQuery();
         discussionQuery.orderByDescending("createdAt");
@@ -55,7 +53,6 @@ public class MainAllRelisFragment extends BaseRelisFragment {
                             if (li.size() == 0) {
                                 displayNoRelisMessage();
                                 chatsList = new ArrayList<>();
-//                                dia.dismiss();
                                 return;
                             }
                             else {
@@ -63,8 +60,6 @@ public class MainAllRelisFragment extends BaseRelisFragment {
                             }
 
                             chatsList = new ArrayList<>(li);
-//                            ListView list = (ListView) v.findViewById(R.id.list_relis);
-//                            list.setAdapter(new DiscussionAdapter());
                             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                                 @Override
@@ -78,26 +73,11 @@ public class MainAllRelisFragment extends BaseRelisFragment {
                             });
                             discussionAdapter.notifyDataSetChanged();
                         } else {
-//                            Utils.showDialog(ctx, getString(R.string.err_users) + " " + e.getMessage());
-//                            e.printStackTrace();
+
                         }
 
-//                        dia.dismiss();
                     }
                 });
-        allHandler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-//                if (HomeFragment.runningAll) {
-//                    Toast.makeText(getActivity().getApplicationContext(), "In loadUserList ALL", Toast.LENGTH_SHORT).show();
-//                    loadUserList();
-//                }
-
-                loadUserList();
-
-            }
-        }, 1000);
     }
 
     /* ========================================================================== */

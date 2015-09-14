@@ -22,14 +22,21 @@
         android:visibility="gone"
         android:textStyle="bold"/>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/circles_title_hidden_relis">
+
     <ListView
         android:id="@+id/list_relis"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:divider="@color/main_color_green"
         android:dividerHeight="1dp"
-        tools:listitem="@layout/discussion_item"
-        android:layout_below="@id/circles_title_hidden_relis" />
+        tools:listitem="@layout/discussion_item"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_discussion_btn_relis"
@@ -48,7 +55,7 @@
         app:fabSize="normal"
         app:borderWidth="0dp"
         app:rippleColor="#F06292"
-        android:layout_alignBottom="@+id/list_relis"
+        android:layout_alignBottom="@+id/swipe_container"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
