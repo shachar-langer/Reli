@@ -1,4 +1,4 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container_login"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:context="reli.reliapp.co.il.reli.login.LoginActivity" tools:ignore="MergeRootFrame"/>
+    tools:context="il.co.reli.il.il.login.LoginActivity" tools:ignore="MergeRootFrame"/>
