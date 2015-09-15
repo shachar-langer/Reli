@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -100,18 +101,16 @@ public class MainActivity extends CustomActivity implements LocationListener,
 
     public static ReliUser user;
     public static Fragment homeFragment;
-    //public static ParseInstallation installation;
-
-    // UI Stuff
-    ListView mDrawerList;
-    RelativeLayout mDrawerPane;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private DrawerLayout mDrawerLayout;
-    ArrayList<NavItem> mNavItems;
-
-    public static HashSet<String> discussionsImIn = new HashSet<String>();
+    public static HashSet<String> discussionsImIn = new HashSet<>();
     public static HashMap<String, ReliTag> tagsIdToTag = new HashMap<>();
     public static HashMap<String, Bitmap> usersAvatars = new HashMap<>();
+
+    // UI Stuff
+    private ListView mDrawerList;
+    private RelativeLayout mDrawerPane;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerLayout mDrawerLayout;
+    private ArrayList<NavItem> mNavItems;
 
     /* ========================================================================== */
 
@@ -621,6 +620,18 @@ public class MainActivity extends CustomActivity implements LocationListener,
             // Return to home screen
             getHomeFragment();
         }
+        else if (positionMeaning.equals(getString(R.string.nav_drawer_facebook))) {
+            // Open Reli's page on Facebook
+            Intent intent;
+            String profileId = "528014970706716";
+            try {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/" + profileId));
+            } catch (Exception e) {
+                intent =  new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/" + profileId));
+            }
+
+            this.startActivity(intent);
+        }
 
         // Update selected item
         mDrawerList.setItemChecked(position, true);
@@ -688,17 +699,14 @@ public class MainActivity extends CustomActivity implements LocationListener,
     /* ========================================================================== */
 
     private void getHomeFragment() {
-        Fragment myFragment = getSupportFragmentManager().findFragmentByTag(Const.HOME_FRAGMENT_TAG);
-        if (myFragment == null) {
-            homeFragment = new HomeFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.mainContent, homeFragment)
-                    .addToBackStack(Const.HOME_FRAGMENT_TAG)
-                    .commit();
+        String currentFragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+
+        // Check if we're already in home fragment
+        if (currentFragmentTag != null && currentFragmentTag.equals(Const.HOME_FRAGMENT_TAG)) {
+            return;
         } else {
             getSupportFragmentManager().popBackStackImmediate(Const.HOME_FRAGMENT_TAG, 0);
         }
-
     }
 
     /* ========================================================================== */

@@ -1,5 +1,6 @@
 package reli.reliapp.co.il.reli.login;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,6 +53,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     private LoginButton fbLoginButton;
     private CheckBox cb;
     private View view;
+    private ProgressDialog dia = null;
 
     /* ========================================================================== */
 
@@ -130,6 +132,8 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                 return;
             }
 
+            dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
+
             // Check if the Facebook user already has a ParseID
             ParseQuery query = ParseQuery.getQuery(Const.FACEBOOK_TO_PARSE_MAPPING);
             query.whereEqualTo(Const.FACEBOOK_TO_PARSE_MAPPING_FACEBOOK_ID, profile.getId());
@@ -170,6 +174,7 @@ public class LoginFragment extends android.support.v4.app.Fragment {
         anonymousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dia = ProgressDialog.show(getActivity(), null, getString(R.string.alert_loading));
                 handleAnonymousLogin();
             }
         });
@@ -196,13 +201,13 @@ public class LoginFragment extends android.support.v4.app.Fragment {
                         new ParseGeoPoint(),
                         null);
             } catch (Exception e) {
-
+                dia.dismiss();
             }
 
             try {
                 addUserToParse(reliUser, false);
             } catch (Exception e) {
-
+                dia.dismiss();
             }
         }
     }
@@ -300,6 +305,10 @@ public class LoginFragment extends android.support.v4.app.Fragment {
     /* ========================================================================== */
 
     private void continueToMain() {
+        if (dia != null) {
+            dia.dismiss();
+        }
+
         if (cb.isChecked()) {
             Utils.saveParseUserInSharedPreferences(getActivity(), MainActivity.user.getParseID());
         }

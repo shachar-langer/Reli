@@ -108,6 +108,9 @@
     <string name="nav_drawer_about">About</string>
     <string name="nav_drawer_about_sub">Who are we?</string>
 
+    <string name="nav_drawer_facebook">Reli in Facebook</string>
+    <string name="nav_drawer_facebook_sub">Visit our Facebook page</string>
+
     <string-array name="nav_drawer_items">
         <item>@string/nav_drawer_inbox</item>
         <item>@string/nav_drawer_notification_settings</item>
@@ -115,6 +118,7 @@
         <!--<item>@string/nav_drawer_tour</item>-->
         <item>@string/nav_drawer_faq</item>
         <item>@string/nav_drawer_about</item>
+        <item>@string/nav_drawer_facebook</item>
         <item>@string/nav_drawer_sign_out</item>
         <item>@string/nav_drawer_exit</item>
     </string-array>
@@ -125,6 +129,7 @@
         <!--<item>@string/nav_drawer_tour_sub</item>-->
         <item>@string/nav_drawer_faq_sub</item>
         <item>@string/nav_drawer_about_sub</item>
+        <item>@string/nav_drawer_facebook_sub</item>
         <item>@string/nav_drawer_sign_out_sub</item>
         <item>@string/nav_drawer_exit_sub</item>
     </string-array>
