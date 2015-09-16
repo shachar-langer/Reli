@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 
 public class CreatePollFragment extends Fragment {
     @Override

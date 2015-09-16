@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import il.co.reli.custom.CustomActivity;
 import il.co.reli.viewPageIndicator.CirclePageIndicator;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 
 public class HomeFragment extends Fragment {
 

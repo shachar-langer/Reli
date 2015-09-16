@@ -10,7 +10,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.createReli.DiscussionActivity;
 import il.co.reli.dataStructures.Discussion;
 import il.co.reli.dataStructures.ReliUser;

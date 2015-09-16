@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 
 public class FaqFragment extends Fragment {
 

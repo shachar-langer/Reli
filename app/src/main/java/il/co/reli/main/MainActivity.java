@@ -46,7 +46,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.ReliApp;
 import il.co.reli.custom.CustomActivity;
 import il.co.reli.dataStructures.ReliTag;

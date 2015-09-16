@@ -2,7 +2,7 @@ package il.co.reli.createReli;
 
 import android.os.Bundle;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.custom.CustomActivity;
 
 public class CreateReliActivity extends CustomActivity {

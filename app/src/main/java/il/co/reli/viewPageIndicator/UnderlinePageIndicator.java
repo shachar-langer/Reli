@@ -30,7 +30,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 
 /**
  * Draws a line for each page. The current page line is colored differently

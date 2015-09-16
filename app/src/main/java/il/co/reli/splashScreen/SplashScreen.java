@@ -21,7 +21,7 @@ import com.parse.SaveCallback;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.dataStructures.ReliTag;
 import il.co.reli.dataStructures.ReliUser;
 import il.co.reli.login.LoginActivity;

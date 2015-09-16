@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import android.support.v4.app.FragmentActivity;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 
 
 public class LoginActivity extends FragmentActivity {

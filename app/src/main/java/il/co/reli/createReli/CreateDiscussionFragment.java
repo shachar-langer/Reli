@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.dataStructures.Discussion;
 import il.co.reli.dataStructures.ReliTag;
 import il.co.reli.dataStructures.ReliUser;

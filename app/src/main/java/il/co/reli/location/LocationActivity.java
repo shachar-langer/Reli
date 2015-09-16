@@ -19,7 +19,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 
 public class LocationActivity extends Activity implements ConnectionCallbacks,
         OnConnectionFailedListener, LocationListener {

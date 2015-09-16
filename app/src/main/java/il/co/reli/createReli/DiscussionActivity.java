@@ -35,7 +35,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.custom.CustomActivity;
 import il.co.reli.dataStructures.Discussion;
 import il.co.reli.dataStructures.Message;

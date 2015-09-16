@@ -27,7 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.createReli.CreateReliActivity;
 import il.co.reli.dataStructures.Discussion;
 import il.co.reli.utils.Const;

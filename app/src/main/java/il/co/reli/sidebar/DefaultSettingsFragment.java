@@ -10,7 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.dataStructures.ReliUser;
 import il.co.reli.main.MainActivity;
 import il.co.reli.utils.Const;

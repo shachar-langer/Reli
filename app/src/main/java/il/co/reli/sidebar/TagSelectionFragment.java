@@ -20,7 +20,7 @@ import com.parse.ParseInstallation;
 
 import java.util.ArrayList;
 
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.dataStructures.ReliTag;
 import il.co.reli.dataStructures.ReliUser;
 import il.co.reli.main.MainActivity;

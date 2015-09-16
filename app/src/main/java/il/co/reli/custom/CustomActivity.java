@@ -3,7 +3,7 @@ package il.co.reli.custom;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import il.co.reli.il.reli.R;
+import il.co.reli.R;
 import il.co.reli.utils.TouchEffect;
 
 /**
